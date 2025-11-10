@@ -20,14 +20,14 @@ Visit [metrics.lecoq.io](https://metrics.lecoq.io) and start playing around!
 
 > ⚠️ Some plugins are not available on the web instance. Consider using [GitHub action](https://github.com/marketplace/actions/metrics-embed) to enjoy all features!
 
-> ℹ️ [metrics.lecoq.io](https://metrics.lecoq.io) always run on [latest release](https://github.com/lowlighter/metrics/releases/latest). To test upcoming releases, use [beta-metrics.lecoq.io](https://beta-metrics.lecoq.io), which always run on `@master` instead.
+> ℹ️ [metrics.lecoq.io](https://metrics.lecoq.io) always run on [latest release](https://github.com/kjanat/metrics/releases/latest). To test upcoming releases, use [beta-metrics.lecoq.io](https://beta-metrics.lecoq.io), which always run on `@master` instead.
 
 ![metrics.lecoq.io](/.github/readme/imgs/setup_shared.light.png#gh-light-mode-only)
 ![metrics.lecoq.io](/.github/readme/imgs/setup_shared.dark.png#gh-dark-mode-only)
 
 > ⚠️ This service is hosted on a small server that I rent. It is provided free of charge so please be gentle with it 😅 Availability not guaranteed!
 
-> 💕 If you really enjoy this service, consider [sponsoring me](https://github.com/sponsors/lowlighter) to help me cover server costs!
+> 💕 If you really enjoy this service, consider [sponsoring me](https://github.com/sponsors/kjanat) to help me cover server costs!
 
 ## 3️ Add images to your profile `README.md`
 

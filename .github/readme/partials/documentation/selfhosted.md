@@ -29,9 +29,9 @@ To run *metrics* action on a self-hosted runner, uses `runs-on: self-hosted`.
 ```yaml
 runs-on: self-hosted
 steps:
-  - uses: lowlighter/metrics@latest
+  - uses: kjanat/metrics@latest
     with:
       token: ${{ secrets.METRICS_TOKEN }}
 ```
 
-> 💡 To easily debug workflow errors, use [`debug: yes`](https://github.com/lowlighter/metrics/tree/master/source/plugins/core#debug) option
+> 💡 To easily debug workflow errors, use [`debug: yes`](https://github.com/kjanat/metrics/tree/master/source/plugins/core#debug) option

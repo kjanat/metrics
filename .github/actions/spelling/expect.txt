@@ -180,7 +180,7 @@ losed
 lovell
 lowalert
 lowercased
-lowlighter
+kjanat
 lsb
 lstat
 mangas

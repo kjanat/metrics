@@ -11,4 +11,4 @@ If you are interested in contributing, the following resources may interest you:
   * [📖 GitHub Rest API](https://docs.github.com/en/rest)
   * [📖 GitHub Octicons](https://github.com/primer/octicons)
 
-Use [`💬 discussions`](https://github.com/lowlighter/metrics/discussions) for feedback, new features suggestions, bugs reports or to request help for installation.
+Use [`💬 discussions`](https://github.com/kjanat/metrics/discussions) for feedback, new features suggestions, bugs reports or to request help for installation.
