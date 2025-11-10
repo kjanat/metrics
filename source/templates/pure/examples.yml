@@ -1,0 +1,32 @@
+- name: Basic pure template
+  with:
+    filename: metrics.pure.svg
+    template: pure
+    base: header
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Pure template with languages
+  with:
+    filename: metrics.pure.languages.svg
+    template: pure
+    base: header
+    plugin_languages: yes
+    plugin_languages_indepth: yes
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Pure template large display
+  with:
+    filename: metrics.pure.large.svg
+    template: pure
+    config_display: large
+    base: header
+    plugin_languages: yes
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Organization with pure template
+  with:
+    filename: metrics.pure.organization.svg
+    template: pure
+    user: github
+    base: header
+    token: ${{ secrets.METRICS_TOKEN_WITH_SCOPES }}

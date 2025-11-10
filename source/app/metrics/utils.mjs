@@ -528,6 +528,12 @@ export const svg = {
       return false
     }
 
+    // Quick check: Pure template is always Satori-compatible
+    if (/<svg[^>]*class="[^"]*pure[^"]*"/i.test(rendered)) {
+      console.debug("metrics/svg/resize > detected pure template, using Satori")
+      return true
+    }
+
     // Check for features that require Puppeteer
     const requiresPuppeteer = [
       /<foreignObject/i.test(rendered), // foreignObject not supported by Satori

@@ -1,0 +1,131 @@
+<%
+  // Pure SVG header - no HTML!
+  const iconSize = 16
+  const avatarSize = 48
+  const spacing = 20
+  let localY = 0
+%>
+
+<% if (base.header) { %>
+  <% if (account === "user") { %>
+    <!-- Header Background -->
+    <rect x="0" y="0" width="<%= width %>" height="115" fill="url(#gradient-header)" rx="6"/>
+    <rect x="0" y="0" width="<%= width %>" height="115" fill="none" stroke="#d1d5da" stroke-width="1" rx="6"/>
+
+    <!-- Avatar and Name -->
+    <g class="header-title">
+      <image x="<%= padding %>" y="<%= padding %>" width="<%= avatarSize %>" height="<%= avatarSize %>" href="<%= computed.avatar %>" clip-path="inset(0% round 50%)"/>
+      <text x="<%= padding + avatarSize + 15 %>" y="<%= padding + 30 %>" font-size="20" font-weight="600" fill="#24292e">
+        <%= user.name || user.login %>
+      </text>
+    </g>
+    <% localY = padding + avatarSize + spacing %>
+
+    <!-- Stats Row 1 -->
+    <g class="stats-row-1" transform="translate(<%= padding %>, <%= localY %>)">
+      <!-- Joined date -->
+      <g class="stat <%= computed.cakeday ? 'cakeday' : '' %>">
+        <text x="<%= iconSize + 5 %>" y="14" font-size="12" fill="#586069">
+          <% if (computed.cakeday) { %>🎂<% } else { %>🕐<% } %>
+          Joined <%= computed.registration %>
+        </text>
+      </g>
+
+      <!-- Followers -->
+      <g class="stat" transform="translate(0, 20)">
+        <text x="<%= iconSize + 5 %>" y="14" font-size="12" fill="#586069">
+          👥 <%= user.followers.totalCount %> follower<%= s(user.followers.totalCount) %>
+        </text>
+      </g>
+
+      <% if (user.isHireable) { %>
+        <!-- Hireable badge -->
+        <g class="stat hireable" transform="translate(0, 40)">
+          <rect x="0" y="0" width="140" height="20" fill="#28a745" rx="3" opacity="0.1"/>
+          <text x="<%= iconSize + 5 %>" y="14" font-size="12" fill="#28a745" font-weight="600">
+            💼 Available for hire!
+          </text>
+        </g>
+      <% } %>
+    </g>
+
+    <!-- Stats Row 2 (Right side) -->
+    <g class="stats-row-2" transform="translate(<%= padding + width/2 + 10 %>, <%= localY %>)">
+      <!-- Calendar visualization -->
+      <g class="calendar-mini">
+        <% const calendarWidth = Math.min(computed.calendar.length * 4, 160) %>
+        <% const maxVisible = Math.floor(160 / 4) %>
+        <% const startIdx = Math.max(0, computed.calendar.length - maxVisible) %>
+        <% for (let i = startIdx; i < computed.calendar.length; i++) { %>
+          <% const {color} = computed.calendar[i] %>
+          <rect
+            x="<%= (i - startIdx) * 4 %>"
+            y="0"
+            width="3"
+            height="12"
+            fill="<%= color %>"
+            rx="1"
+          />
+        <% } %>
+      </g>
+
+      <!-- Contributions -->
+      <g class="stat" transform="translate(0, 20)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          📊 <%= user.repositoriesContributedTo.totalCount %> repositor<%= s(user.repositoriesContributedTo.totalCount, "y") %>
+        </text>
+      </g>
+    </g>
+
+  <% } else if (account === "organization") { %>
+    <!-- Organization Header -->
+    <rect x="0" y="0" width="<%= width %>" height="115" fill="url(#gradient-header)" rx="6"/>
+    <rect x="0" y="0" width="<%= width %>" height="115" fill="none" stroke="#d1d5da" stroke-width="1" rx="6"/>
+
+    <!-- Avatar and Name -->
+    <g class="header-title">
+      <image x="<%= padding %>" y="<%= padding %>" width="<%= avatarSize %>" height="<%= avatarSize %>" href="<%= computed.avatar %>" clip-path="inset(0% round 15%)"/>
+      <text x="<%= padding + avatarSize + 15 %>" y="<%= padding + 30 %>" font-size="20" font-weight="600" fill="#24292e">
+        <%= user.name || user.login %>
+      </text>
+    </g>
+    <% localY = padding + avatarSize + spacing %>
+
+    <!-- Organization Stats -->
+    <g class="org-stats" transform="translate(<%= padding %>, <%= localY %>)">
+      <!-- Joined date -->
+      <g class="stat">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          <% if (computed.cakeday) { %>🎂<% } else { %>🕐<% } %>
+          Created <%= computed.registration %>
+        </text>
+      </g>
+
+      <!-- Location -->
+      <% if (user.location) { %>
+        <g class="stat" transform="translate(0, 20)">
+          <text x="0" y="14" font-size="12" fill="#586069">
+            📍 <%= user.location %>
+          </text>
+        </g>
+      <% } %>
+
+      <!-- Members -->
+      <g class="stat" transform="translate(<%= width/2 %>, 0)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          👥 <%= user.membersWithRole.totalCount %> member<%= s(user.membersWithRole.totalCount) %>
+        </text>
+      </g>
+
+      <!-- Verified badge -->
+      <% if (user.isVerified) { %>
+        <g class="stat verified" transform="translate(<%= width/2 %>, 20)">
+          <text x="0" y="14" font-size="12" fill="#0969da" font-weight="600">
+            ✓ Verified
+          </text>
+        </g>
+      <% } %>
+    </g>
+
+  <% } %>
+<% } %>

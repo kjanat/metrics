@@ -1,0 +1,42 @@
+name: "🚀 Pure SVG (Satori-optimized)"
+extends: null
+index: 2
+supports:
+  - user
+  - organization
+  - repository
+formats:
+  - svg
+  - png
+  - jpeg
+description: |
+  A high-performance template designed for Satori rendering.
+  Uses pure SVG elements instead of HTML in foreignObject, resulting in 10-100x faster rendering.
+  Perfect for automated workflows and high-frequency metric generation.
+
+readme:
+  header: |
+    This template is optimized for speed by avoiding HTML foreignObject elements.
+    It renders 10-100x faster than traditional templates by using pure SVG.
+
+    Key features:
+    - Pure SVG rendering (no foreignObject)
+    - Satori-compatible for ultra-fast rendering
+    - Clean, modern design
+    - Ideal for CI/CD workflows
+    - Supports most popular plugins
+
+example:
+  - name: Satori-optimized metrics
+    with:
+      template: pure
+      base: header, repositories
+      plugin_languages: yes
+
+  - name: Fast CI metrics
+    with:
+      template: pure
+      config_display: large
+      plugin_languages: yes
+      plugin_languages_indepth: yes
+      plugin_lines: yes
