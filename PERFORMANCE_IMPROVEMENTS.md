@@ -15,7 +15,9 @@ This document details the comprehensive performance optimizations implemented to
 - **End-user execution**: 3-10 minutes for comprehensive metrics
 
 ### Overall Impact
-**70-80% reduction in execution time** while maintaining or improving accuracy.
+**65-75% reduction in execution time** while maintaining or improving accuracy.
+
+**Note**: Satori rendering currently provides limited gains (~5%) due to templates using `foreignObject`. See `SATORI_ROADMAP.md` for plans to increase Satori usage to 70-80% through template redesign.
 
 ---
 
@@ -188,14 +190,22 @@ canUseSatori(rendered) {
 - **Puppeteer**: 3-5 seconds per render
 - **Speedup**: 10-25x faster for simple SVGs
 
-**Expected Distribution**:
-- ~70% of SVGs can use Satori (simple metric cards)
-- ~30% require Puppeteer (complex animations, foreignObject)
+**Current Reality**:
+- ~5-10% of SVGs can use Satori (limited by foreignObject in templates)
+- ~90-95% require Puppeteer (all main templates use foreignObject)
 
-**Overall Impact on 150 Examples**:
+**Why the Low Current Usage**:
+All main templates (classic, repository, terminal) wrap content in `<foreignObject>` elements, which Satori cannot process. See `SATORI_ROADMAP.md` for migration strategy to achieve 70% Satori usage.
+
+**Future Potential** (after template redesign):
+- **Target**: 70-80% of SVGs use Satori
+- **Expected overall speedup**: 3-5x for rendering phase
+- **Timeline**: 3-6 months of template/plugin migration
+
+**Current Impact** (conservative estimate):
 - **Before**: 150 × 3.5s = 525 seconds (~9 minutes)
-- **After**: 105 × 0.35s + 45 × 3.5s = 194 seconds (~3 minutes)
-- **Speedup**: 2.7x faster for rendering phase
+- **After**: 140 × 3.5s + 10 × 0.35s = 494 seconds (~8 minutes)
+- **Speedup**: ~6% faster (infrastructure for future gains)
 
 ---
 
@@ -409,11 +419,13 @@ console.log(status)
 
 ### SVG Rendering (150 Examples)
 
-| Renderer | Time per SVG | Total (150 SVGs) |
-|----------|-------------|------------------|
-| Puppeteer Only | 3-5 seconds | ~9 minutes |
-| Satori + Puppeteer | 0.5-2 seconds | ~3 minutes |
-| **Improvement** | **2-3x faster** | **3x faster** |
+| Renderer | Time per SVG | Total (150 SVGs) | Current Usage |
+|----------|-------------|------------------|---------------|
+| Puppeteer Only | 3-5 seconds | ~9 minutes | 95% (baseline) |
+| Satori + Puppeteer (current) | 3-4 seconds | ~8 minutes | 5% Satori-compatible |
+| Satori + Puppeteer (future target) | 0.5-2 seconds | ~3 minutes | 70% Satori-compatible |
+| **Current Improvement** | **~6% faster** | **~6% faster** | Infrastructure in place |
+| **Future Improvement** | **2-3x faster** | **3x faster** | After template redesign |
 
 ---
 
