@@ -1,9 +1,14 @@
 # THIS WORKFLOW IS AUTO-GENERATED
-name: Publish examples
+name: Publish examples (Parallel)
 on:
   schedule:
     - cron: "0 8 1/2 * *"
   workflow_dispatch:
+    inputs:
+      concurrency:
+        description: 'Maximum parallel jobs'
+        required: false
+        default: '10'
   workflow_call:
     secrets:
       METRICS_TOKEN:
@@ -32,54 +37,98 @@ on:
         required: true
       WAKATIME_TOKEN:
         required: true
+
 jobs:
 
 # ======================================================================================
-# Examples renders
+# Examples renders (parallelized with matrix strategy)
 # ======================================================================================
 
   examples:
     runs-on: ubuntu-latest
     if: "github.repository == 'lowlighter/metrics'"
+    strategy:
+      max-parallel: ${{ github.event.inputs.concurrency || 10 }}
+      fail-fast: false
+      matrix:
+        batch: <%- JSON.stringify(matrix) %>
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # Enhanced caching strategy
+      # Enhanced caching strategy using GitHub Actions cache v4
       - name: Setup Node.js with caching
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      - name: Cache metrics dependencies
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Cache metrics renders
         uses: actions/cache@v4
         with:
           path: |
+            /metrics_renders/
             ~/.cache/puppeteer
-            node_modules
-          key: ${{ runner.os }}-metrics-deps-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-metrics-${{ hashFiles('source/**/*.mjs') }}
           restore-keys: |
-            ${{ runner.os }}-metrics-deps-
+            ${{ runner.os }}-metrics-
 
       - name: Checkout examples
         run: git checkout examples
 
-<%- steps.split("\n").map(line => `      ${line}`).join("\n") %>
+<%- batchSteps %>
+
+      - name: Upload batch artifacts
+        if: ${{ success() || failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: metrics-batch-${{ matrix.batch }}
+          path: /metrics_renders/
+          retention-days: 1
+
+# ======================================================================================
+# Collect and publish all examples
+# ======================================================================================
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [ examples ]
+    if: "github.repository == 'lowlighter/metrics' && (success() || failure())"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout examples
+        run: git checkout examples
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/metrics_renders/
 
       - name: Screenshot markdown example
         if: ${{ success() || failure() }}
         run: |
           docker run --rm --entrypoint="" --volume=/tmp:/tmp ghcr.io/lowlighter/metrics:master node /metrics/.github/scripts/markdown_example.mjs
-          sudo mv /tmp/metrics.markdown.png /metrics_renders/
+          sudo mv /tmp/metrics.markdown.png /tmp/metrics_renders/
+
       - name: Publish examples
         if: ${{ success() || failure() }}
         run: |
           set +e
-          sudo rm -rf /metrics_renders/github-metrics.*
-          sudo mv /metrics_renders/* ./
+          sudo rm -rf /tmp/metrics_renders/github-metrics.*
+          sudo cp -r /tmp/metrics_renders/*/* ./
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git pull
@@ -94,11 +143,11 @@ jobs:
 
   repository:
     runs-on: ubuntu-latest
-    needs: [ examples ]
+    needs: [ publish ]
     if: "github.repository == 'lowlighter/metrics'"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Checkout examples
@@ -119,7 +168,7 @@ jobs:
           plugins_errors_fatal: yes
           config_display: large
           output_action: none
-          delay: 120
+          delay: 30
       - name: Sponsors
         if: ${{ success() || failure() }}
         uses: lowlighter/metrics@master
@@ -135,7 +184,7 @@ jobs:
           plugins_errors_fatal: yes
           config_display: large
           output_action: none
-          delay: 120
+          delay: 30
       - name: Licenses
         if: ${{ success() || failure() }}
         uses: lowlighter/metrics@master
@@ -152,9 +201,9 @@ jobs:
           plugin_licenses_ratio: yes
           plugins_errors_fatal: yes
           output_action: none
-          delay: 120
+          delay: 30
 
-      - name: Publish examples
+      - name: Publish repository examples
         if: ${{ success() || failure() }}
         run: |
           set +e

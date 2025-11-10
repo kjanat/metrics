@@ -1,5 +1,5 @@
 //Imports
-import { indepth as indepth_analyzer, recent as recent_analyzer } from "./analyzers.mjs"
+import { indepth as indepth_analyzer, recent as recent_analyzer, api as api_analyzer, graphqlBatch as graphql_batch_analyzer } from "./analyzers.mjs"
 
 //Setup
 export default async function({login, data, imports, q, rest, account}, {enabled = false, extras = false} = {}) {
@@ -79,14 +79,44 @@ export default async function({login, data, imports, q, rest, account}, {enabled
     //Indepth mode
     if ((indepth) && (imports.metadata.plugins.languages.extras("indepth", {extras}))) {
       try {
-        console.debug(`metrics/compute/${login}/plugins > languages > switching to indepth mode (this may take some time)`)
+        // Determine which analyzer to use based on configuration
+        // Default to GraphQL batch analyzer for best performance
+        const analyzerMode = q["languages_analyzer_mode"] ?? "graphql"
+        const useGraphQL = imports.plugins.octograph?.enabled()
+
+        console.debug(`metrics/compute/${login}/plugins > languages > switching to ${analyzerMode} analyzer mode`)
         const existingColors = languages.colors
-        Object.assign(languages, await indepth_analyzer({login, data, imports, rest, context, repositories: repositories.concat(_indepth_custom)}, {skipped, categories, timeout}))
+
+        // Use the appropriate analyzer based on configuration
+        let analysisResults
+        if (analyzerMode === "legacy" || analyzerMode === "clone") {
+          // Legacy indepth analyzer (slow, clones repos)
+          console.debug(`metrics/compute/${login}/plugins > languages > using legacy indepth analyzer (this may take some time)`)
+          analysisResults = await indepth_analyzer({login, data, imports, rest, context, repositories: repositories.concat(_indepth_custom)}, {skipped, categories, timeout})
+        }
+        else if (analyzerMode === "graphql" && useGraphQL) {
+          // GraphQL batch analyzer (fastest)
+          console.debug(`metrics/compute/${login}/plugins > languages > using GraphQL batch analyzer`)
+          analysisResults = await graphql_batch_analyzer({login, data, imports, rest, graphql: imports.graphql, context, repositories: repositories.concat(_indepth_custom)}, {skipped, categories, timeout})
+        }
+        else {
+          // API-based analyzer (fast, uses REST API)
+          console.debug(`metrics/compute/${login}/plugins > languages > using API-based analyzer`)
+          analysisResults = await api_analyzer({login, data, imports, rest, context, repositories: repositories.concat(_indepth_custom)}, {skipped, categories, timeout})
+        }
+
+        Object.assign(languages, analysisResults)
         Object.assign(languages.colors, existingColors)
-        console.debug(`metrics/compute/${login}/plugins > languages > indepth analysis processed successfully ${languages.commits} and missed ${languages.missed.commits} commits in ${languages.elapsed.toFixed(2)}m`)
+
+        if (languages.commits) {
+          console.debug(`metrics/compute/${login}/plugins > languages > analysis processed successfully ${languages.commits} commits and missed ${languages.missed.commits} in ${languages.elapsed.toFixed(2)}m`)
+        }
+        else {
+          console.debug(`metrics/compute/${login}/plugins > languages > analysis completed successfully`)
+        }
       }
       catch (error) {
-        console.debug(`metrics/compute/${login}/plugins > languages > indepth analyzer > ${error}`)
+        console.debug(`metrics/compute/${login}/plugins > languages > analyzer > ${error}`)
       }
     }
 

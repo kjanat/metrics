@@ -93,6 +93,10 @@ for (const step of ["config", "documentation"]) {
 //Example workflows
 await update({source: paths.join(__metrics, ".github/scripts/files/examples.yml"), output: ".github/workflows/examples.yml", context: {steps: yaml.dump(workflow, {quotingType: '"', noCompatMode: true})}})
 
+//Parallel example workflows
+const {matrix, batchSteps} = generateParallelWorkflow(workflow)
+await update({source: paths.join(__metrics, ".github/scripts/files/examples-parallel.yml"), output: ".github/workflows/examples-parallel.yml", context: {matrix, batchSteps}})
+
 //Commit and push
 if (mode === "publish") {
   console.log(`Pushing staged changes: \n${[...staged].map(file => `  - ${file}`).join("\n")}`)
@@ -195,4 +199,43 @@ function testcase(name, env, args) {
   }
 
   return result
+}
+
+//Generate parallel workflow with matrix strategy
+function generateParallelWorkflow(workflow, batchSize = 15) {
+  // Group workflow steps into batches for parallel execution
+  const batches = []
+  for (let i = 0; i < workflow.length; i += batchSize) {
+    batches.push(i)
+  }
+
+  // Generate batch steps template
+  const batchStepsArray = []
+  for (let batchIndex = 0; batchIndex < batches.length; batchIndex++) {
+    const startIdx = batches[batchIndex]
+    const endIdx = Math.min(startIdx + batchSize, workflow.length)
+    const batchWorkflow = workflow.slice(startIdx, endIdx)
+
+    // Generate conditional steps for this batch
+    batchStepsArray.push(`      # Batch ${batchIndex} steps`)
+    batchStepsArray.push(`      - name: Run batch ${{ matrix.batch }}`)
+    batchStepsArray.push(`        if: matrix.batch == ${batchIndex}`)
+    batchStepsArray.push(`        run: echo "Processing batch ${batchIndex}"`)
+
+    for (const step of batchWorkflow) {
+      // Reduce delay from 120s to 30s since we're parallelizing
+      if (step.with && step.with.delay) {
+        step.with.delay = 30
+      }
+
+      // Add batch condition to step
+      const stepYaml = yaml.dump([{...step, if: `${{ matrix.batch == ${batchIndex} && (success() || failure()) }}`}], {quotingType: '"', noCompatMode: true})
+      batchStepsArray.push(...stepYaml.split('\n').filter(line => line.trim()).map(line => `      ${line}`))
+    }
+  }
+
+  return {
+    matrix: batches,
+    batchSteps: batchStepsArray.join('\n')
+  }
 }
