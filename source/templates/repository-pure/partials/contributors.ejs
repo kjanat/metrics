@@ -1,0 +1,38 @@
+<%
+  // Pure SVG contributors section - simplified version
+  let localY = 0
+%>
+
+<% if (plugins.contributors) { %>
+  <% if (plugins.contributors.error) { %>
+    <!-- Error message -->
+    <g class="error" transform="translate(0, <%= localY %>)">
+      <text x="0" y="14" font-size="12" fill="#cb2431">
+        ❌ <%= plugins.contributors.error.message %>
+      </text>
+    </g>
+  <% } else { %>
+    <!-- Contributors Section Header -->
+    <g class="contributors-header" transform="translate(0, <%= localY %>)">
+      <text x="0" y="18" font-size="14" font-weight="600" fill="#24292e">
+        🏅 Repository contributors
+      </text>
+    </g>
+    <% localY += 30 %>
+
+    <!-- Contributors count -->
+    <g class="contributors-stats" transform="translate(<%= padding %>, <%= localY %>)">
+      <text x="0" y="14" font-size="12" fill="#586069">
+        👥 <%= repo.contributors.totalCount %> contributor<%= s(repo.contributors.totalCount) %>
+      </text>
+    </g>
+
+    <!-- Note about simplified view -->
+    <% localY += 30 %>
+    <g transform="translate(<%= padding %>, <%= localY %>)">
+      <text x="0" y="14" font-size="10" fill="#959da5" opacity="0.7">
+        Note: Contributor avatars available in standard template
+      </text>
+    </g>
+  <% } %>
+<% } %>

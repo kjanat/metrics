@@ -1,0 +1,108 @@
+<%
+  // Pure SVG repository header - no HTML!
+  const iconSize = 16
+  const spacing = 15
+  let localY = 0
+%>
+
+<% if (base.header) { %>
+  <!-- Repository Header Background -->
+  <rect x="0" y="0" width="<%= width %>" height="135" fill="url(#gradient-header)" rx="6"/>
+  <rect x="0" y="0" width="<%= width %>" height="135" fill="none" stroke="#e1e4e8" stroke-width="1" rx="6"/>
+
+  <!-- Repository Icon and Name -->
+  <g class="repo-title" transform="translate(<%= padding %>, <%= padding + 5 %>)">
+    <!-- Book icon (repository) using emoji -->
+    <text x="0" y="18" font-size="16">📘</text>
+    <text x="25" y="20" font-size="18" font-weight="600" fill="#0366d6">
+      <%= user.name %>
+    </text>
+  </g>
+  <% localY = padding + 30 %>
+
+  <!-- Repository Stats - Left Column -->
+  <g class="repo-stats-left" transform="translate(<%= padding %>, <%= localY %>)">
+    <!-- Created date -->
+    <g class="stat <%= computed.cakeday ? 'cakeday' : '' %>">
+      <text x="0" y="14" font-size="12" fill="#586069">
+        <% if (computed.cakeday) { %>🎂<% } else { %>🕐<% } %>
+        Created <%= computed.registration %>
+      </text>
+    </g>
+
+    <!-- Deployments -->
+    <g class="stat" transform="translate(0, 22)">
+      <text x="0" y="14" font-size="12" fill="#586069">
+        🚀 Deployed <%= repo.deployments.totalCount %> time<%= s(repo.deployments.totalCount) %>
+      </text>
+    </g>
+
+    <!-- Disk usage -->
+    <g class="stat" transform="translate(0, 44)">
+      <text x="0" y="14" font-size="12" fill="#586069">
+        💾 <%= computed.diskUsage %> used
+      </text>
+    </g>
+
+    <% if (plugins.traffic) { %>
+      <g class="stat <%= plugins.traffic.error ? 'error' : '' %>" transform="translate(0, 66)">
+        <text x="0" y="14" font-size="12" fill="<%= plugins.traffic.error ? '#cb2431' : '#586069' %>">
+          <% if (plugins.traffic.error) { %>
+            📖 <%= plugins.traffic.error.message %>
+          <% } else { %>
+            📖 <%= f(plugins.traffic.views.count) %> view<%= s(plugins.traffic.views.count) %> in last two weeks
+          <% } %>
+        </text>
+      </g>
+    <% } %>
+  </g>
+
+  <!-- Repository Stats - Right Column -->
+  <g class="repo-stats-right" transform="translate(<%= width/2 + padding %>, <%= localY %>)">
+    <!-- Calendar visualization -->
+    <g class="calendar-mini">
+      <% const maxDays = Math.min(14, computed.calendar.length) %>
+      <% for (let i = 0; i < maxDays; i++) { %>
+        <% const day = computed.calendar[i] || {color: '#ebedf0'} %>
+        <rect
+          x="<%= i * 15 %>"
+          y="0"
+          width="11"
+          height="11"
+          fill="<%= day.color %>"
+          rx="2"
+          class="calendar-day"
+        />
+      <% } %>
+    </g>
+
+    <!-- Environments -->
+    <g class="stat" transform="translate(0, 22)">
+      <text x="0" y="14" font-size="12" fill="#586069">
+        💻 <%= repo.environments.totalCount %> Environment<%= s(repo.environments.totalCount) %>
+      </text>
+    </g>
+
+    <% if (repo.actionUsersCount) { %>
+      <!-- Action workflows using this repo -->
+      <g class="stat" transform="translate(0, 44)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          ▶️ <%= repo.actionUsersCount %> workflow<%= s(repo.actionUsersCount) %> using it
+        </text>
+      </g>
+    <% } %>
+
+    <% if (plugins.lines) { %>
+      <g class="stat <%= plugins.lines.error ? 'error' : '' %>" transform="translate(0, <%= repo.actionUsersCount ? 66 : 44 %>)">
+        <text x="0" y="14" font-size="12" fill="<%= plugins.lines.error ? '#cb2431' : '#586069' %>">
+          <% if (plugins.lines.error) { %>
+            📄 <%= plugins.lines.error.message %>
+          <% } else { %>
+            📄 <%= f(plugins.lines.added) %> added, <%= f(plugins.lines.deleted) %> removed
+          <% } %>
+        </text>
+      </g>
+    <% } %>
+  </g>
+
+<% } %>

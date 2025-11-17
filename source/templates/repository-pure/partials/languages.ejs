@@ -1,0 +1,135 @@
+<%
+  // Pure SVG languages section
+  let localY = 0
+  const barHeight = 8
+  const barWidth = width - padding * 2
+%>
+
+<% if (plugins.languages) { %>
+  <!-- Languages Section Header -->
+  <g class="languages-header" transform="translate(0, <%= localY %>)">
+    <text x="0" y="18" font-size="14" font-weight="600" fill="#24292e">
+      🈷️ <%= plugins.languages.unique %> Language<%= s(plugins.languages.unique) %>
+    </text>
+  </g>
+  <% localY += 30 %>
+
+  <% for (const section of (plugins.languages.sections ?? ["error"])) { %>
+    <% const languages = {"most-used":plugins.languages.favorites, "recently-used":plugins.languages.recent}[section] %>
+
+    <!-- Section Subheader -->
+    <g class="languages-subsection" transform="translate(0, <%= localY %>)">
+      <text x="0" y="14" font-size="13" font-weight="500" fill="#586069">
+        <%= {"most-used":"Most used languages", "recently-used":"Recently used languages", error:""}[section] %>
+      </text>
+    </g>
+    <% localY += 20 %>
+
+    <% if (plugins.languages.error) { %>
+      <!-- Error message -->
+      <g class="error" transform="translate(0, <%= localY %>)">
+        <text x="0" y="14" font-size="12" fill="#cb2431">
+          ❌ <%= plugins.languages.error.message %>
+        </text>
+      </g>
+      <% localY += 25 %>
+    <% } else { %>
+      <!-- Recently used stats -->
+      <% if (section === "recently-used") { %>
+        <g class="languages-stats" transform="translate(0, <%= localY %>)">
+          <text x="0" y="12" font-size="11" fill="#586069">
+            estimation from <%= plugins.languages["stats.recent"]?.files %> edited file<%= s(plugins.languages["stats.recent"]?.files) %> from <%= plugins.languages["stats.recent"]?.commits %> commit<%= s(plugins.languages["stats.recent"]?.commits) %>
+            <% if (plugins.languages["stats.recent"]?.branch) { %>
+              on branch <%= plugins.languages["stats.recent"].branch %>
+            <% } %>
+            <% { const days = plugins.languages["stats.recent"]?.latest ?? plugins.languages["stats.recent"]?.days; if (days) { %>
+              over last <%= days %> day<%= s(days) %>
+            <% } } %>
+          </text>
+        </g>
+        <% localY += 18 %>
+      <% } %>
+
+      <!-- Language Bar Chart -->
+      <g class="languages-bar" transform="translate(<%= padding %>, <%= localY %>)">
+        <defs>
+          <clipPath id="languages-bar-clip-<%= section %>">
+            <rect x="0" y="0" width="<%= barWidth %>" height="<%= barHeight %>" rx="4"/>
+          </clipPath>
+        </defs>
+
+        <!-- Background -->
+        <rect x="0" y="0" width="<%= barWidth %>" height="<%= barHeight %>" fill="#d1d5da" rx="4"/>
+
+        <!-- Language segments -->
+        <% for (const {name, value, color, x} of languages) { %>
+          <rect
+            clip-path="url(#languages-bar-clip-<%= section %>)"
+            x="<%= x * barWidth %>"
+            y="0"
+            width="<%= value * barWidth %>"
+            height="<%= barHeight %>"
+            fill="<%= color ?? '#959DA5' %>"
+          />
+        <% } %>
+      </g>
+      <% localY += barHeight + 15 %>
+
+      <!-- Language Details -->
+      <% if (plugins.languages.details?.length) { %>
+        <% const cols = large ? 4 : 2 %>
+        <% const colWidth = (width - padding * 2) / cols %>
+        <g class="languages-details" transform="translate(<%= padding %>, <%= localY %>)">
+          <% for (let i = 0; i < languages.length; i++) { %>
+            <% const {name, value, lines = 0, color, size} = languages[i] %>
+            <% const col = i % cols %>
+            <% const row = Math.floor(i / cols) %>
+            <% const x = col * colWidth %>
+            <% const y = row * 25 %>
+
+            <g class="language-item" transform="translate(<%= x %>, <%= y %>)">
+              <!-- Language color dot -->
+              <circle cx="5" cy="10" r="5" fill="<%= color ?? '#959DA5' %>"/>
+
+              <!-- Language name -->
+              <text x="15" y="14" font-size="12" fill="#24292e">
+                <%= name %>
+              </text>
+
+              <!-- Details -->
+              <text x="15" y="14" font-size="10" fill="#586069">
+                <% const details = [] %>
+                <% if (plugins.languages.details.includes("lines")) details.push(`${f(lines)} lines`) %>
+                <% if (plugins.languages.details.includes("bytes-size")) details.push(f.bytes(size)) %>
+                <% if (plugins.languages.details.includes("percentage")) details.push(f.percentage(value)) %>
+                <% if (details.length) { %>
+                  <tspan dx="5" dy="0"> · <%= details.join(' · ') %></tspan>
+                <% } %>
+              </text>
+            </g>
+          <% } %>
+        </g>
+        <% localY += Math.ceil(languages.length / cols) * 25 + 10 %>
+      <% } else { %>
+        <!-- Simple language list (no details) -->
+        <g class="languages-list" transform="translate(<%= padding %>, <%= localY %>)">
+          <% const itemsPerRow = large ? 6 : 3 %>
+          <% const itemWidth = 120 %>
+          <% for (let i = 0; i < languages.length; i++) { %>
+            <% const {name, color} = languages[i] %>
+            <% const col = i % itemsPerRow %>
+            <% const row = Math.floor(i / itemsPerRow) %>
+            <% const x = col * itemWidth %>
+            <% const y = row * 20 %>
+
+            <g class="language-item" transform="translate(<%= x %>, <%= y %>)">
+              <circle cx="5" cy="10" r="5" fill="<%= color ?? '#959DA5' %>"/>
+              <text x="15" y="14" font-size="12" fill="#586069"><%= name %></text>
+            </g>
+          <% } %>
+        </g>
+        <% localY += Math.ceil(languages.length / (large ? 6 : 3)) * 20 + 10 %>
+      <% } %>
+    <% } %>
+  <% } %>
+<% } %>

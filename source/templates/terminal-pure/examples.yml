@@ -1,0 +1,29 @@
+- name: Basic terminal (fast rendering)
+  uses: lowlighter/metrics@latest
+  with:
+    template: terminal-pure
+    filename: metrics.terminal-pure.svg
+    token: ${{ secrets.METRICS_TOKEN }}
+    base: header, repositories, metadata
+
+- name: Terminal with languages
+  uses: lowlighter/metrics@latest
+  with:
+    template: terminal-pure
+    filename: metrics.terminal-pure-lang.svg
+    token: ${{ secrets.METRICS_TOKEN }}
+    base: header, repositories, metadata
+    plugin_languages: yes
+    plugin_languages_limit: 8
+
+- name: Full terminal dashboard
+  uses: lowlighter/metrics@latest
+  with:
+    template: terminal-pure
+    filename: metrics.terminal-pure-full.svg
+    token: ${{ secrets.METRICS_TOKEN }}
+    base: header, activity, community, repositories, metadata
+    plugin_lines: yes
+    plugin_traffic: yes
+    plugin_languages: yes
+    plugin_isocalendar: yes

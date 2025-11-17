@@ -1,0 +1,27 @@
+<%
+  // Terminal-style traffic display
+  let localY = 0
+  const textColor = "#DDDDDD"
+  const boldColor = "#FFFFFF"
+  const errorColor = "#cb2431"
+%>
+
+<% if (plugins.traffic) { %>
+  <% if (plugins.traffic.error) { %>
+    <!-- Traffic error -->
+    <g class="stdout" transform="translate(0, <%= localY %>)">
+      <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>Traffic: </tspan>
+        <tspan class="error" fill="<%= errorColor %>">Error: <%= plugins.traffic.error.message %></tspan>
+      </text>
+    </g>
+  <% } else { %>
+    <!-- Traffic views -->
+    <g class="stdout" transform="translate(0, <%= localY %>)">
+      <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>Repository views: </tspan>
+        <tspan font-weight="700" fill="<%= boldColor %>"><%= f(plugins.traffic.views.count) %></tspan>
+      </text>
+    </g>
+  <% } %>
+<% } %>

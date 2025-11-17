@@ -1,0 +1,30 @@
+<%
+  // Pure SVG sponsors section - simplified version
+  let localY = 0
+%>
+
+<% if (plugins.sponsors) { %>
+  <% if (plugins.sponsors.error) { %>
+    <!-- Error message -->
+    <g class="error" transform="translate(0, <%= localY %>)">
+      <text x="0" y="14" font-size="12" fill="#cb2431">
+        ❌ <%= plugins.sponsors.error.message %>
+      </text>
+    </g>
+  <% } else { %>
+    <!-- Sponsors Section Header -->
+    <g class="sponsors-header" transform="translate(0, <%= localY %>)">
+      <text x="0" y="18" font-size="14" font-weight="600" fill="#24292e">
+        💕 GitHub Sponsors
+      </text>
+    </g>
+    <% localY += 30 %>
+
+    <!-- Sponsors count -->
+    <g class="sponsors-stats" transform="translate(<%= padding %>, <%= localY %>)">
+      <text x="0" y="14" font-size="12" fill="#586069">
+        💝 <%= plugins.sponsors.count || 0 %> sponsor<%= s(plugins.sponsors.count || 0) %>
+      </text>
+    </g>
+  <% } %>
+<% } %>

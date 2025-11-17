@@ -1,0 +1,116 @@
+<%
+  // Terminal-style activity and community display
+  let localY = 0
+  const promptColor = "#7EDA29"
+  const pathColor = "#4878c0"
+  const textColor = "#DDDDDD"
+  const boldColor = "#FFFFFF"
+%>
+
+<% if ((account === "user")&&((base.activity)||(base.community))) { %>
+  <!-- Command: git status -->
+  <g class="stdin" transform="translate(0, <%= localY %>)">
+    <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace">
+      <tspan class="ps1-path" fill="<%= promptColor %>"><%= user.login.toLowerCase() %>@metrics</tspan><tspan fill="<%= textColor %>">:</tspan><tspan class="ps1-location" fill="<%= pathColor %>">~</tspan><tspan class="ps1-symbol" fill="<%= textColor %>"><%= computed.token.scopes.includes("repo") ? "#" : "$" %></tspan><tspan fill="<%= textColor %>"> git status</tspan>
+    </text>
+  </g>
+  <% localY += lineHeight %>
+
+  <!-- Output: activity and community stats -->
+  <g class="stdout" transform="translate(0, <%= localY %>)">
+    <% let outputY = 0 %>
+
+    <% if (base.activity) { %>
+      <!-- Recent activity header -->
+      <text x="0" y="<%= outputY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= boldColor %>" font-weight="700">
+        <tspan>Recent activity</tspan>
+      </text>
+      <% outputY += lineHeight %>
+
+      <!-- Commits -->
+      <text x="0" y="<%= outputY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>  </tspan>
+        <tspan font-weight="700" fill="<%= boldColor %>"><%= `${computed.commits}`.padStart(5) %></tspan>
+        <tspan> commit<%= s(computed.commits) %></tspan>
+      </text>
+      <% outputY += lineHeight %>
+
+      <!-- PR reviews -->
+      <text x="0" y="<%= outputY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>  </tspan>
+        <tspan font-weight="700" fill="<%= boldColor %>"><%= `${user.contributionsCollection.totalPullRequestReviewContributions}`.padStart(5) %></tspan>
+        <tspan> pull request<%= s(user.contributionsCollection.totalPullRequestReviewContributions) %> reviewed</tspan>
+      </text>
+      <% outputY += lineHeight %>
+
+      <!-- PRs opened -->
+      <text x="0" y="<%= outputY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>  </tspan>
+        <tspan font-weight="700" fill="<%= boldColor %>"><%= `${user.contributionsCollection.totalPullRequestContributions}`.padStart(5) %></tspan>
+        <tspan> pull request<%= s(user.contributionsCollection.totalPullRequestContributions) %> opened</tspan>
+      </text>
+      <% outputY += lineHeight %>
+
+      <!-- Issues opened -->
+      <text x="0" y="<%= outputY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>  </tspan>
+        <tspan font-weight="700" fill="<%= boldColor %>"><%= `${user.contributionsCollection.totalIssueContributions}`.padStart(5) %></tspan>
+        <tspan> issue<%= s(user.contributionsCollection.totalIssueContributions) %> opened</tspan>
+      </text>
+      <% outputY += lineHeight %>
+
+      <!-- Issue comments -->
+      <text x="0" y="<%= outputY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>  </tspan>
+        <tspan font-weight="700" fill="<%= boldColor %>"><%= `${user.issueComments.totalCount}`.padStart(5) %></tspan>
+        <tspan> issue comment<%= s(user.issueComments.totalCount) %></tspan>
+      </text>
+      <% outputY += lineHeight %>
+    <% } %>
+
+    <% if ((base.activity)&&(base.community)) { %>
+      <!-- Spacer -->
+      <% outputY += lineHeight %>
+    <% } %>
+
+    <% if (base.community) { %>
+      <!-- Tracked activity header -->
+      <text x="0" y="<%= outputY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= boldColor %>" font-weight="700">
+        <tspan>Tracked activity</tspan>
+      </text>
+      <% outputY += lineHeight %>
+
+      <!-- Following -->
+      <text x="0" y="<%= outputY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>  </tspan>
+        <tspan font-weight="700" fill="<%= boldColor %>"><%= `${user.following.totalCount}`.padStart(5) %></tspan>
+        <tspan> user<%= s(user.following.totalCount) %> followed</tspan>
+      </text>
+      <% outputY += lineHeight %>
+
+      <!-- Sponsorships -->
+      <text x="0" y="<%= outputY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>  </tspan>
+        <tspan font-weight="700" fill="<%= boldColor %>"><%= `${user.sponsorshipsAsSponsor.totalCount}`.padStart(5) %></tspan>
+        <tspan> repositor<%= s(user.sponsorshipsAsSponsor.totalCount, "y") %> sponsored</tspan>
+      </text>
+      <% outputY += lineHeight %>
+
+      <!-- Starred repos -->
+      <text x="0" y="<%= outputY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>  </tspan>
+        <tspan font-weight="700" fill="<%= boldColor %>"><%= `${user.starredRepositories.totalCount}`.padStart(5) %></tspan>
+        <tspan> repositor<%= s(user.starredRepositories.totalCount, "y") %> starred</tspan>
+      </text>
+      <% outputY += lineHeight %>
+
+      <!-- Watched repos -->
+      <text x="0" y="<%= outputY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>  </tspan>
+        <tspan font-weight="700" fill="<%= boldColor %>"><%= `${user.watching.totalCount}`.padStart(5) %></tspan>
+        <tspan> repositor<%= s(user.watching.totalCount, "y") %> watched</tspan>
+      </text>
+      <% outputY += lineHeight %>
+    <% } %>
+  </g>
+<% } %>

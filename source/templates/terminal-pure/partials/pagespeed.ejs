@@ -1,0 +1,34 @@
+<%
+  // Terminal-style PageSpeed display
+  let localY = 0
+  const promptColor = "#7EDA29"
+  const pathColor = "#4878c0"
+  const textColor = "#DDDDDD"
+  const boldColor = "#FFFFFF"
+  const errorColor = "#cb2431"
+%>
+
+<% if (plugins.pagespeed) { %>
+  <% if (!plugins.pagespeed.error) { %>
+    <!-- Command: curl pagespeed -->
+    <g class="stdin" transform="translate(0, <%= localY %>)">
+      <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace">
+        <tspan class="ps1-path" fill="<%= promptColor %>"><%= user.login.toLowerCase() %>@metrics</tspan><tspan fill="<%= textColor %>">:</tspan><tspan class="ps1-location" fill="<%= pathColor %>">~</tspan><tspan class="ps1-symbol" fill="<%= textColor %>"><%= computed.token.scopes.includes("repo") ? "#" : "$" %></tspan><tspan fill="<%= textColor %>"> curl -s pagespeed/metrics</tspan>
+      </text>
+    </g>
+    <% localY += lineHeight %>
+
+    <!-- Output: PageSpeed scores -->
+    <g class="stdout" transform="translate(0, <%= localY %>)">
+      <% if (plugins.pagespeed.detailed) { %>
+        <% const metrics = plugins.pagespeed.detailed %>
+        <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+          <tspan x="0" dy="0">Performance: </tspan>
+          <tspan font-weight="700" fill="<%= boldColor %>"><%= Math.round(metrics.performance * 100) %></tspan>
+          <tspan>/100</tspan>
+        </text>
+        <% localY += lineHeight %>
+      <% } %>
+    </g>
+  <% } %>
+<% } %>

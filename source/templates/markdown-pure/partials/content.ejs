@@ -1,0 +1,59 @@
+<%
+  // Pure SVG markdown content renderer partial
+  // This partial can be used to render markdown content from various sources
+
+  const localWidth = width || 760
+  const localPadding = padding || 15
+  let localY = yOffset || 0
+
+  // Get markdown content from various sources
+  let markdownText = ''
+
+  // From plugin data
+  if (plugins.posts?.content) {
+    markdownText = plugins.posts.content
+  } else if (plugins.activity?.summary) {
+    markdownText = plugins.activity.summary
+  } else if (config.markdown_content) {
+    markdownText = config.markdown_content
+  } else {
+    markdownText = '# No Content\n\nNo markdown content available.'
+  }
+
+  // Simple markdown section renderer
+  const sections = markdownText.split('\n\n')
+%>
+
+<% for (let i = 0; i < sections.length; i++) { %>
+  <% const section = sections[i].trim() %>
+  <% if (section.startsWith('#')) { %>
+    <!-- Header section -->
+    <% const level = (section.match(/^#+/) || [''])[0].length %>
+    <% const text = section.replace(/^#+\s*/, '') %>
+    <% const fontSize = { 1: 24, 2: 20, 3: 18, 4: 16, 5: 14, 6: 12 }[level] || 14 %>
+    <text x="0" y="<%= localY + fontSize %>" font-size="<%= fontSize %>" font-weight="600" fill="#24292e">
+      <%= text %>
+    </text>
+    <% localY += fontSize + 15 %>
+  <% } else if (section.startsWith('-') || section.startsWith('*')) { %>
+    <!-- List section -->
+    <% const items = section.split('\n').filter(l => l.trim()) %>
+    <% for (let j = 0; j < items.length; j++) { %>
+      <circle cx="5" cy="<%= localY + 9 %>" r="3" fill="#24292e"/>
+      <text x="20" y="<%= localY + 14 %>" font-size="14" fill="#24292e">
+        <%= items[j].replace(/^[-*]\s*/, '') %>
+      </text>
+      <% localY += 22 %>
+    <% } %>
+    <% localY += 10 %>
+  <% } else if (section) { %>
+    <!-- Paragraph section -->
+    <text x="0" y="<%= localY + 14 %>" font-size="14" fill="#24292e">
+      <%= section %>
+    </text>
+    <% localY += 30 %>
+  <% } %>
+<% } %>
+
+<!-- Return height for parent -->
+<% const partialHeight = localY - (yOffset || 0) %>

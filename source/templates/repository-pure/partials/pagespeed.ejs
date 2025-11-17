@@ -1,0 +1,31 @@
+<%
+  // Pure SVG pagespeed section - simplified version
+  let localY = 0
+%>
+
+<% if (plugins.pagespeed) { %>
+  <% if (plugins.pagespeed.error) { %>
+    <g class="error" transform="translate(0, <%= localY %>)">
+      <text x="0" y="14" font-size="12" fill="#cb2431">
+        ❌ <%= plugins.pagespeed.error.message %>
+      </text>
+    </g>
+  <% } else { %>
+    <g class="pagespeed-header" transform="translate(0, <%= localY %>)">
+      <text x="0" y="18" font-size="14" font-weight="600" fill="#24292e">
+        ⏱️ Google PageSpeed
+      </text>
+    </g>
+    <% localY += 35 %>
+    <% if (plugins.pagespeed.detailed) { %>
+      <g class="pagespeed-stats" transform="translate(<%= padding %>, <%= localY %>)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          Performance: <%= plugins.pagespeed.detailed.performance || 'N/A' %>
+        </text>
+        <text x="200" y="14" font-size="12" fill="#586069">
+          Accessibility: <%= plugins.pagespeed.detailed.accessibility || 'N/A' %>
+        </text>
+      </g>
+    <% } %>
+  <% } %>
+<% } %>

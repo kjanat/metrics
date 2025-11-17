@@ -1,0 +1,116 @@
+<%
+  // Pure SVG activity and community stats - Classic style
+  if (account !== "user" || (!base.activity && !base.community)) return
+  let localY = 0
+  const iconSize = 16
+  const statHeight = 22
+  const sectionPadding = 15
+  const colWidth = (width - 2 * padding) / 2
+%>
+
+<% if ((account === "user") && ((base.activity) || (base.community))) { %>
+  <!-- Activity + Community Section -->
+  <rect x="0" y="0" width="<%= width %>" height="<%= base.activity && base.community ? 200 : 120 %>" fill="#f6f8fa" rx="6"/>
+  <rect x="0" y="0" width="<%= width %>" height="<%= base.activity && base.community ? 200 : 120 %>" fill="none" stroke="#d1d5da" stroke-width="1" rx="6"/>
+
+  <% if (base.activity) { %>
+    <!-- Activity Column -->
+    <g class="activity-stats" transform="translate(<%= padding %>, <%= padding %>)">
+      <!-- Activity Header -->
+      <text x="0" y="16" font-size="16" font-weight="600" fill="#0366d6" class="h2">
+        📊 Activity
+      </text>
+      <% localY = 30 %>
+
+      <!-- Commits -->
+      <g transform="translate(0, <%= localY %>)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          ⚫ <%= computed.commits %> Commit<%= s(computed.commits) %>
+        </text>
+      </g>
+      <% localY += statHeight %>
+
+      <!-- Pull request reviews -->
+      <g transform="translate(0, <%= localY %>)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          📝 <%= user.contributionsCollection.totalPullRequestReviewContributions %> PR<%= s(user.contributionsCollection.totalPullRequestReviewContributions) %> reviewed
+        </text>
+      </g>
+      <% localY += statHeight %>
+
+      <!-- Pull requests opened -->
+      <g transform="translate(0, <%= localY %>)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          🔀 <%= user.contributionsCollection.totalPullRequestContributions %> PR<%= s(user.contributionsCollection.totalPullRequestContributions) %> opened
+        </text>
+      </g>
+      <% localY += statHeight %>
+
+      <!-- Issues opened -->
+      <g transform="translate(0, <%= localY %>)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          ⚪ <%= user.contributionsCollection.totalIssueContributions %> Issue<%= s(user.contributionsCollection.totalIssueContributions) %> opened
+        </text>
+      </g>
+      <% localY += statHeight %>
+
+      <!-- Issue comments -->
+      <g transform="translate(0, <%= localY %>)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          💬 <%= user.issueComments.totalCount %> comment<%= s(user.issueComments.totalCount) %>
+        </text>
+      </g>
+    </g>
+  <% } %>
+
+  <% if (base.community) { %>
+    <!-- Community Column -->
+    <g class="community-stats" transform="translate(<%= base.activity ? colWidth + padding : padding %>, <%= padding %>)">
+      <!-- Community Header -->
+      <text x="0" y="16" font-size="16" font-weight="600" fill="#0366d6" class="h2">
+        👥 Community
+      </text>
+      <% localY = 30 %>
+
+      <!-- Organizations -->
+      <g transform="translate(0, <%= localY %>)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          🏢 <%= user.organizations.totalCount %> organization<%= s(user.organizations.totalCount) %>
+        </text>
+      </g>
+      <% localY += statHeight %>
+
+      <!-- Following -->
+      <g transform="translate(0, <%= localY %>)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          👤 <%= user.following.totalCount %> following
+        </text>
+      </g>
+      <% localY += statHeight %>
+
+      <!-- Sponsoring -->
+      <g transform="translate(0, <%= localY %>)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          💖 <%= user.sponsorshipsAsSponsor.totalCount %> sponsoring
+        </text>
+      </g>
+      <% localY += statHeight %>
+
+      <!-- Starred -->
+      <g transform="translate(0, <%= localY %>)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          ⭐ <%= user.starredRepositories.totalCount %> starred
+        </text>
+      </g>
+      <% localY += statHeight %>
+
+      <!-- Watching -->
+      <g transform="translate(0, <%= localY %>)">
+        <text x="0" y="14" font-size="12" fill="#586069">
+          👁 <%= user.watching.totalCount %> watching
+        </text>
+      </g>
+    </g>
+  <% } %>
+
+<% } %>

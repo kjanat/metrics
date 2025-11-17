@@ -1,0 +1,72 @@
+- name: Basic Classic Pure
+  with:
+    filename: metrics.classic-pure.svg
+    template: classic-pure
+    base: header
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Classic Pure with Activity & Community
+  with:
+    filename: metrics.classic-pure.activity.svg
+    template: classic-pure
+    base: header, activity, community
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Classic Pure with Languages
+  with:
+    filename: metrics.classic-pure.languages.svg
+    template: classic-pure
+    base: header, repositories
+    plugin_languages: yes
+    plugin_languages_indepth: yes
+    plugin_languages_details: lines, bytes-size
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Classic Pure with Achievements
+  with:
+    filename: metrics.classic-pure.achievements.svg
+    template: classic-pure
+    base: header
+    plugin_achievements: yes
+    plugin_achievements_display: detailed
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Classic Pure Full Featured
+  with:
+    filename: metrics.classic-pure.full.svg
+    template: classic-pure
+    base: header, activity, community, repositories
+    plugin_languages: yes
+    plugin_achievements: yes
+    plugin_activity: yes
+    plugin_activity_limit: 5
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Classic Pure Large Display
+  with:
+    filename: metrics.classic-pure.large.svg
+    template: classic-pure
+    config_display: large
+    base: header, activity, community, repositories
+    plugin_languages: yes
+    plugin_achievements: yes
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Organization with Classic Pure
+  with:
+    filename: metrics.classic-pure.org.svg
+    template: classic-pure
+    user: github
+    base: header, repositories
+    plugin_languages: yes
+    token: ${{ secrets.METRICS_TOKEN_WITH_SCOPES }}
+
+- name: Classic Pure Fast CI/CD
+  with:
+    filename: metrics.classic-pure.fast.svg
+    template: classic-pure
+    base: header, repositories
+    plugin_languages: yes
+    plugin_languages_limit: 4
+    config_animations: no
+    token: ${{ secrets.METRICS_TOKEN }}

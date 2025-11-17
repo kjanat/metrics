@@ -1,0 +1,46 @@
+<%
+  // Pure SVG introduction section
+  let localY = 0
+%>
+
+<% if (plugins.introduction) { %>
+  <% if (plugins.introduction.error) { %>
+    <!-- Error message -->
+    <g class="error" transform="translate(0, <%= localY %>)">
+      <text x="0" y="14" font-size="12" fill="#cb2431">
+        ❌ <%= plugins.introduction.error.message %>
+      </text>
+    </g>
+  <% } else { %>
+    <!-- Introduction Section -->
+    <g class="introduction-section" transform="translate(0, <%= localY %>)">
+      <text x="0" y="18" font-size="14" font-weight="600" fill="#24292e">
+        🙋 Introduction
+      </text>
+    </g>
+    <% localY += 30 %>
+
+    <!-- Introduction text (simplified, wrapping text in SVG is complex) -->
+    <g class="introduction-text" transform="translate(<%= padding %>, <%= localY %>)">
+      <% const intro = plugins.introduction.text || '' %>
+      <% const maxCharsPerLine = large ? 100 : 50 %>
+      <% const lines = [] %>
+      <% let currentLine = '' %>
+      <% for (const word of intro.split(' ')) { %>
+        <% if ((currentLine + word).length > maxCharsPerLine) { %>
+          <% lines.push(currentLine.trim()) %>
+          <% currentLine = word + ' ' %>
+        <% } else { %>
+          <% currentLine += word + ' ' %>
+        <% } %>
+      <% } %>
+      <% if (currentLine.trim()) lines.push(currentLine.trim()) %>
+
+      <% for (let i = 0; i < Math.min(lines.length, 5); i++) { %>
+        <text x="0" y="<%= i * 16 + 14 %>" font-size="12" fill="#586069">
+          <%= lines[i] %>
+        </text>
+      <% } %>
+    </g>
+  <% } %>
+<% } %>

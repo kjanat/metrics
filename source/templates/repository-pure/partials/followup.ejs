@@ -1,0 +1,52 @@
+<%
+  // Pure SVG followup section - simplified version
+  let localY = 0
+%>
+
+<% if (plugins.followup) { %>
+  <% if (plugins.followup.error) { %>
+    <!-- Error message -->
+    <g class="error" transform="translate(0, <%= localY %>)">
+      <text x="0" y="14" font-size="12" fill="#cb2431">
+        ❌ <%= plugins.followup.error.message %>
+      </text>
+    </g>
+  <% } else { %>
+    <!-- Follow-up Section Header -->
+    <g class="followup-header" transform="translate(0, <%= localY %>)">
+      <text x="0" y="18" font-size="14" font-weight="600" fill="#24292e">
+        🎟️ Follow-up of issues and pull requests
+      </text>
+    </g>
+    <% localY += 35 %>
+
+    <!-- Open Issues and PRs Summary -->
+    <g class="followup-summary" transform="translate(<%= padding %>, <%= localY %>)">
+      <% if (plugins.followup.issues?.open !== undefined) { %>
+        <text x="0" y="14" font-size="12" fill="#586069">
+          🔴 <%= plugins.followup.issues.open %> open issue<%= s(plugins.followup.issues.open) %>
+        </text>
+        <text x="200" y="14" font-size="12" fill="#586069">
+          🟢 <%= plugins.followup.issues.closed %> closed issue<%= s(plugins.followup.issues.closed) %>
+        </text>
+      <% } %>
+
+      <% if (plugins.followup.pr?.open !== undefined) { %>
+        <text x="0" y="34" font-size="12" fill="#586069">
+          🟣 <%= plugins.followup.pr.open %> open PR<%= s(plugins.followup.pr.open) %>
+        </text>
+        <text x="200" y="34" font-size="12" fill="#586069">
+          🟣 <%= plugins.followup.pr.merged %> merged PR<%= s(plugins.followup.pr.merged) %>
+        </text>
+      <% } %>
+    </g>
+
+    <!-- Note: Full followup details simplified for Pure SVG template -->
+    <% localY += 60 %>
+    <g transform="translate(<%= padding %>, <%= localY %>)">
+      <text x="0" y="14" font-size="10" fill="#959da5" opacity="0.7">
+        Note: Detailed issue/PR tracking available in standard template
+      </text>
+    </g>
+  <% } %>
+<% } %>

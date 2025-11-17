@@ -1,0 +1,179 @@
+/* Terminal Pure SVG Template Styles */
+
+/* SVG Global Context */
+svg {
+  font-family: 'Courier New', 'Courier Prime', monospace;
+  font-size: 14px;
+  background: transparent;
+}
+
+/* Terminal Window */
+.terminal-window {
+  font-family: 'Courier New', 'Courier Prime', monospace;
+}
+
+/* Terminal Content */
+.terminal-content text {
+  font-family: 'Courier New', 'Courier Prime', monospace;
+  fill: #DDDDDD;
+}
+
+/* Terminal Prompt Colors */
+.ps1-path {
+  fill: #7EDA29;
+  font-weight: 600;
+}
+
+.ps1-location {
+  fill: #4878c0;
+  font-weight: 600;
+}
+
+.ps1-symbol {
+  fill: #DDDDDD;
+  font-weight: 600;
+}
+
+/* Command Input (stdin) */
+.stdin text {
+  fill: #DDDDDD;
+  font-family: 'Courier New', 'Courier Prime', monospace;
+}
+
+/* Command Output (stdout) */
+.stdout text {
+  fill: #DDDDDD;
+  font-family: 'Courier New', 'Courier Prime', monospace;
+}
+
+/* Banner and Footer */
+.banner text,
+.footer text {
+  fill: #AE9DA7;
+  font-family: 'Courier New', 'Courier Prime', monospace;
+}
+
+/* Warnings */
+.warnings text {
+  fill: #D79533;
+  font-family: 'Courier New', 'Courier Prime', monospace;
+}
+
+/* Error Messages */
+.error {
+  fill: #cb2431;
+}
+
+/* Diff/Changes */
+.diff {
+  fill: #3A96DD;
+}
+
+/* Bold Text */
+.bold,
+text.bold {
+  font-weight: 700;
+}
+
+/* File Permissions */
+.permissions {
+  fill: #DDDDDD;
+}
+
+/* File Sizes and Numbers */
+.filesize,
+.count {
+  fill: #DDDDDD;
+  font-weight: 600;
+}
+
+/* Labels and Descriptions */
+.label {
+  fill: #DDDDDD;
+}
+
+/* Links and URLs */
+.link {
+  fill: #7EDA29;
+  text-decoration: underline;
+}
+
+/* Success/Positive Values */
+.success {
+  fill: #7EDA29;
+}
+
+/* Special Characters and Symbols */
+.symbol {
+  fill: #AE9DA7;
+}
+
+/* Calendar/Graph Elements (if used) */
+.calendar rect {
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 1;
+}
+
+/* Window Controls */
+.window-buttons circle {
+  stroke: none;
+}
+
+.window-buttons text {
+  font-family: Arial, sans-serif;
+}
+
+/* Animation Support */
+@keyframes terminal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes terminal-type {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Disable animations when not needed */
+.no-animations * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Responsive text sizing */
+.small-text {
+  font-size: 12px;
+}
+
+.large-text {
+  font-size: 16px;
+}
+
+/* Contrast adjustments */
+.high-contrast text {
+  fill: #FFFFFF;
+}
+
+.low-contrast text {
+  fill: #999999;
+}
+
+/* Terminal color palette variables (for reference) */
+/*
+  Background: #42092B (dark purple/maroon)
+  Primary text: #DDDDDD (light gray)
+  Secondary text: #AE9DA7 (muted purple-gray)
+  Path highlight: #7EDA29 (bright green)
+  Location: #4878c0 (blue)
+  Warning: #D79533 (amber)
+  Error: #cb2431 (red)
+  Diff: #3A96DD (cyan)
+*/

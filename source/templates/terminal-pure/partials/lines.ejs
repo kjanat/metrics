@@ -1,0 +1,25 @@
+<%
+  // Terminal-style lines of code display
+  let localY = 0
+  const diffColor = "#3A96DD"
+  const errorColor = "#cb2431"
+  const textColor = "#DDDDDD"
+%>
+
+<% if (plugins.lines) { %>
+  <% if (plugins.lines.error) { %>
+    <!-- Lines error -->
+    <g class="stdout" transform="translate(0, <%= localY %>)">
+      <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" class="diff error" fill="<%= errorColor %>">
+        <tspan>@@ <%= plugins.lines.error.message %> @@</tspan>
+      </text>
+    </g>
+  <% } else { %>
+    <!-- Lines diff -->
+    <g class="stdout" transform="translate(0, <%= localY %>)">
+      <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" class="diff" fill="<%= diffColor %>">
+        <tspan>@@ -<%= f(plugins.lines.deleted) %> +<%= f(plugins.lines.added) %> @@</tspan>
+      </text>
+    </g>
+  <% } %>
+<% } %>

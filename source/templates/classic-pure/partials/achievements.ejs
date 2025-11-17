@@ -1,0 +1,101 @@
+<%
+  // Pure SVG achievements plugin - Classic style
+  if (!plugins.achievements) return
+  let localY = 0
+  const achievementHeight = 60
+  const achievementWidth = (width - 2 * padding - 10) / 2
+  const maxAchievements = 6
+%>
+
+<% if (plugins.achievements) { %>
+  <!-- Achievements Section -->
+  <% const displayMode = plugins.achievements?.display ?? "detailed" %>
+  <% const achievements = plugins.achievements.list.slice(0, maxAchievements) %>
+  <% const sectionHeight = 60 + Math.ceil(achievements.length / 2) * (achievementHeight + 10) %>
+
+  <rect x="0" y="0" width="<%= width %>" height="<%= sectionHeight %>" fill="#f6f8fa" rx="6"/>
+  <rect x="0" y="0" width="<%= width %>" height="<%= sectionHeight %>" fill="none" stroke="#d1d5da" stroke-width="1" rx="6"/>
+
+  <!-- Section Title -->
+  <text x="<%= padding + 5 %>" y="<%= padding + 18 %>" font-size="16" font-weight="600" fill="#0366d6" class="h2">
+    🏆 Achievements
+  </text>
+
+  <% localY = padding + 35 %>
+
+  <% if (plugins.achievements.error) { %>
+    <!-- Error State -->
+    <g transform="translate(<%= padding %>, <%= localY %>)">
+      <text x="0" y="20" font-size="12" fill="#cb2431">
+        ❌ <%= plugins.achievements.error.message %>
+      </text>
+    </g>
+  <% } else { %>
+    <!-- Achievement Grid -->
+    <g class="achievements-grid" transform="translate(<%= padding %>, <%= localY %>)">
+      <% for (const [i, {prefix, title, text, rank, value, progress = 0}] of Object.entries(achievements)) { %>
+        <% const col = i % 2 %>
+        <% const row = Math.floor(i / 2) %>
+        <% const x = col * (achievementWidth + 10) %>
+        <% const y = row * (achievementHeight + 10) %>
+        <% const rankClass = rank === "$" ? "secret" : rank.charAt(0).toLowerCase() %>
+        <% const isUnlocked = rank !== "X" %>
+
+        <g class="achievement rank-<%= rankClass %>" transform="translate(<%= x %>, <%= y %>)">
+          <!-- Achievement Background -->
+          <rect x="0" y="0" width="<%= achievementWidth %>" height="<%= achievementHeight - 5 %>"
+                fill="<%= isUnlocked ? '#ffffff' : '#f6f8fa' %>"
+                stroke="<%= rank === 'S' ? '#ffd700' : rank === 'A' ? '#c0c0c0' : rank === 'B' ? '#cd7f32' : '#d1d5da' %>"
+                stroke-width="<%= isUnlocked ? '2' : '1' %>"
+                rx="4"/>
+
+          <!-- Rank Badge -->
+          <g transform="translate(8, 8)">
+            <circle cx="18" cy="18" r="18"
+                    fill="<%= rank === 'S' ? '#ffd700' : rank === 'A' ? '#c0c0c0' : rank === 'B' ? '#cd7f32' : '#e1e4e8' %>"
+                    opacity="<%= isUnlocked ? '0.3' : '0.1' %>"/>
+            <% if (isUnlocked && progress > 0) { %>
+              <!-- Progress Arc -->
+              <circle cx="18" cy="18" r="18"
+                      fill="none"
+                      stroke="<%= rank === 'S' ? '#b8860b' : rank === 'A' ? '#808080' : rank === 'B' ? '#8b4513' : '#0366d6' %>"
+                      stroke-width="2"
+                      stroke-dasharray="<%= progress * 113 %> 113"
+                      transform="rotate(-90 18 18)"/>
+            <% } %>
+            <text x="18" y="18" text-anchor="middle" dominant-baseline="central"
+                  font-size="20" fill="#24292e">
+              <%= rank === "X" ? "?" : rank === "$" ? "★" : rank %>
+            </text>
+          </g>
+
+          <!-- Achievement Info -->
+          <g transform="translate(48, 8)">
+            <!-- Title -->
+            <text x="0" y="14" font-size="12" font-weight="600" fill="#24292e">
+              <% if (prefix.length) { %>
+                <tspan fill="#0366d6"><%= prefix %></tspan>
+                <tspan> <%= title.toLowerCase() %></tspan>
+              <% } else { %>
+                <%= title %>
+              <% } %>
+            </text>
+
+            <!-- Description -->
+            <text x="0" y="30" font-size="10" fill="#586069">
+              <%= text.substring(0, 35) %><%= text.length > 35 ? '...' : '' %>
+            </text>
+
+            <!-- Value -->
+            <% if (isUnlocked && typeof value === "number") { %>
+              <text x="0" y="45" font-size="11" font-weight="600" fill="#0366d6">
+                <%= Math.floor(value) %>
+              </text>
+            <% } %>
+          </g>
+        </g>
+      <% } %>
+    </g>
+  <% } %>
+
+<% } %>

@@ -1,0 +1,176 @@
+<%
+  // Terminal-style repositories listing (ls -lh format)
+  let localY = 0
+  const promptColor = "#7EDA29"
+  const pathColor = "#4878c0"
+  const textColor = "#DDDDDD"
+  const boldColor = "#FFFFFF"
+  const diffColor = "#3A96DD"
+  const errorColor = "#cb2431"
+%>
+
+<% if (base.repositories) { %>
+  <!-- Command: ls -lh github/repositories -->
+  <g class="stdin" transform="translate(0, <%= localY %>)">
+    <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace">
+      <tspan class="ps1-path" fill="<%= promptColor %>"><%= user.login.toLowerCase() %>@metrics</tspan><tspan fill="<%= textColor %>">:</tspan><tspan class="ps1-location" fill="<%= pathColor %>">~</tspan><tspan class="ps1-symbol" fill="<%= textColor %>"><%= computed.token.scopes.includes("repo") ? "#" : "$" %></tspan><tspan fill="<%= textColor %>"> ls -lh github/repositories</tspan>
+    </text>
+  </g>
+  <% localY += lineHeight %>
+
+  <!-- Output: repository listing -->
+  <g class="stdout" transform="translate(0, <%= localY %>)">
+    <!-- Total line -->
+    <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+      <tspan>Total <%= user.repositories.totalCount %> repositor<%= s(user.repositories.totalCount, "y") %><%= computed.repositories.forked ? ` - ${computed.repositories.forked} fork${s(computed.repositories.forked)}` : "" %> - <%= computed.diskUsage %></tspan>
+    </text>
+    <% localY += lineHeight %>
+
+    <% if (plugins.traffic) { %>
+      <% if (plugins.traffic.error) { %>
+        <!-- Traffic error -->
+        <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+          <tspan>----  </tspan>
+          <tspan font-weight="700" fill="<%= boldColor %>">     </tspan>
+          <tspan>  views </tspan>
+          <tspan class="error" fill="<%= errorColor %>">(Error: <%= plugins.traffic.error.message %>)</tspan>
+        </text>
+      <% } else { %>
+        <!-- Traffic views -->
+        <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+          <tspan>-r--  </tspan>
+          <tspan font-weight="700" fill="<%= boldColor %>"><%= `${f(plugins.traffic.views.count)}`.padStart(5) %></tspan>
+          <tspan>  views</tspan>
+        </text>
+      <% } %>
+      <% localY += lineHeight %>
+    <% } %>
+
+    <!-- Stargazers -->
+    <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+      <tspan>-r--  </tspan>
+      <tspan font-weight="700" fill="<%= boldColor %>"><%= `${computed.repositories.stargazers}`.padStart(5) %></tspan>
+      <tspan>  stargazer<%= s(computed.repositories.stargazers) %></tspan>
+    </text>
+    <% localY += lineHeight %>
+
+    <!-- Forks -->
+    <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+      <tspan>-r--  </tspan>
+      <tspan font-weight="700" fill="<%= boldColor %>"><%= `${computed.repositories.forks}`.padStart(5) %></tspan>
+      <tspan>  fork<%= s(computed.repositories.forks) %></tspan>
+    </text>
+    <% localY += lineHeight %>
+
+    <!-- Watchers -->
+    <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+      <tspan>-r--  </tspan>
+      <tspan font-weight="700" fill="<%= boldColor %>"><%= `${computed.repositories.watchers}`.padStart(5) %></tspan>
+      <tspan>  watcher<%= s(computed.repositories.watchers) %></tspan>
+    </text>
+    <% localY += lineHeight %>
+
+    <!-- Packages -->
+    <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+      <tspan>dr-x  </tspan>
+      <tspan font-weight="700" fill="<%= boldColor %>"><%= `${user.packages.totalCount}`.padStart(5) %></tspan>
+      <tspan>  package<%= s(user.packages.totalCount) %></tspan>
+    </text>
+    <% localY += lineHeight %>
+
+    <% if (plugins.followup) { %>
+      <% if (plugins.followup.error) { %>
+        <!-- Followup errors -->
+        <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+          <tspan>d---  </tspan>
+          <tspan font-weight="700" fill="<%= boldColor %>">     </tspan>
+          <tspan>  ISSUES </tspan>
+          <tspan class="error" fill="<%= errorColor %>">(Error: <%= plugins.followup.error.message %>)</tspan>
+        </text>
+        <% localY += lineHeight %>
+        <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+          <tspan>d---  </tspan>
+          <tspan font-weight="700" fill="<%= boldColor %>">     </tspan>
+          <tspan>  PULL_REQUESTS </tspan>
+          <tspan class="error" fill="<%= errorColor %>">(Error: <%= plugins.followup.error.message %>)</tspan>
+        </text>
+        <% localY += lineHeight %>
+      <% } else { %>
+        <!-- Issues directory -->
+        <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+          <tspan>dr-x  </tspan>
+          <tspan font-weight="700" fill="<%= boldColor %>"><%= `${plugins.followup.issues.count}`.padStart(5) %></tspan>
+          <tspan>  ISSUES</tspan>
+        </text>
+        <% localY += lineHeight %>
+
+        <!-- Open issues -->
+        <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+          <tspan>-r--  </tspan>
+          <tspan font-weight="700" fill="<%= boldColor %>"><%= `${plugins.followup.issues.open}`.padStart(5) %></tspan>
+          <tspan>  ├── open</tspan>
+        </text>
+        <% localY += lineHeight %>
+
+        <!-- Closed issues -->
+        <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+          <tspan>-r--  </tspan>
+          <tspan font-weight="700" fill="<%= boldColor %>"><%= `${plugins.followup.issues.closed}`.padStart(5) %></tspan>
+          <tspan>  └── closed</tspan>
+        </text>
+        <% localY += lineHeight %>
+
+        <!-- Pull requests directory -->
+        <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+          <tspan>dr-x  </tspan>
+          <tspan font-weight="700" fill="<%= boldColor %>"><%= `${plugins.followup.pr.count}`.padStart(5) %></tspan>
+          <tspan>  PULL_REQUESTS</tspan>
+        </text>
+        <% localY += lineHeight %>
+
+        <!-- Open PRs -->
+        <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+          <tspan>-r--  </tspan>
+          <tspan font-weight="700" fill="<%= boldColor %>"><%= `${plugins.followup.pr.open}`.padStart(5) %></tspan>
+          <tspan>  ├── open</tspan>
+        </text>
+        <% localY += lineHeight %>
+
+        <!-- Merged PRs -->
+        <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+          <tspan>-r--  </tspan>
+          <tspan font-weight="700" fill="<%= boldColor %>"><%= `${plugins.followup.pr.merged}`.padStart(5) %></tspan>
+          <tspan>  └── merged</tspan>
+        </text>
+        <% localY += lineHeight %>
+      <% } %>
+    <% } %>
+
+    <% if (computed.licenses.favorite.length) { %>
+      <!-- License directory -->
+      <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>dr-x         LICENSE</tspan>
+      </text>
+      <% localY += lineHeight %>
+      <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>-r--         └── <%= computed.licenses.favorite %></tspan>
+      </text>
+      <% localY += lineHeight %>
+    <% } %>
+
+    <% if (plugins.lines) { %>
+      <% if (plugins.lines.error) { %>
+        <!-- Lines error -->
+        <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" class="diff error" fill="<%= errorColor %>">
+          <tspan>@@ <%= plugins.lines.error.message %> @@</tspan>
+        </text>
+      <% } else { %>
+        <!-- Lines diff -->
+        <text x="0" y="<%= localY %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" class="diff" fill="<%= diffColor %>">
+          <tspan>@@ -<%= f(plugins.lines.deleted) %> +<%= f(plugins.lines.added) %> @@</tspan>
+        </text>
+      <% } %>
+      <% localY += lineHeight %>
+    <% } %>
+  </g>
+<% } %>

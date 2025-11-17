@@ -1,0 +1,38 @@
+<%
+  // Pure SVG stargazers section - simplified version
+  let localY = 0
+%>
+
+<% if (plugins.stargazers) { %>
+  <% if (plugins.stargazers.error) { %>
+    <!-- Error message -->
+    <g class="error" transform="translate(0, <%= localY %>)">
+      <text x="0" y="14" font-size="12" fill="#cb2431">
+        ❌ <%= plugins.stargazers.error.message %>
+      </text>
+    </g>
+  <% } else { %>
+    <!-- Stargazers Section Header -->
+    <g class="stargazers-header" transform="translate(0, <%= localY %>)">
+      <text x="0" y="18" font-size="14" font-weight="600" fill="#24292e">
+        ✨ Stargazers
+      </text>
+    </g>
+    <% localY += 30 %>
+
+    <!-- Stargazers stats -->
+    <g class="stargazers-stats" transform="translate(<%= padding %>, <%= localY %>)">
+      <text x="0" y="14" font-size="12" fill="#586069">
+        ⭐ <%= repo.stargazers.totalCount %> stars
+      </text>
+    </g>
+
+    <!-- Simplified chart note -->
+    <% localY += 30 %>
+    <g transform="translate(<%= padding %>, <%= localY %>)">
+      <text x="0" y="14" font-size="10" fill="#959da5" opacity="0.7">
+        Note: Stargazer graph available in standard template
+      </text>
+    </g>
+  <% } %>
+<% } %>

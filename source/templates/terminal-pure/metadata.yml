@@ -1,0 +1,46 @@
+name: "📙 Terminal Pure SVG (Satori-optimized)"
+extends: null
+index: 3
+supports:
+  - user
+  - organization
+formats:
+  - svg
+  - png
+  - jpeg
+description: |
+  A high-performance terminal-themed template optimized for Satori rendering.
+  Mimics a SSH/terminal session using pure SVG elements (no foreignObject).
+  Achieves 10-100x faster rendering compared to the standard terminal template.
+  Perfect for automated workflows requiring terminal aesthetics with maximum performance.
+
+readme:
+  header: |
+    This template combines the terminal aesthetic with Satori optimization.
+    Uses pure SVG elements for terminal window chrome, monospace typography, and terminal colors.
+
+    Key features:
+    - Pure SVG rendering (no foreignObject or HTML)
+    - Terminal window with title bar and control buttons
+    - Monospace fonts for authentic CLI feel
+    - Dark terminal color scheme (#42092B background)
+    - Green/amber terminal text colors
+    - 10-100x faster than standard terminal template
+    - Satori-compatible for ultra-fast rendering
+    - Ideal for CI/CD workflows needing terminal aesthetics
+
+example:
+  - name: Terminal-style metrics (fast rendering)
+    with:
+      template: terminal-pure
+      base: header, repositories, metadata
+      plugin_languages: yes
+
+  - name: Full terminal with plugins
+    with:
+      template: terminal-pure
+      base: header, activity, community, repositories, metadata
+      plugin_lines: yes
+      plugin_traffic: yes
+      plugin_languages: yes
+      plugin_isocalendar: yes

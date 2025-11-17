@@ -1,0 +1,21 @@
+{
+  "base.header": "Repository header with stats",
+  "activity": "Recent repository activity",
+  "contributors": "Repository contributors",
+  "crypto": "Cryptocurrency prices",
+  "followup": "Follow-up of issues and pull requests",
+  "introduction": "Repository introduction",
+  "languages": "Languages statistics",
+  "licenses": "Repository licenses",
+  "lines": "Lines of code changed (included in base.header)",
+  "pagespeed": "Google PageSpeed metrics",
+  "people": "People plugin",
+  "posts": "Recent posts",
+  "projects": "GitHub projects",
+  "rss": "RSS feed",
+  "screenshot": "Website screenshot",
+  "sponsors": "GitHub Sponsors",
+  "stargazers": "Stargazers",
+  "stock": "Stock prices",
+  "traffic": "Repository traffic (included in base.header)"
+}

@@ -1,0 +1,71 @@
+<%
+  // Terminal-style header using pure SVG
+  let localY = 0
+  const promptColor = "#7EDA29"
+  const pathColor = "#4878c0"
+  const textColor = "#DDDDDD"
+  const boldColor = "#FFFFFF"
+%>
+
+<% if (base.header) { %>
+  <% if (account === "user") { %>
+    <!-- Command: whoami -->
+    <g class="stdin" transform="translate(0, <%= localY %>)">
+      <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace">
+        <tspan class="ps1-path" fill="<%= promptColor %>"><%= user.login.toLowerCase() %>@metrics</tspan><tspan fill="<%= textColor %>">:</tspan><tspan class="ps1-location" fill="<%= pathColor %>">~</tspan><tspan class="ps1-symbol" fill="<%= textColor %>"><%= computed.token.scopes.includes("repo") ? "#" : "$" %></tspan><tspan fill="<%= textColor %>"> whoami</tspan>
+      </text>
+    </g>
+    <% localY += lineHeight %>
+
+    <!-- Output: user info -->
+    <g class="stdout" transform="translate(0, <%= localY %>)">
+      <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <!-- Name line -->
+        <tspan x="0" dy="0" font-weight="700" fill="<%= boldColor %>"><%= user.name || user.login %></tspan>
+        <tspan> registered=<%= computed.registration.match(/^.+? [ymd]/)?.[0].replace(/ /g, "") %>, uid=<%= `${user.databaseId}`.substr(-4) %>, gid=<%= user.organizations.totalCount %></tspan>
+
+        <!-- Contributions line with calendar -->
+        <tspan x="0" dy="<%= lineHeight %>">  contributed to <%= user.repositoriesContributedTo.totalCount %> repositor<%= s(user.repositoriesContributedTo.totalCount, "y") %> </tspan>
+      </text>
+
+      <!-- Calendar visualization -->
+      <g transform="translate(0, <%= lineHeight * 1.2 %>)">
+        <% for (const [idx, {color}] of Object.entries(computed.calendar)) { %>
+          <text x="<%= idx * 8 %>" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= color %>" font-weight="700">#</text>
+        <% } %>
+      </g>
+
+      <!-- Followers line -->
+      <text x="0" y="<%= lineHeight * 2.5 %>" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>  followed by </tspan>
+        <tspan font-weight="700" fill="<%= boldColor %>"><%= user.followers.totalCount %></tspan>
+        <tspan> user<%= s(user.followers.totalCount) %></tspan>
+      </text>
+    </g>
+    <% localY += lineHeight * 4 %>
+
+  <% } else if (account === "organization") { %>
+    <!-- Command: whoami (organization) -->
+    <g class="stdin" transform="translate(0, <%= localY %>)">
+      <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace">
+        <tspan class="ps1-path" fill="<%= promptColor %>"><%= user.login.toLowerCase() %>@metrics</tspan><tspan fill="<%= textColor %>">:</tspan><tspan class="ps1-location" fill="<%= pathColor %>">~</tspan><tspan class="ps1-symbol" fill="<%= textColor %>"><%= computed.token.scopes.includes("repo") ? "#" : "$" %></tspan><tspan fill="<%= textColor %>"> whoami</tspan>
+      </text>
+    </g>
+    <% localY += lineHeight %>
+
+    <!-- Output: organization info -->
+    <g class="stdout" transform="translate(0, <%= localY %>)">
+      <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <!-- Name line -->
+        <tspan x="0" dy="0" font-weight="700" fill="<%= boldColor %>"><%= user.name || user.login %></tspan>
+        <tspan> registered=<%= computed.registration.match(/^.+? [ymd]/)?.[0].replace(/ /g, "") %>, uid=0, gid=<%= `${user.databaseId}`.substr(-4) %></tspan>
+
+        <!-- Members line -->
+        <tspan x="0" dy="<%= lineHeight %>">  organization with </tspan>
+        <tspan font-weight="700" fill="<%= boldColor %>"><%= user.membersWithRole.totalCount %></tspan>
+        <tspan> member<%= s(user.membersWithRole.totalCount) %></tspan>
+      </text>
+    </g>
+    <% localY += lineHeight * 3 %>
+  <% } %>
+<% } %>

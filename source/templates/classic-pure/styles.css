@@ -1,0 +1,268 @@
+/* Classic Pure SVG Template Styles */
+/* Combines Classic GitHub styling with Pure SVG performance */
+
+/* Base SVG styling */
+svg.classic-pure {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  background: #ffffff;
+  color: #24292e;
+}
+
+svg.classic-pure.large {
+  width: 960px;
+}
+
+/* Text defaults - Classic GitHub style */
+text {
+  font-family: inherit;
+  font-size: 12px;
+  fill: #24292e;
+}
+
+/* Headings - Classic style */
+text.heading,
+text.h1 {
+  font-size: 20px;
+  font-weight: 600;
+  fill: #24292e;
+}
+
+text.h2 {
+  font-size: 16px;
+  font-weight: 600;
+  fill: #0366d6;
+}
+
+text.h3 {
+  font-size: 14px;
+  font-weight: 500;
+  fill: #24292e;
+}
+
+text.subheading {
+  font-size: 12px;
+  fill: #586069;
+}
+
+/* Links - GitHub blue */
+text.link {
+  fill: #0969da;
+  cursor: pointer;
+}
+
+text.link:hover {
+  text-decoration: underline;
+}
+
+/* Stats and numbers */
+text.stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  fill: #24292e;
+}
+
+text.stat-label {
+  font-size: 12px;
+  fill: #586069;
+}
+
+text.muted {
+  fill: #586069;
+  font-size: 11px;
+}
+
+/* Icons and symbols */
+text.icon {
+  font-size: 14px;
+}
+
+/* Code and monospace */
+text.code {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Menlo, Consolas, monospace;
+  font-size: 11px;
+  fill: #0366d6;
+}
+
+/* Status indicators - Classic GitHub colors */
+.success text {
+  fill: #28a745;
+}
+
+.warning text {
+  fill: #D79533;
+}
+
+.error text {
+  fill: #cb2431;
+}
+
+.info text {
+  fill: #0969da;
+}
+
+.hireable text {
+  fill: #28a745;
+}
+
+.cakeday text {
+  fill: #ea4aaa;
+}
+
+/* Shapes and backgrounds - Classic style */
+rect.card {
+  fill: #ffffff;
+  stroke: #d1d5da;
+  stroke-width: 1;
+}
+
+rect.card-background {
+  fill: #f6f8fa;
+}
+
+rect.section {
+  fill: #ffffff;
+  stroke: #e1e4e8;
+  stroke-width: 1;
+}
+
+/* Achievement ranks - Classic colors */
+.rank-s rect.rank-fill { fill: #ffd700; }
+.rank-s text { fill: #b8860b; }
+
+.rank-a rect.rank-fill { fill: #c0c0c0; }
+.rank-a text { fill: #808080; }
+
+.rank-b rect.rank-fill { fill: #cd7f32; }
+.rank-b text { fill: #8b4513; }
+
+.rank-c rect.rank-fill { fill: #e1e4e8; }
+.rank-c text { fill: #586069; }
+
+/* Language colors - GitHub's official colors */
+.language-JavaScript circle, .language-JavaScript rect { fill: #f1e05a; }
+.language-TypeScript circle, .language-TypeScript rect { fill: #2b7489; }
+.language-Python circle, .language-Python rect { fill: #3572A5; }
+.language-Java circle, .language-Java rect { fill: #b07219; }
+.language-Go circle, .language-Go rect { fill: #00ADD8; }
+.language-Rust circle, .language-Rust rect { fill: #dea584; }
+.language-Ruby circle, .language-Ruby rect { fill: #701516; }
+.language-PHP circle, .language-PHP rect { fill: #4F5D95; }
+.language-C circle, .language-C rect { fill: #555555; }
+.language-CPP circle, .language-CPP rect { fill: #f34b7d; }
+.language-CSharp circle, .language-CSharp rect { fill: #178600; }
+.language-Swift circle, .language-Swift rect { fill: #ffac45; }
+.language-Kotlin circle, .language-Kotlin rect { fill: #F18E33; }
+.language-Shell circle, .language-Shell rect { fill: #89e051; }
+.language-HTML circle, .language-HTML rect { fill: #e34c26; }
+.language-CSS circle, .language-CSS rect { fill: #563d7c; }
+.language-Scala circle, .language-Scala rect { fill: #c22d40; }
+.language-Dart circle, .language-Dart rect { fill: #00B4AB; }
+.language-Lua circle, .language-Lua rect { fill: #000080; }
+.language-R circle, .language-R rect { fill: #198CE7; }
+
+/* Contribution calendar colors - Classic GitHub */
+.calendar-day-L0 { fill: #ebedf0; }
+.calendar-day-L1 { fill: #9be9a8; }
+.calendar-day-L2 { fill: #40c463; }
+.calendar-day-L3 { fill: #30a14e; }
+.calendar-day-L4 { fill: #216e39; }
+
+/* Activity indicators */
+circle.activity-dot {
+  fill: #28a745;
+  opacity: 0.8;
+}
+
+/* Progress bars and gauges */
+.gauge-base {
+  fill: none;
+  stroke: #e1e4e8;
+  stroke-width: 2;
+}
+
+.gauge-arc {
+  fill: none;
+  stroke: #0366d6;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.progress-bar-bg {
+  fill: #e1e4e8;
+}
+
+.progress-bar-fill {
+  fill: #28a745;
+}
+
+/* Animations (simplified for Satori compatibility) */
+svg:not(.no-animations) .animated {
+  animation: fadeIn 0.3s ease-in;
+}
+
+svg:not(.no-animations) .pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Responsive font sizing for large display */
+svg.classic-pure.large text {
+  font-size: 13px;
+}
+
+svg.classic-pure.large text.heading,
+svg.classic-pure.large text.h1 {
+  font-size: 22px;
+}
+
+svg.classic-pure.large text.h2 {
+  font-size: 18px;
+}
+
+svg.classic-pure.large text.stat-value {
+  font-size: 20px;
+}
+
+/* Dark mode support (future enhancement) */
+svg.classic-pure.dark {
+  background: #0d1117;
+}
+
+svg.classic-pure.dark text {
+  fill: #c9d1d9;
+}
+
+svg.classic-pure.dark text.heading,
+svg.classic-pure.dark text.h1,
+svg.classic-pure.dark text.h2,
+svg.classic-pure.dark text.h3 {
+  fill: #ffffff;
+}
+
+svg.classic-pure.dark text.h2 {
+  fill: #58a6ff;
+}
+
+svg.classic-pure.dark text.stat-label,
+svg.classic-pure.dark text.muted {
+  fill: #8b949e;
+}
+
+svg.classic-pure.dark rect.card,
+svg.classic-pure.dark rect.section {
+  fill: #161b22;
+  stroke: #30363d;
+}
+
+svg.classic-pure.dark rect.card-background {
+  fill: #0d1117;
+}

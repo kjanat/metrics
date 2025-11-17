@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="99999" class="pure terminal-pure <%= !animated ? 'no-animations' : '' %>">
+  <%
+    meta.$ = `${user.login.toLowerCase()}@metrics:~${computed.token.scopes.includes("repo") ? "#" : "$"}`
+    meta.animations = !meta.placeholder ? {stdin:.16, stdout:.28, length:(2+Object.keys(base).length+Object.keys(plugins).length)} : {stdin:0, stdout:0, length:0}
+  %>
+
+  <defs>
+    <style><%= fonts %></style>
+
+    <!-- Terminal window gradients -->
+    <linearGradient id="terminal-header" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#504b45;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3c3b37;stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="button-normal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7d7871;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#595953;stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="button-exit" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f37458;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#de4c12;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <style data-optimizable="true"><%= style %></style>
+  <style><%= extras.css %></style>
+
+  <%
+    let yOffset = 0
+    const width = 480
+    const padding = 12
+    const lineHeight = 18
+    const headerHeight = 20
+    const terminalBg = "#42092B"
+  %>
+
+  <!-- Terminal Window Container -->
+  <g class="terminal-window" transform="translate(0, 0)">
+
+    <!-- Terminal Title Bar -->
+    <rect x="0" y="0" width="<%= width %>" height="<%= headerHeight %>" fill="url(#terminal-header)" rx="5" />
+    <rect x="0" y="0" width="<%= width %>" height="<%= headerHeight %>" fill="none" rx="5" ry="5" />
+
+    <!-- Window Buttons -->
+    <g class="window-buttons" transform="translate(<%= width - 60 %>, 4)">
+      <!-- Minimize button -->
+      <circle cx="6" cy="6" r="6" fill="url(#button-normal)"/>
+      <text x="6" y="9" font-size="8" text-anchor="middle" fill="#000" opacity="0.6">─</text>
+
+      <!-- Maximize button -->
+      <circle cx="24" cy="6" r="6" fill="url(#button-normal)"/>
+      <text x="24" y="9" font-size="8" text-anchor="middle" fill="#000" opacity="0.6">□</text>
+
+      <!-- Close button -->
+      <circle cx="42" cy="6" r="6" fill="url(#button-exit)"/>
+      <text x="42" y="10" font-size="8" text-anchor="middle" fill="#000" opacity="0.6">✕</text>
+    </g>
+
+    <% yOffset = headerHeight %>
+
+    <!-- Terminal Background -->
+    <rect x="0" y="<%= yOffset %>" width="<%= width %>" height="99999" fill="<%= terminalBg %>" />
+    <rect x="0" y="<%= headerHeight %>" width="<%= width %>" height="1" fill="<%= terminalBg %>" />
+
+    <% yOffset += padding %>
+
+    <!-- Terminal Content Area -->
+    <g class="terminal-content" transform="translate(<%= padding %>, <%= yOffset %>)">
+      <%
+        let contentY = 0
+        const contentWidth = width - (padding * 2)
+      %>
+
+      <% if (base.metadata) { %>
+        <!-- Banner -->
+        <g class="banner" transform="translate(0, <%= contentY %>)">
+          <text x="0" y="0" font-family="'Courier New', 'Courier Prime', monospace" font-size="14" fill="#AE9DA7">
+            <tspan x="0" dy="0">Metrics generator <%= meta.version %></tspan>
+            <tspan x="0" dy="<%= lineHeight %>">These generated metrics comes with ABSOLUTELY NO</tspan>
+            <tspan x="0" dy="<%= lineHeight %>">WARRANTY, to the extent permitted by applicable law.</tspan>
+            <tspan x="0" dy="<%= lineHeight * 2 %>">Last generated: <%= meta.generated %></tspan>
+          </text>
+        </g>
+        <% contentY += lineHeight * 5 %>
+      <% } %>
+
+      <% if (warnings.length) { %>
+        <!-- Warnings -->
+        <g class="warnings" transform="translate(0, <%= contentY %>)">
+          <% warnings.forEach((w, i) => { %>
+            <text x="0" y="<%= i * lineHeight %>" font-family="'Courier New', 'Courier Prime', monospace" font-size="14" fill="#D79533">
+              <tspan>WARN: <%= w.warning.message %></tspan>
+            </text>
+          <% }) %>
+        </g>
+        <% contentY += warnings.length * lineHeight + lineHeight %>
+      <% } %>
+
+      <!-- Render partials -->
+      <% for (const partial of [...partials]) { %>
+        <g class="partial-<%= partial %>" transform="translate(0, <%= contentY %>)">
+          <%- await include(`partials/${partial}.ejs`, {yOffset: 0, width: contentWidth, padding, lineHeight, terminalPrompt: meta.$}) %>
+        </g>
+        <%
+          // Height estimation per partial
+          const heights = {
+            'base.header': lineHeight * 5,
+            'base.activity+community': lineHeight * 4,
+            'base.repositories': lineHeight * 15,
+            'languages': lineHeight * 8,
+            'gists': lineHeight * 5,
+            'pagespeed': lineHeight * 10,
+            'isocalendar': lineHeight * 3,
+            'screenshot': lineHeight * 3,
+            'lines': lineHeight * 2,
+            'traffic': lineHeight * 2,
+          }
+          contentY += heights[partial] || lineHeight * 3
+        %>
+      <% } %>
+
+      <% if (base.metadata) { %>
+        <!-- Footer -->
+        <g class="footer" transform="translate(0, <%= contentY %>)">
+          <text x="0" y="<%= lineHeight %>" font-family="'Courier New', 'Courier Prime', monospace" font-size="14" fill="#AE9DA7">
+            Connection reset by <%= Math.floor(256*Math.random()) %>.<%= Math.floor(256*Math.random()) %>.<%= Math.floor(256*Math.random()) %>.<%= Math.floor(256*Math.random()) %>
+          </text>
+        </g>
+        <% contentY += lineHeight * 3 %>
+      <% } %>
+
+      <!-- End marker for height calculation -->
+      <rect id="metrics-end" x="0" y="<%= contentY %>" width="1" height="1" opacity="0"/>
+    </g>
+  </g>
+
+</svg>

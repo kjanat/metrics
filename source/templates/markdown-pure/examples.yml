@@ -1,0 +1,59 @@
+- name: Simple markdown example
+  uses: lowlighter/metrics@latest
+  with:
+    template: markdown-pure
+    filename: metrics.markdown.svg
+    config_markdown: |
+      # My GitHub Stats
+
+      Welcome to my profile! Here are some quick facts:
+
+      - I love coding
+      - I contribute to open source
+      - I write clean code
+
+      Check out my repositories below!
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Documentation badge with code
+  uses: lowlighter/metrics@latest
+  with:
+    template: markdown-pure
+    filename: docs-badge.svg
+    config_display: large
+    config_markdown: |
+      # Project Documentation
+
+      ## Quick Start
+
+      Install the package:
+
+      ```bash
+      npm install my-package
+      ```
+
+      ## Usage
+
+      ```javascript
+      import { MyClass } from 'my-package';
+
+      const instance = new MyClass();
+      instance.doSomething();
+      ```
+
+      ## Features
+
+      - Fast and efficient
+      - Pure SVG rendering
+      - Zero dependencies
+      - TypeScript support
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Markdown content from external source
+  uses: lowlighter/metrics@latest
+  with:
+    template: markdown-pure
+    filename: readme-preview.svg
+    markdown: https://raw.githubusercontent.com/user/repo/main/README.md
+    config_output: svg
+    token: ${{ secrets.METRICS_TOKEN }}

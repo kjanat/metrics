@@ -1,0 +1,33 @@
+- name: Basic repository metrics (Pure SVG)
+  uses: lowlighter/metrics@latest
+  with:
+    template: repository-pure
+    filename: metrics.repository-pure.svg
+    token: ${{ secrets.METRICS_TOKEN }}
+    user: lowlighter
+    repo: metrics
+    plugin_lines: yes
+
+- name: Repository with follow-up tracking
+  uses: lowlighter/metrics@latest
+  with:
+    template: repository-pure
+    filename: metrics.repository-followup.svg
+    token: ${{ secrets.METRICS_TOKEN_WITH_SCOPES }}
+    user: lowlighter
+    repo: metrics
+    plugin_lines: yes
+    plugin_followup: yes
+    plugin_followup_sections: repositories
+
+- name: Repository with language stats
+  uses: lowlighter/metrics@latest
+  with:
+    template: repository-pure
+    filename: metrics.repository-languages.svg
+    token: ${{ secrets.METRICS_TOKEN }}
+    user: lowlighter
+    repo: metrics
+    plugin_languages: yes
+    plugin_languages_details: bytes-size, percentage
+    plugin_lines: yes

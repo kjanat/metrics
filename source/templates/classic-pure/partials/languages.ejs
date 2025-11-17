@@ -1,0 +1,76 @@
+<%
+  // Pure SVG languages plugin visualization
+  if (!plugins.languages) return
+  const languages = plugins.languages
+  let localY = 0
+  const barHeight = 8
+  const labelHeight = 18
+  const maxLanguages = 8
+%>
+
+<% if (languages.favorites.length) { %>
+  <!-- Languages Section -->
+  <rect x="0" y="0" width="<%= width %>" height="<%= 60 + languages.favorites.slice(0, maxLanguages).length * (labelHeight + 5) %>" fill="#f6f8fa" rx="6"/>
+  <rect x="0" y="0" width="<%= width %>" height="<%= 60 + languages.favorites.slice(0, maxLanguages).length * (labelHeight + 5) %>" fill="none" stroke="#d1d5da" stroke-width="1" rx="6"/>
+
+  <!-- Section Title -->
+  <text x="<%= padding + 5 %>" y="<%= padding + 18 %>" font-size="16" font-weight="600" fill="#24292e">
+    💬 Most Used Languages
+  </text>
+
+  <% localY = padding + 35 %>
+
+  <!-- Language Bar (Combined) -->
+  <g class="language-bar" transform="translate(<%= padding %>, <%= localY %>)">
+    <% let xPos = 0 %>
+    <% for (const [i, {name, value, color}] of Object.entries(languages.favorites.slice(0, maxLanguages))) { %>
+      <% const barWidth = (width - 2 * padding) * value %>
+      <rect
+        x="<%= xPos %>"
+        y="0"
+        width="<%= barWidth %>"
+        height="<%= barHeight %>"
+        fill="<%= color %>"
+        <% if (i == 0) { %>rx="3 0 0 3"<% } %>
+        <% if (i == languages.favorites.length - 1 || i == maxLanguages - 1) { %>rx="0 3 3 0"<% } %>
+      />
+      <% xPos += barWidth %>
+    <% } %>
+  </g>
+
+  <% localY += barHeight + 15 %>
+
+  <!-- Language List -->
+  <g class="language-list" transform="translate(<%= padding %>, <%= localY %>)">
+    <% for (const [i, {name, value, color, lines}] of Object.entries(languages.favorites.slice(0, maxLanguages))) { %>
+      <g class="language-item" transform="translate(0, <%= i * (labelHeight + 5) %>)">
+        <!-- Color dot -->
+        <circle cx="6" cy="<%= labelHeight / 2 - 2 %>" r="6" fill="<%= color %>"/>
+
+        <!-- Language name -->
+        <text x="20" y="<%= labelHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+          <%= name %>
+        </text>
+
+        <!-- Percentage -->
+        <text x="<%= width - 2 * padding - 80 %>" y="<%= labelHeight / 2 + 4 %>" font-size="12" fill="#586069" text-anchor="end">
+          <%= (value * 100).toFixed(1) %>%
+        </text>
+
+        <% if (languages.details.includes('lines') && lines) { %>
+          <!-- Lines of code -->
+          <text x="<%= width - 2 * padding %>" y="<%= labelHeight / 2 + 4 %>" font-size="11" fill="#959da5" text-anchor="end">
+            <%= lines.toLocaleString() %> lines
+          </text>
+        <% } %>
+      </g>
+    <% } %>
+  </g>
+
+<% } else { %>
+  <!-- No languages data -->
+  <rect x="0" y="0" width="<%= width %>" height="60" fill="#f6f8fa" rx="6"/>
+  <text x="<%= width / 2 %>" y="35" text-anchor="middle" font-size="12" fill="#959da5">
+    No language data available
+  </text>
+<% } %>

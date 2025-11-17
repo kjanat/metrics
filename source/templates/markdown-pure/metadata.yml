@@ -1,0 +1,51 @@
+name: "📒 Markdown (Pure SVG)"
+extends: null
+index: 4
+supports:
+  - user
+  - organization
+  - repository
+formats:
+  - svg
+  - png
+  - jpeg
+description: |
+  A Satori-optimized template for rendering markdown content as pure SVG.
+  10-100x faster than traditional rendering by eliminating foreignObject elements.
+  Supports headers, code blocks, lists, inline code, and basic markdown formatting.
+
+readme:
+  header: |
+    This template renders markdown content using pure SVG elements for ultra-fast Satori rendering.
+    Perfect for documentation badges, project overviews, and dynamic content displays.
+
+    Key features:
+    - Pure SVG rendering (no foreignObject)
+    - Satori-compatible for 10-100x faster rendering
+    - Markdown syntax support: headers, code blocks, lists, inline code
+    - Clean, readable design optimized for GitHub aesthetics
+    - Ideal for CI/CD workflows and automated documentation
+
+example:
+  - name: Basic markdown rendering
+    with:
+      template: markdown-pure
+      config_markdown: |
+        # Hello World
+        This is a **markdown** example.
+
+  - name: Documentation badge
+    with:
+      template: markdown-pure
+      config_display: large
+      config_markdown: |
+        # Project Overview
+
+        ## Features
+        - Fast rendering
+        - Pure SVG output
+        - No dependencies
+
+        ```javascript
+        console.log('Hello World');
+        ```

@@ -1,0 +1,92 @@
+<%
+  // Pure SVG activity plugin - Simplified version for Classic Pure
+  if (!plugins.activity) return
+  let localY = 0
+  const maxEvents = 5
+  const eventHeight = 70
+%>
+
+<% if (plugins.activity) { %>
+  <% const events = plugins.activity.events.slice(0, maxEvents) %>
+  <% const sectionHeight = 60 + events.length * eventHeight %>
+
+  <!-- Activity Section -->
+  <rect x="0" y="0" width="<%= width %>" height="<%= sectionHeight %>" fill="#f6f8fa" rx="6"/>
+  <rect x="0" y="0" width="<%= width %>" height="<%= sectionHeight %>" fill="none" stroke="#d1d5da" stroke-width="1" rx="6"/>
+
+  <!-- Section Title -->
+  <text x="<%= padding + 5 %>" y="<%= padding + 18 %>" font-size="16" font-weight="600" fill="#0366d6" class="h2">
+    🎯 Recent Activity
+  </text>
+
+  <% localY = padding + 35 %>
+
+  <% if (plugins.activity.error) { %>
+    <!-- Error State -->
+    <g transform="translate(<%= padding %>, <%= localY %>)">
+      <text x="0" y="20" font-size="12" fill="#cb2431">
+        ❌ <%= plugins.activity.error.message %>
+      </text>
+    </g>
+  <% } else if (!events.length) { %>
+    <!-- No Activity -->
+    <g transform="translate(<%= padding %>, <%= localY %>)">
+      <text x="0" y="20" font-size="12" fill="#586069">
+        No recent activity
+      </text>
+    </g>
+  <% } else { %>
+    <!-- Activity List -->
+    <g class="activity-list" transform="translate(<%= padding %>, <%= localY %>)">
+      <% for (const [i, {actor, type, repo, timestamp, ...event}] of Object.entries(events)) { %>
+        <g class="activity-event" transform="translate(0, <%= i * eventHeight %>)">
+          <!-- Event Icon and Type -->
+          <% let icon = "⚫" %>
+          <% let actionText = "" %>
+          <% if (type === "push") { icon = "⚫"; actionText = `Pushed ${event.size} commit${event.size !== 1 ? 's' : ''} to` } %>
+          <% else if (type === "pr") { icon = "🔀"; actionText = `${event.action === 'opened' ? 'Opened' : event.action === 'merged' ? 'Merged' : 'Closed'} PR #${event.number} in` } %>
+          <% else if (type === "issue") { icon = "⚪"; actionText = `${event.action === 'opened' ? 'Opened' : 'Closed'} issue #${event.number} in` } %>
+          <% else if (type === "comment") { icon = "💬"; actionText = `Commented on #${event.number} in` } %>
+          <% else if (type === "star") { icon = "⭐"; actionText = "Starred" } %>
+          <% else if (type === "fork") { icon = "🔀"; actionText = "Forked" } %>
+          <% else if (/^ref/.test(type)) { icon = "🌿"; actionText = /create/.test(type) ? `Created ${event.ref.type}` : `Deleted ${event.ref.type}` } %>
+          <% else { icon = "•"; actionText = type } %>
+
+          <text x="0" y="14" font-size="12" fill="#24292e">
+            <%= icon %> <%= actionText %>
+            <tspan fill="#0366d6"> <%= repo %></tspan>
+          </text>
+
+          <!-- Event Details -->
+          <% if (type === "pr" && event.title) { %>
+            <text x="20" y="32" font-size="11" fill="#586069">
+              <%= event.title.substring(0, 60) %><%= event.title.length > 60 ? '...' : '' %>
+            </text>
+          <% } else if (type === "issue" && event.title) { %>
+            <text x="20" y="32" font-size="11" fill="#586069">
+              <%= event.title.substring(0, 60) %><%= event.title.length > 60 ? '...' : '' %>
+            </text>
+          <% } else if (type === "push" && event.branch) { %>
+            <text x="20" y="32" font-size="11" fill="#586069">
+              Branch: <tspan class="code"><%= event.branch %></tspan>
+            </text>
+          <% } %>
+
+          <!-- Timestamp -->
+          <% if (plugins.activity.timestamps) { %>
+            <text x="0" y="50" font-size="10" fill="#959da5" opacity="0.8">
+              <%= f.date(timestamp, {time:true, date:true, timeZone:config.timezone?.name}) %>
+            </text>
+          <% } %>
+
+          <!-- Separator -->
+          <% if (i < events.length - 1) { %>
+            <line x1="0" y1="<%= eventHeight - 5 %>" x2="<%= width - 2 * padding %>" y2="<%= eventHeight - 5 %>"
+                  stroke="#e1e4e8" stroke-width="1"/>
+          <% } %>
+        </g>
+      <% } %>
+    </g>
+  <% } %>
+
+<% } %>

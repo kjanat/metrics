@@ -1,0 +1,26 @@
+<%
+  // Pure SVG crypto section - simplified version
+  let localY = 0
+%>
+
+<% if (plugins.crypto) { %>
+  <% if (plugins.crypto.error) { %>
+    <g class="error" transform="translate(0, <%= localY %>)">
+      <text x="0" y="14" font-size="12" fill="#cb2431">
+        ❌ <%= plugins.crypto.error.message %>
+      </text>
+    </g>
+  <% } else { %>
+    <g class="crypto-header" transform="translate(0, <%= localY %>)">
+      <text x="0" y="18" font-size="14" font-weight="600" fill="#24292e">
+        🪙 Crypto
+      </text>
+    </g>
+    <% localY += 30 %>
+    <g transform="translate(<%= padding %>, <%= localY %>)">
+      <text x="0" y="14" font-size="10" fill="#959da5" opacity="0.7">
+        Note: Crypto charts available in standard template
+      </text>
+    </g>
+  <% } %>
+<% } %>

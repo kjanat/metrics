@@ -1,0 +1,274 @@
+/* Markdown Pure SVG Template Styles */
+
+/* Base SVG styling */
+svg.markdown-pure {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  background: #ffffff;
+}
+
+svg.markdown-pure.large {
+  width: 960px;
+}
+
+/* Text defaults */
+text {
+  font-family: inherit;
+  font-size: 14px;
+  fill: #24292e;
+  line-height: 1.6;
+}
+
+/* Markdown Headers */
+.markdown-header.h1 text {
+  font-size: 28px;
+  font-weight: 700;
+  fill: #24292e;
+}
+
+.markdown-header.h2 text {
+  font-size: 24px;
+  font-weight: 700;
+  fill: #24292e;
+}
+
+.markdown-header.h3 text {
+  font-size: 20px;
+  font-weight: 600;
+  fill: #24292e;
+}
+
+.markdown-header.h4 text {
+  font-size: 18px;
+  font-weight: 600;
+  fill: #24292e;
+}
+
+.markdown-header.h5 text {
+  font-size: 16px;
+  font-weight: 600;
+  fill: #586069;
+}
+
+.markdown-header.h6 text {
+  font-size: 14px;
+  font-weight: 600;
+  fill: #586069;
+}
+
+/* Paragraphs */
+.markdown-paragraph text {
+  font-size: 14px;
+  fill: #24292e;
+  line-height: 1.6;
+}
+
+/* Code blocks */
+.markdown-code rect {
+  fill: #f6f8fa;
+  stroke: #d1d5da;
+  stroke-width: 1;
+}
+
+.markdown-code text {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Monaco, 'Courier New', monospace;
+  font-size: 12px;
+  fill: #24292e;
+}
+
+/* Inline code */
+text + rect {
+  fill: #f6f8fa;
+  stroke: #d1d5da;
+  stroke-width: 0.5;
+}
+
+/* Lists */
+.markdown-list circle {
+  fill: #24292e;
+}
+
+.markdown-list text {
+  font-size: 14px;
+  fill: #24292e;
+}
+
+/* Links (when rendered) */
+text.markdown-link {
+  fill: #0969da;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+text.markdown-link:hover {
+  text-decoration: underline;
+}
+
+/* Bold text */
+text.markdown-bold {
+  font-weight: 600;
+}
+
+/* Italic text */
+text.markdown-italic {
+  font-style: italic;
+}
+
+/* Horizontal rules */
+.markdown-hr line {
+  stroke: #d1d5da;
+  stroke-width: 1;
+}
+
+/* Blockquotes */
+.markdown-blockquote {
+  fill: #656d76;
+}
+
+.markdown-blockquote rect {
+  fill: #f6f8fa;
+  stroke: #0969da;
+  stroke-width: 3;
+}
+
+/* Language badges in code blocks */
+.markdown-code .language-badge {
+  fill: #0969da;
+  opacity: 0.1;
+}
+
+.markdown-code .language-badge text {
+  fill: #0969da;
+  font-weight: 600;
+  font-size: 11px;
+}
+
+/* Status indicators */
+.success text {
+  fill: #28a745;
+}
+
+.warning text {
+  fill: #dbab09;
+}
+
+.error text {
+  fill: #cb2431;
+}
+
+.info text {
+  fill: #0969da;
+}
+
+/* Tables (if implemented) */
+.markdown-table rect {
+  fill: #ffffff;
+  stroke: #d1d5da;
+  stroke-width: 1;
+}
+
+.markdown-table text {
+  font-size: 13px;
+  fill: #24292e;
+}
+
+.markdown-table .header rect {
+  fill: #f6f8fa;
+}
+
+.markdown-table .header text {
+  font-weight: 600;
+}
+
+/* Task lists */
+.markdown-task-list rect {
+  fill: #ffffff;
+  stroke: #d1d5da;
+  stroke-width: 1;
+}
+
+.markdown-task-list.checked rect {
+  fill: #0969da;
+}
+
+.markdown-task-list.checked path {
+  fill: #ffffff;
+}
+
+/* Animations (simplified for Satori) */
+svg.markdown-pure:not(.no-animations) .animated {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Dark mode support */
+svg.markdown-pure.dark {
+  background: #0d1117;
+}
+
+svg.markdown-pure.dark text {
+  fill: #c9d1d9;
+}
+
+svg.markdown-pure.dark .markdown-header text {
+  fill: #ffffff;
+}
+
+svg.markdown-pure.dark .markdown-code rect {
+  fill: #161b22;
+  stroke: #30363d;
+}
+
+svg.markdown-pure.dark .markdown-code text {
+  fill: #c9d1d9;
+}
+
+svg.markdown-pure.dark .markdown-hr line {
+  stroke: #30363d;
+}
+
+svg.markdown-pure.dark .markdown-list circle {
+  fill: #c9d1d9;
+}
+
+/* Responsive sizing for large display */
+svg.markdown-pure.large text {
+  font-size: 15px;
+}
+
+svg.markdown-pure.large .markdown-header.h1 text {
+  font-size: 32px;
+}
+
+svg.markdown-pure.large .markdown-header.h2 text {
+  font-size: 28px;
+}
+
+svg.markdown-pure.large .markdown-header.h3 text {
+  font-size: 24px;
+}
+
+svg.markdown-pure.large .markdown-code text {
+  font-size: 13px;
+}
+
+/* Footer */
+.footer-section text {
+  fill: #586069;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* Warning section */
+.warning-section rect {
+  fill: #fff3cd;
+  stroke: #ffc107;
+}
+
+.warning-section text {
+  fill: #856404;
+  font-weight: 500;
+}

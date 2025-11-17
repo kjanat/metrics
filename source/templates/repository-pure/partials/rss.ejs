@@ -1,0 +1,32 @@
+<%
+  // Pure SVG RSS section - simplified version
+  let localY = 0
+%>
+
+<% if (plugins.rss) { %>
+  <% if (plugins.rss.error) { %>
+    <g class="error" transform="translate(0, <%= localY %>)">
+      <text x="0" y="14" font-size="12" fill="#cb2431">
+        ❌ <%= plugins.rss.error.message %>
+      </text>
+    </g>
+  <% } else { %>
+    <g class="rss-header" transform="translate(0, <%= localY %>)">
+      <text x="0" y="18" font-size="14" font-weight="600" fill="#24292e">
+        🗼 RSS feed
+      </text>
+    </g>
+    <% localY += 35 %>
+    <% if (plugins.rss.feed?.length) { %>
+      <% for (let i = 0; i < Math.min(plugins.rss.feed.length, 3); i++) { %>
+        <% const item = plugins.rss.feed[i] %>
+        <g class="rss-item" transform="translate(<%= padding %>, <%= localY %>)">
+          <text x="0" y="14" font-size="12" fill="#0366d6">
+            📰 <%= item.title.substring(0, 60) %><%= item.title.length > 60 ? '...' : '' %>
+          </text>
+        </g>
+        <% localY += 22 %>
+      <% } %>
+    <% } %>
+  <% } %>
+<% } %>

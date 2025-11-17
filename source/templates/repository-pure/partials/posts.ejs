@@ -1,0 +1,32 @@
+<%
+  // Pure SVG posts section - simplified version
+  let localY = 0
+%>
+
+<% if (plugins.posts) { %>
+  <% if (plugins.posts.error) { %>
+    <g class="error" transform="translate(0, <%= localY %>)">
+      <text x="0" y="14" font-size="12" fill="#cb2431">
+        ❌ <%= plugins.posts.error.message %>
+      </text>
+    </g>
+  <% } else { %>
+    <g class="posts-header" transform="translate(0, <%= localY %>)">
+      <text x="0" y="18" font-size="14" font-weight="600" fill="#24292e">
+        ✒️ Recent posts
+      </text>
+    </g>
+    <% localY += 35 %>
+    <% if (plugins.posts.list?.length) { %>
+      <% for (let i = 0; i < Math.min(plugins.posts.list.length, 3); i++) { %>
+        <% const post = plugins.posts.list[i] %>
+        <g class="post-item" transform="translate(<%= padding %>, <%= localY %>)">
+          <text x="0" y="14" font-size="12" fill="#0366d6">
+            📝 <%= post.title.substring(0, 60) %><%= post.title.length > 60 ? '...' : '' %>
+          </text>
+        </g>
+        <% localY += 22 %>
+      <% } %>
+    <% } %>
+  <% } %>
+<% } %>

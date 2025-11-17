@@ -1,0 +1,270 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="<%= large ? 960 : 800 %>" height="99999" class="pure markdown-pure <%= large ? 'large' : '' %> <%= !animated ? 'no-animations' : '' %>">
+
+  <defs>
+    <style><%= fonts %></style>
+    <!-- Define gradients for code blocks -->
+    <linearGradient id="code-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f6f8fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f0f2f5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <style data-optimizable="true"><%= style %></style>
+  <style><%= extras.css %></style>
+
+  <!-- Pure SVG Markdown rendering - no foreignObject! -->
+  <g class="markdown-container" transform="translate(20, 20)">
+    <%
+      let yOffset = 0
+      const width = large ? 920 : 760
+      const padding = 15
+      const lineHeight = 22
+      const codeLineHeight = 20
+
+      // Parse markdown content from config
+      const markdownContent = config.markdown || "No markdown content provided. Use the 'markdown' configuration option to provide content."
+
+      // Helper function to render text with word wrapping
+      function wrapText(text, maxWidth, fontSize = 14) {
+        const words = text.split(' ')
+        const lines = []
+        let currentLine = ''
+        const charWidth = fontSize * 0.55 // Approximate character width
+
+        for (const word of words) {
+          const testLine = currentLine ? currentLine + ' ' + word : word
+          const testWidth = testLine.length * charWidth
+
+          if (testWidth > maxWidth && currentLine) {
+            lines.push(currentLine)
+            currentLine = word
+          } else {
+            currentLine = testLine
+          }
+        }
+        if (currentLine) lines.push(currentLine)
+        return lines
+      }
+
+      // Parse markdown into sections
+      function parseMarkdown(content) {
+        const lines = content.split('\n')
+        const sections = []
+        let currentCodeBlock = null
+        let currentList = null
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i]
+
+          // Code block start/end
+          if (line.trim().startsWith('```')) {
+            if (currentCodeBlock) {
+              sections.push({ type: 'code', content: currentCodeBlock.join('\n'), lang: currentCodeBlock.lang })
+              currentCodeBlock = null
+            } else {
+              const lang = line.trim().substring(3).trim()
+              currentCodeBlock = { lines: [], lang }
+            }
+            continue
+          }
+
+          if (currentCodeBlock) {
+            currentCodeBlock.lines.push(line)
+            continue
+          }
+
+          // Headers
+          if (line.match(/^#{1,6}\s/)) {
+            if (currentList) {
+              sections.push({ type: 'list', items: currentList })
+              currentList = null
+            }
+            const level = line.match(/^#+/)[0].length
+            const text = line.replace(/^#+\s*/, '')
+            sections.push({ type: 'header', level, text })
+            continue
+          }
+
+          // List items
+          if (line.match(/^\s*[-*]\s/)) {
+            const text = line.replace(/^\s*[-*]\s*/, '')
+            if (!currentList) currentList = []
+            currentList.push(text)
+            continue
+          }
+
+          // End list if not a list item
+          if (currentList && !line.match(/^\s*[-*]\s/)) {
+            sections.push({ type: 'list', items: currentList })
+            currentList = null
+          }
+
+          // Horizontal rule
+          if (line.match(/^---+$/)) {
+            sections.push({ type: 'hr' })
+            continue
+          }
+
+          // Regular paragraph
+          if (line.trim()) {
+            sections.push({ type: 'paragraph', text: line.trim() })
+          }
+        }
+
+        // Close any remaining blocks
+        if (currentCodeBlock) {
+          sections.push({ type: 'code', content: currentCodeBlock.lines.join('\n'), lang: currentCodeBlock.lang })
+        }
+        if (currentList) {
+          sections.push({ type: 'list', items: currentList })
+        }
+
+        return sections
+      }
+
+      const sections = parseMarkdown(markdownContent)
+    %>
+
+    <% if (warnings.length) { %>
+      <!-- Warning Section -->
+      <g class="warning-section" transform="translate(0, <%= yOffset %>)">
+        <rect x="0" y="0" width="<%= width %>" height="40" fill="#fff3cd" stroke="#ffc107" stroke-width="1" rx="6"/>
+        <text x="15" y="25" fill="#856404" font-size="13" font-weight="500">
+          ⚠ <%= warnings.map(({warning}) => warning.message).join(", ") %>
+        </text>
+      </g>
+      <% yOffset += 50 %>
+    <% } %>
+
+    <!-- Render markdown sections -->
+    <% for (const section of sections) { %>
+      <% if (section.type === 'header') { %>
+        <!-- Header -->
+        <%
+          const headerSizes = { 1: 28, 2: 24, 3: 20, 4: 18, 5: 16, 6: 14 }
+          const fontSize = headerSizes[section.level] || 16
+          const headerSpacing = { 1: 40, 2: 35, 3: 30, 4: 28, 5: 26, 6: 24 }
+          const spacing = headerSpacing[section.level] || 26
+        %>
+        <g class="markdown-header h<%= section.level %>" transform="translate(0, <%= yOffset %>)">
+          <text x="0" y="<%= fontSize %>" font-size="<%= fontSize %>" font-weight="<%= section.level <= 2 ? 700 : 600 %>" fill="#24292e">
+            <%= section.text %>
+          </text>
+        </g>
+        <% yOffset += spacing + 10 %>
+
+      <% } else if (section.type === 'paragraph') { %>
+        <!-- Paragraph with inline formatting -->
+        <%
+          let text = section.text
+          // Simple inline code detection
+          const hasInlineCode = text.includes('`')
+          const lines = wrapText(text, width - 20, 14)
+        %>
+        <g class="markdown-paragraph" transform="translate(0, <%= yOffset %>)">
+          <% for (let i = 0; i < lines.length; i++) { %>
+            <%
+              let lineText = lines[i]
+              let currentX = 0
+              const parts = lineText.split('`')
+            %>
+            <% for (let j = 0; j < parts.length; j++) { %>
+              <% if (j % 2 === 0) { %>
+                <!-- Regular text -->
+                <% if (parts[j]) { %>
+                  <text x="<%= currentX %>" y="<%= i * lineHeight + 14 %>" font-size="14" fill="#24292e">
+                    <%= parts[j] %>
+                  </text>
+                  <% currentX += parts[j].length * 7.7 %>
+                <% } %>
+              <% } else { %>
+                <!-- Inline code -->
+                <% if (parts[j]) { %>
+                  <rect x="<%= currentX - 2 %>" y="<%= i * lineHeight + 2 %>" width="<%= parts[j].length * 8 + 4 %>" height="16" fill="#f6f8fa" stroke="#d1d5da" stroke-width="0.5" rx="3"/>
+                  <text x="<%= currentX %>" y="<%= i * lineHeight + 14 %>" font-size="13" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" fill="#c9222d">
+                    <%= parts[j] %>
+                  </text>
+                  <% currentX += parts[j].length * 8 + 4 %>
+                <% } %>
+              <% } %>
+            <% } %>
+          <% } %>
+        </g>
+        <% yOffset += lines.length * lineHeight + 15 %>
+
+      <% } else if (section.type === 'code') { %>
+        <!-- Code block -->
+        <%
+          const codeLines = section.content.split('\n')
+          const maxLineLength = Math.max(...codeLines.map(l => l.length))
+          const codeWidth = Math.min(Math.max(maxLineLength * 7.5 + 30, 300), width)
+          const codeHeight = codeLines.length * codeLineHeight + 20
+        %>
+        <g class="markdown-code" transform="translate(0, <%= yOffset %>)">
+          <!-- Code block background -->
+          <rect x="0" y="0" width="<%= codeWidth %>" height="<%= codeHeight %>" fill="url(#code-bg)" stroke="#d1d5da" stroke-width="1" rx="6"/>
+
+          <!-- Language label -->
+          <% if (section.lang) { %>
+            <rect x="10" y="5" width="<%= section.lang.length * 7 + 10 %>" height="18" fill="#0969da" rx="3" opacity="0.1"/>
+            <text x="15" y="18" font-size="11" fill="#0969da" font-weight="600" font-family="'SFMono-Regular', Consolas, monospace">
+              <%= section.lang %>
+            </text>
+          <% } %>
+
+          <!-- Code lines -->
+          <g class="code-lines" transform="translate(15, <%= section.lang ? 30 : 15 %>)">
+            <% for (let i = 0; i < codeLines.length; i++) { %>
+              <text x="0" y="<%= i * codeLineHeight + 12 %>" font-size="12" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" fill="#24292e">
+                <%= codeLines[i] %>
+              </text>
+            <% } %>
+          </g>
+        </g>
+        <% yOffset += codeHeight + 20 %>
+
+      <% } else if (section.type === 'list') { %>
+        <!-- List -->
+        <g class="markdown-list" transform="translate(0, <%= yOffset %>)">
+          <% for (let i = 0; i < section.items.length; i++) { %>
+            <% const lines = wrapText(section.items[i], width - 40, 14) %>
+            <g class="list-item" transform="translate(0, <%= i > 0 ? i * (lineHeight + 8) : 0 %>)">
+              <!-- Bullet point -->
+              <circle cx="5" cy="9" r="3" fill="#24292e"/>
+
+              <!-- List item text -->
+              <% for (let j = 0; j < lines.length; j++) { %>
+                <text x="20" y="<%= j * lineHeight + 14 %>" font-size="14" fill="#24292e">
+                  <%= lines[j] %>
+                </text>
+              <% } %>
+            </g>
+          <% } %>
+        </g>
+        <% yOffset += section.items.length * (lineHeight + 8) + 15 %>
+
+      <% } else if (section.type === 'hr') { %>
+        <!-- Horizontal rule -->
+        <g class="markdown-hr" transform="translate(0, <%= yOffset %>)">
+          <line x1="0" y1="0" x2="<%= width %>" y2="0" stroke="#d1d5da" stroke-width="1"/>
+        </g>
+        <% yOffset += 25 %>
+      <% } %>
+    <% } %>
+
+    <% if (base.metadata) { %>
+      <!-- Footer Section -->
+      <g class="footer-section" transform="translate(0, <%= yOffset + 20 %>)">
+        <line x1="0" y1="0" x2="<%= width %>" y2="0" stroke="#e1e4e8" opacity="0.3" stroke-width="1"/>
+        <text x="<%= width / 2 %>" y="20" text-anchor="middle" fill="#586069" font-size="11" opacity="0.7">
+          Generated <%= meta.generated %> with lowlighter/metrics@<%= meta.version %>
+        </text>
+      </g>
+      <% yOffset += 50 %>
+    <% } %>
+
+    <!-- End marker for height calculation -->
+    <rect id="metrics-end" x="0" y="<%= yOffset %>" width="1" height="1" opacity="0"/>
+  </g>
+
+</svg>

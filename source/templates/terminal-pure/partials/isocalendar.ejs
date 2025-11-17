@@ -1,0 +1,26 @@
+<%
+  // Terminal-style isocalendar display
+  let localY = 0
+  const promptColor = "#7EDA29"
+  const pathColor = "#4878c0"
+  const textColor = "#DDDDDD"
+%>
+
+<% if (plugins.isocalendar) { %>
+  <% if (!plugins.isocalendar.error) { %>
+    <!-- Command: cat calendar/contributions.txt -->
+    <g class="stdin" transform="translate(0, <%= localY %>)">
+      <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace">
+        <tspan class="ps1-path" fill="<%= promptColor %>"><%= user.login.toLowerCase() %>@metrics</tspan><tspan fill="<%= textColor %>">:</tspan><tspan class="ps1-location" fill="<%= pathColor %>">~</tspan><tspan class="ps1-symbol" fill="<%= textColor %>"><%= computed.token.scopes.includes("repo") ? "#" : "$" %></tspan><tspan fill="<%= textColor %>"> cat calendar/contributions.txt</tspan>
+      </text>
+    </g>
+    <% localY += lineHeight %>
+
+    <!-- Output: calendar info (simplified ASCII representation) -->
+    <g class="stdout" transform="translate(0, <%= localY %>)">
+      <text x="0" y="0" font-size="14" font-family="'Courier New', 'Courier Prime', monospace" fill="<%= textColor %>">
+        <tspan>[Isometric contribution calendar - see full visualization]</tspan>
+      </text>
+    </g>
+  <% } %>
+<% } %>
