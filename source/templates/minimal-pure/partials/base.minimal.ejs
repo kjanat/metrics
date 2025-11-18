@@ -1,0 +1,86 @@
+<%
+  // Minimal header - essential stats only
+  const avatarSize = 20
+  const spacing = 6
+  let localY = 0
+%>
+
+<% if (base.header) { %>
+  <% if (account === "user") { %>
+    <!-- Compact Avatar + Name -->
+    <g class="header">
+      <rect x="0" y="0" width="<%= width %>" height="32" fill="#f6f8fa" rx="4"/>
+      <image x="<%= padding %>" y="<%= padding %>" width="<%= avatarSize %>" height="<%= avatarSize %>" href="<%= computed.avatar %>" clip-path="inset(0% round 50%)"/>
+      <text x="<%= padding + avatarSize + 8 %>" y="<%= padding + 15 %>" class="name" font-size="14" font-weight="600">
+        <%= user.name || user.login %>
+      </text>
+    </g>
+    <% localY = 40 %>
+
+    <!-- Key Stats Grid (3 columns, compact) -->
+    <g class="stats-grid" transform="translate(0, <%= localY %>)">
+      <%
+        const colWidth = width / 3
+        const stats = [
+          { emoji: '👥', value: user.followers.totalCount, label: 'Followers' },
+          { emoji: '📦', value: user.repositories.totalCount, label: 'Repos' },
+          { emoji: '✨', value: user.contributionsCollection.totalCommitContributions, label: 'Commits' }
+        ]
+      %>
+
+      <% stats.forEach((stat, i) => { %>
+        <g class="stat-col" transform="translate(<%= i * colWidth %>, 0)">
+          <!-- Stat background -->
+          <rect x="<%= i === 0 ? 0 : 2 %>" y="0" width="<%= colWidth - (i === stats.length - 1 ? 0 : 4) %>" height="54" fill="#ffffff" stroke="#e1e4e8" stroke-width="1" rx="4"/>
+
+          <!-- Emoji icon -->
+          <text x="<%= colWidth / 2 %>" y="18" text-anchor="middle" font-size="16">
+            <%= stat.emoji %>
+          </text>
+
+          <!-- Value -->
+          <text x="<%= colWidth / 2 %>" y="36" text-anchor="middle" class="stat-value">
+            <%= stat.value.toLocaleString() %>
+          </text>
+
+          <!-- Label -->
+          <text x="<%= colWidth / 2 %>" y="48" text-anchor="middle" class="stat-label">
+            <%= stat.label %>
+          </text>
+        </g>
+      <% }) %>
+    </g>
+
+  <% } else if (account === "organization") { %>
+    <!-- Organization Compact Header -->
+    <g class="header">
+      <rect x="0" y="0" width="<%= width %>" height="32" fill="#f6f8fa" rx="4"/>
+      <image x="<%= padding %>" y="<%= padding %>" width="<%= avatarSize %>" height="<%= avatarSize %>" href="<%= computed.avatar %>" clip-path="inset(0% round 15%)"/>
+      <text x="<%= padding + avatarSize + 8 %>" y="<%= padding + 15 %>" class="name" font-size="14" font-weight="600">
+        <%= user.name || user.login %>
+      </text>
+    </g>
+    <% localY = 40 %>
+
+    <!-- Organization Stats (2 columns) -->
+    <g class="stats-grid" transform="translate(0, <%= localY %>)">
+      <%
+        const colWidth = width / 2
+        const orgStats = [
+          { emoji: '👥', value: user.membersWithRole.totalCount, label: 'Members' },
+          { emoji: '📦', value: user.repositories.totalCount, label: 'Repos' }
+        ]
+      %>
+
+      <% orgStats.forEach((stat, i) => { %>
+        <g class="stat-col" transform="translate(<%= i * colWidth %>, 0)">
+          <rect x="<%= i === 0 ? 0 : 2 %>" y="0" width="<%= colWidth - (i === 1 ? 0 : 4) %>" height="54" fill="#ffffff" stroke="#e1e4e8" stroke-width="1" rx="4"/>
+          <text x="<%= colWidth / 2 %>" y="18" text-anchor="middle" font-size="16"><%= stat.emoji %></text>
+          <text x="<%= colWidth / 2 %>" y="36" text-anchor="middle" class="stat-value"><%= stat.value.toLocaleString() %></text>
+          <text x="<%= colWidth / 2 %>" y="48" text-anchor="middle" class="stat-label"><%= stat.label %></text>
+        </g>
+      <% }) %>
+    </g>
+
+  <% } %>
+<% } %>

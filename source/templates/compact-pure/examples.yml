@@ -1,0 +1,53 @@
+- name: Compact profile badge (standard width)
+  with:
+    filename: metrics.compact-pure.svg
+    template: compact-pure
+    base: header
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Compact with languages
+  with:
+    filename: metrics.compact-pure.languages.svg
+    template: compact-pure
+    base: header
+    plugin_languages: yes
+    plugin_languages_limit: 6
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Compact wide display
+  with:
+    filename: metrics.compact-pure.wide.svg
+    template: compact-pure
+    config_display: large
+    base: header
+    plugin_languages: yes
+    plugin_languages_limit: 8
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Organization compact badge
+  with:
+    filename: metrics.compact-pure.organization.svg
+    template: compact-pure
+    user: github
+    base: header
+    token: ${{ secrets.METRICS_TOKEN_WITH_SCOPES }}
+
+- name: Compact README badge (minimal)
+  with:
+    filename: metrics.compact-pure.minimal.svg
+    template: compact-pure
+    base: header
+    base_indepth: no
+    config_display: compact
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Compact with detailed languages
+  with:
+    filename: metrics.compact-pure.detailed.svg
+    template: compact-pure
+    base: header
+    plugin_languages: yes
+    plugin_languages_indepth: yes
+    plugin_languages_details: lines, percentage
+    plugin_languages_limit: 6
+    token: ${{ secrets.METRICS_TOKEN }}

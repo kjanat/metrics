@@ -1,0 +1,279 @@
+/* Compact Pure SVG Template Styles */
+/* Optimized for space efficiency - Maximum info, minimum height */
+
+/* Base SVG styling - Compact mode */
+svg.compact-pure {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  background: #ffffff;
+}
+
+svg.compact-pure.wide {
+  width: 800px;
+}
+
+svg.compact-pure.standard {
+  width: 480px;
+}
+
+/* Compact text defaults */
+text {
+  font-family: inherit;
+  font-size: 10px;
+  fill: #24292e;
+  letter-spacing: 0.01em;
+}
+
+/* Compact headings */
+text.heading {
+  font-size: 14px;
+  font-weight: 600;
+  fill: #24292e;
+}
+
+text.subheading {
+  font-size: 11px;
+  font-weight: 500;
+  fill: #586069;
+}
+
+text.tiny {
+  font-size: 9px;
+  fill: #6a737d;
+}
+
+/* Compact links */
+text.link {
+  fill: #0969da;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+/* Compact stats and numbers */
+text.stat-value {
+  font-size: 14px;
+  font-weight: 600;
+  fill: #24292e;
+}
+
+text.stat-label {
+  font-size: 9px;
+  fill: #6a737d;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Compact badge styling */
+rect.badge {
+  fill: #f6f8fa;
+  stroke: #d1d5da;
+  stroke-width: 0.5;
+}
+
+rect.badge-primary {
+  fill: #dbeafe;
+  stroke: #3b82f6;
+  stroke-width: 0.5;
+}
+
+rect.badge-success {
+  fill: #dcfce7;
+  stroke: #22c55e;
+  stroke-width: 0.5;
+}
+
+rect.badge-warning {
+  fill: #fef3c7;
+  stroke: #f59e0b;
+  stroke-width: 0.5;
+}
+
+/* Status indicators (compact) */
+.success text {
+  fill: #22c55e;
+}
+
+.warning text {
+  fill: #f59e0b;
+}
+
+.error text {
+  fill: #ef4444;
+}
+
+.info text {
+  fill: #3b82f6;
+}
+
+/* Compact shapes and backgrounds */
+rect.card {
+  fill: #ffffff;
+  stroke: #e1e4e8;
+  stroke-width: 1;
+}
+
+rect.card-background {
+  fill: #f9fafb;
+}
+
+/* Inline separator */
+rect.separator {
+  fill: #e1e4e8;
+  opacity: 0.3;
+}
+
+/* Minimal animations for performance */
+svg:not(.no-animations) .fade-in {
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Language colors - compact mode */
+.lang-JavaScript { fill: #f1e05a; }
+.lang-TypeScript { fill: #2b7489; }
+.lang-Python { fill: #3572A5; }
+.lang-Java { fill: #b07219; }
+.lang-Go { fill: #00ADD8; }
+.lang-Rust { fill: #dea584; }
+.lang-Ruby { fill: #701516; }
+.lang-PHP { fill: #4F5D95; }
+.lang-C { fill: #555555; }
+.lang-CPP { fill: #f34b7d; }
+.lang-CSharp { fill: #178600; }
+.lang-Swift { fill: #ffac45; }
+.lang-Kotlin { fill: #F18E33; }
+.lang-Shell { fill: #89e051; }
+.lang-HTML { fill: #e34c26; }
+.lang-CSS { fill: #563d7c; }
+
+/* Compact icons */
+.icon {
+  font-size: 12px;
+}
+
+.icon-small {
+  font-size: 10px;
+}
+
+/* Avatar styles - compact */
+image.avatar {
+  clip-path: inset(0% round 50%);
+}
+
+image.avatar-small {
+  clip-path: inset(0% round 40%);
+}
+
+image.avatar-org {
+  clip-path: inset(0% round 12%);
+}
+
+/* Horizontal layout helpers */
+.h-layout {
+  display: inline;
+}
+
+/* Compact spacing utilities */
+.spacing-tight {
+  margin: 2px;
+}
+
+.spacing-compact {
+  margin: 5px;
+}
+
+/* Dark mode support (compact) */
+svg.compact-pure.dark {
+  background: #0d1117;
+}
+
+svg.compact-pure.dark text {
+  fill: #c9d1d9;
+}
+
+svg.compact-pure.dark text.heading {
+  fill: #ffffff;
+}
+
+svg.compact-pure.dark text.stat-label {
+  fill: #8b949e;
+}
+
+svg.compact-pure.dark rect.card {
+  fill: #161b22;
+  stroke: #30363d;
+}
+
+svg.compact-pure.dark rect.card-background {
+  fill: #0d1117;
+}
+
+svg.compact-pure.dark rect.badge {
+  fill: #161b22;
+  stroke: #30363d;
+}
+
+/* Wide mode adjustments */
+svg.compact-pure.wide text {
+  font-size: 11px;
+}
+
+svg.compact-pure.wide text.heading {
+  font-size: 15px;
+}
+
+svg.compact-pure.wide text.stat-value {
+  font-size: 16px;
+}
+
+/* Optimize for small displays */
+@media (max-width: 480px) {
+  text {
+    font-size: 9px;
+  }
+
+  text.heading {
+    font-size: 12px;
+  }
+}
+
+/* Performance optimizations */
+* {
+  shape-rendering: geometricPrecision;
+  text-rendering: optimizeLegibility;
+}
+
+/* Ensure compact display */
+.compact-container {
+  max-height: 300px;
+}
+
+/* Badge text styling */
+text.badge-text {
+  font-size: 10px;
+  font-weight: 500;
+  fill: #24292e;
+}
+
+text.badge-value {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Horizontal stats bar */
+.stats-bar rect {
+  rx: 3;
+}
+
+/* Language bar (horizontal strip) */
+.language-strip rect {
+  height: 6px;
+}
+
+/* Minimal footer */
+.footer-minimal {
+  opacity: 0.6;
+}

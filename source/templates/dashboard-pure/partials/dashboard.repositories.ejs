@@ -1,0 +1,75 @@
+<%
+  // Dashboard repositories panel - Pure SVG
+  if (!base.repositories) return
+  let localY = 0
+  const maxRepos = 5
+  const repos = data.user.repositories.nodes.slice(0, maxRepos)
+  const repoHeight = 48
+  const panelHeight = 60 + repos.length * repoHeight
+%>
+
+<% if (repos.length) { %>
+  <!-- Repositories Panel -->
+  <rect x="0" y="0" width="<%= width %>" height="<%= panelHeight %>" fill="#f6f8fa" rx="8"/>
+  <rect x="0" y="0" width="<%= width %>" height="<%= panelHeight %>" fill="none" stroke="#d1d5da" stroke-width="1" rx="8"/>
+
+  <!-- Section Title -->
+  <text x="<%= padding %>" y="<%= padding + 14 %>" font-size="14" font-weight="600" fill="#24292e">
+    📚 Top Repositories
+  </text>
+
+  <% localY = padding + 35 %>
+
+  <!-- Repository List -->
+  <g class="repo-list" transform="translate(<%= padding %>, <%= localY %>)">
+    <% for (const [i, repo] of Object.entries(repos)) { %>
+      <g class="repo-item" transform="translate(0, <%= i * repoHeight %>)">
+        <!-- Repo name -->
+        <text x="0" y="14" font-size="13" font-weight="600" fill="#0969da">
+          <%= repo.name %>
+        </text>
+
+        <!-- Description -->
+        <% if (repo.description) { %>
+          <text x="0" y="30" font-size="10" fill="#586069">
+            <%= (repo.description || '').substring(0, 50) %><%= repo.description && repo.description.length > 50 ? '...' : '' %>
+          </text>
+        <% } %>
+
+        <!-- Stats -->
+        <g class="repo-stats" transform="translate(0, 38)">
+          <!-- Language -->
+          <% if (repo.primaryLanguage) { %>
+            <circle cx="5" cy="4" r="4" fill="<%= repo.primaryLanguage.color || '#ccc' %>"/>
+            <text x="14" y="8" font-size="10" fill="#586069">
+              <%= repo.primaryLanguage.name %>
+            </text>
+          <% } %>
+
+          <!-- Stars -->
+          <text x="<%= repo.primaryLanguage ? 100 : 0 %>" y="8" font-size="10" fill="#586069">
+            ⭐ <%= repo.stargazers.totalCount %>
+          </text>
+
+          <!-- Forks -->
+          <text x="<%= repo.primaryLanguage ? 150 : 50 %>" y="8" font-size="10" fill="#586069">
+            🔀 <%= repo.forkCount %>
+          </text>
+        </g>
+
+        <!-- Separator -->
+        <% if (i < repos.length - 1) { %>
+          <line x1="0" y1="<%= repoHeight - 2 %>" x2="<%= width - 2 * padding %>" y2="<%= repoHeight - 2 %>" stroke="#e1e4e8" stroke-width="1"/>
+        <% } %>
+      </g>
+    <% } %>
+  </g>
+
+<% } else { %>
+  <!-- No repositories -->
+  <rect x="0" y="0" width="<%= width %>" height="80" fill="#f6f8fa" rx="8"/>
+  <rect x="0" y="0" width="<%= width %>" height="80" fill="none" stroke="#d1d5da" stroke-width="1" rx="8"/>
+  <text x="<%= width / 2 %>" y="45" text-anchor="middle" font-size="12" fill="#959da5">
+    No repositories available
+  </text>
+<% } %>

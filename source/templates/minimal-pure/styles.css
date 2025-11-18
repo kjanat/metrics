@@ -1,0 +1,53 @@
+/* Minimal Pure SVG Template - Ultra-lightweight styles */
+
+/* Base SVG */
+svg.minimal-pure {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #ffffff;
+}
+
+/* Text defaults */
+text {
+  font-family: inherit;
+  font-size: 11px;
+  fill: #24292e;
+}
+
+/* Compact headings */
+text.name {
+  font-size: 14px;
+  font-weight: 600;
+  fill: #24292e;
+}
+
+/* Minimal stat styling */
+text.stat-value {
+  font-size: 13px;
+  font-weight: 600;
+  fill: #0969da;
+}
+
+text.stat-label {
+  font-size: 9px;
+  fill: #586069;
+  opacity: 0.8;
+}
+
+/* Language bar colors - minimal set */
+.lang-JavaScript { fill: #f1e05a; }
+.lang-TypeScript { fill: #2b7489; }
+.lang-Python { fill: #3572A5; }
+.lang-Java { fill: #b07219; }
+.lang-Go { fill: #00ADD8; }
+.lang-Rust { fill: #dea584; }
+.lang-Other { fill: #8b949e; }
+
+/* Minimal animations */
+svg:not(.no-animations) .animated {
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

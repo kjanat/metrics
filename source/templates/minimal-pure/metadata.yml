@@ -1,0 +1,51 @@
+name: "⚡ Minimal Pure"
+extends: null
+index: 3
+supports:
+  - user
+  - organization
+formats:
+  - svg
+  - png
+  - jpeg
+description: |
+  Ultra-lightweight, essential-only metrics template optimized for maximum performance.
+  Perfect for badges, embeds, and low-bandwidth environments.
+
+  Key features:
+  - Ultra-compact: 300px width, ~150-200px height
+  - Lightning fast: < 50ms render time target
+  - Tiny file size: < 10KB target
+  - Pure SVG rendering (Satori-compatible)
+  - Essential stats only
+  - Perfect for GitHub profile badges
+
+readme:
+  header: |
+    The minimal template strips away all non-essential features to deliver
+    the fastest, smallest metrics badge possible. Ideal for:
+
+    - GitHub profile badges
+    - README quick stats
+    - Mobile-first displays
+    - Low-bandwidth environments
+    - Automated high-frequency updates
+
+    Performance targets:
+    - Render time: < 50ms (typically 20-30ms)
+    - File size: < 10KB
+    - Width: 300px (ultra-compact)
+    - Height: 150-200px (minimal vertical space)
+
+example:
+  - name: Minimal badge
+    with:
+      template: minimal-pure
+      base: minimal
+
+  - name: Minimal with language bar
+    with:
+      template: minimal-pure
+      base: minimal
+      plugin_languages: yes
+      plugin_languages_limit: 3

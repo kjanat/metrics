@@ -1,0 +1,54 @@
+<%
+  // Ultra-compact language bar
+  if (!plugins?.languages) return
+  const languages = plugins.languages.favorites || []
+  const topLangs = languages.slice(0, 3) // Only top 3
+%>
+
+<% if (topLangs.length > 0) { %>
+  <g class="languages-minimal" transform="translate(0, 0)">
+    <!-- Single horizontal bar showing top languages -->
+    <rect x="0" y="0" width="<%= width %>" height="36" fill="#ffffff" stroke="#e1e4e8" stroke-width="1" rx="4"/>
+
+    <!-- Language percentage bar -->
+    <g class="lang-bar" transform="translate(<%= padding %>, 8)">
+      <%
+        let xPos = 0
+        const barWidth = width - (padding * 2)
+        const barHeight = 6
+      %>
+
+      <% topLangs.forEach((lang, i) => { %>
+        <%
+          const langWidth = (lang.value / 100) * barWidth
+          const langClass = `lang-${lang.name.replace(/[^a-zA-Z0-9]/g, '')}`
+        %>
+        <rect
+          x="<%= xPos %>"
+          y="0"
+          width="<%= langWidth %>"
+          height="<%= barHeight %>"
+          class="<%= langClass %>"
+          rx="<%= i === 0 ? 3 : 0 %>"
+        />
+        <% xPos += langWidth %>
+      <% }) %>
+    </g>
+
+    <!-- Language labels (compact) -->
+    <g class="lang-labels" transform="translate(<%= padding %>, 22)">
+      <% topLangs.forEach((lang, i) => { %>
+        <%
+          const labelX = i * (width / 3)
+          const langClass = `lang-${lang.name.replace(/[^a-zA-Z0-9]/g, '')}`
+        %>
+        <g class="lang-item" transform="translate(<%= labelX %>, 0)">
+          <circle cx="0" cy="-3" r="3" class="<%= langClass %>"/>
+          <text x="8" y="0" font-size="9" fill="#24292e">
+            <%= lang.name %> <%= lang.value.toFixed(0) %>%
+          </text>
+        </g>
+      <% }) %>
+    </g>
+  </g>
+<% } %>

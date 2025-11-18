@@ -1,0 +1,102 @@
+<%
+  // Dashboard achievements panel - Pure SVG
+  if (!plugins.achievements) return
+  let localY = 0
+  const maxAchievements = 6
+  const achievements = plugins.achievements.list.slice(0, maxAchievements)
+  const achievementHeight = 68
+  const panelHeight = 60 + achievements.length * achievementHeight
+%>
+
+<% if (achievements.length && !plugins.achievements.error) { %>
+  <!-- Achievements Panel -->
+  <rect x="0" y="0" width="<%= width %>" height="<%= panelHeight %>" fill="url(#gradient-achievements)" rx="8"/>
+  <rect x="0" y="0" width="<%= width %>" height="<%= panelHeight %>" fill="none" stroke="#d1d5da" stroke-width="1" rx="8"/>
+
+  <!-- Section Title -->
+  <text x="<%= padding %>" y="<%= padding + 14 %>" font-size="14" font-weight="600" fill="#24292e">
+    🏆 Achievements
+  </text>
+
+  <% localY = padding + 35 %>
+
+  <!-- Achievement List -->
+  <g class="achievement-list" transform="translate(<%= padding %>, <%= localY %>)">
+    <% for (const [i, {prefix, title, text, rank, value, progress = 0}] of Object.entries(achievements)) { %>
+      <%
+        const rankColors = {
+          'S': '#fbbf24',
+          'A': '#ec4899',
+          'B': '#8b5cf6',
+          'C': '#3b82f6',
+          'X': '#6b7280'
+        }
+        const rankColor = rankColors[rank] || '#6b7280'
+      %>
+      <g class="achievement-item" transform="translate(0, <%= i * achievementHeight %>)">
+        <!-- Achievement Badge Circle -->
+        <circle cx="25" cy="25" r="22" fill="<%= rankColor %>" opacity="0.15"/>
+        <circle cx="25" cy="25" r="22" fill="none" stroke="<%= rankColor %>" stroke-width="2"/>
+
+        <!-- Rank Badge -->
+        <text x="25" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="<%= rankColor %>">
+          <%= rank %>
+        </text>
+
+        <!-- Achievement Info -->
+        <g class="achievement-info" transform="translate(55, 0)">
+          <!-- Title -->
+          <text x="0" y="18" font-size="13" font-weight="600" fill="#24292e">
+            <% if (prefix.length) { %>
+              <tspan fill="<%= rankColor %>"><%= prefix %></tspan>
+              <%= title.toLowerCase() %>
+            <% } else { %>
+              <%= title %>
+            <% } %>
+          </text>
+
+          <!-- Description -->
+          <text x="0" y="34" font-size="10" fill="#586069">
+            <%= text.length > 45 ? text.substring(0, 45) + '...' : text %>
+          </text>
+
+          <!-- Progress Bar (if applicable) -->
+          <% if (progress > 0 && rank !== 'S') { %>
+            <g class="progress-bar" transform="translate(0, 42)">
+              <rect x="0" y="0" width="<%= width - 2 * padding - 60 %>" height="6" fill="#e1e4e8" rx="3"/>
+              <rect x="0" y="0" width="<%= (width - 2 * padding - 60) * progress %>" height="6" fill="<%= rankColor %>" rx="3"/>
+              <text x="<%= width - 2 * padding - 55 %>" y="5" font-size="9" fill="#586069" text-anchor="end">
+                <%= Math.round(progress * 100) %>%
+              </text>
+            </g>
+          <% } else if (typeof value === "number") { %>
+            <!-- Value Display -->
+            <text x="<%= width - 2 * padding - 60 %>" y="48" font-size="12" font-weight="600" fill="<%= rankColor %>" text-anchor="end">
+              <%= Math.floor(value) %>
+            </text>
+          <% } %>
+        </g>
+
+        <!-- Separator -->
+        <% if (i < achievements.length - 1) { %>
+          <line x1="0" y1="<%= achievementHeight - 3 %>" x2="<%= width - 2 * padding %>" y2="<%= achievementHeight - 3 %>" stroke="#e1e4e8" stroke-width="1" opacity="0.5"/>
+        <% } %>
+      </g>
+    <% } %>
+  </g>
+
+<% } else if (plugins.achievements.error) { %>
+  <!-- Error state -->
+  <rect x="0" y="0" width="<%= width %>" height="80" fill="url(#gradient-achievements)" rx="8"/>
+  <rect x="0" y="0" width="<%= width %>" height="80" fill="none" stroke="#d1d5da" stroke-width="1" rx="8"/>
+  <text x="<%= width / 2 %>" y="45" text-anchor="middle" font-size="12" fill="#dc2626">
+    <%= plugins.achievements.error.message %>
+  </text>
+<% } else { %>
+  <!-- No achievements -->
+  <rect x="0" y="0" width="<%= width %>" height="80" fill="url(#gradient-achievements)" rx="8"/>
+  <rect x="0" y="0" width="<%= width %>" height="80" fill="none" stroke="#d1d5da" stroke-width="1" rx="8"/>
+  <text x="<%= width / 2 %>" y="45" text-anchor="middle" font-size="12" fill="#959da5">
+    No achievements unlocked yet
+  </text>
+<% } %>

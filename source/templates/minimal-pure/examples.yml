@@ -1,0 +1,38 @@
+- name: Ultra-minimal badge
+  description: Smallest possible metrics badge with just essential stats
+  with:
+    filename: metrics.minimal.svg
+    template: minimal-pure
+    base: minimal
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Minimal with languages
+  description: Compact badge with top 3 languages
+  with:
+    filename: metrics.minimal.languages.svg
+    template: minimal-pure
+    base: minimal
+    plugin_languages: yes
+    plugin_languages_limit: 3
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Organization minimal badge
+  description: Minimal organization metrics
+  with:
+    filename: metrics.minimal.org.svg
+    template: minimal-pure
+    user: github
+    base: minimal
+    token: ${{ secrets.METRICS_TOKEN_WITH_SCOPES }}
+
+- name: No metadata footer
+  description: Even smaller - remove footer for absolute minimum
+  with:
+    filename: metrics.minimal.tiny.svg
+    template: minimal-pure
+    base: ""
+    base_header: yes
+    config_display: regular
+    extras_css: |
+      .footer-section { display: none; }
+    token: ${{ secrets.METRICS_TOKEN }}

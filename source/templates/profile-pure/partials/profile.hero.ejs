@@ -1,0 +1,171 @@
+<%
+  // Hero section - Large avatar, name, tagline, bio, and status
+  const avatarSize = 96
+  const spacing = 20
+  let localY = 0
+
+  // Get user data
+  const displayName = user.name || user.login
+  const userTagline = tagline || (user.bio ? user.bio.split('.')[0] : '')
+  const userBio = bio || user.bio || ''
+  const userStatus = status || ''
+
+  // Calculate bio line wrapping (approx 50 chars per line at 14px)
+  const bioLines = []
+  if (userBio) {
+    const words = userBio.split(' ')
+    let currentLine = ''
+    for (const word of words) {
+      if ((currentLine + ' ' + word).length > 50 && currentLine.length > 0) {
+        bioLines.push(currentLine.trim())
+        currentLine = word
+      } else {
+        currentLine = currentLine ? currentLine + ' ' + word : word
+      }
+    }
+    if (currentLine) bioLines.push(currentLine.trim())
+  }
+
+  const heroHeight = 220
+%>
+
+<!-- Hero Background with Gradient -->
+<rect x="0" y="0" width="<%= width %>" height="<%= heroHeight %>" fill="url(#<%= gradientId %>)" rx="12"/>
+<rect x="0" y="0" width="<%= width %>" height="<%= heroHeight %>" fill="none" stroke="#e5e7eb" stroke-width="1" rx="12"/>
+
+<!-- Decorative Pattern (subtle dots) -->
+<g class="decoration-dots" opacity="0.3">
+  <% for (let i = 0; i < 6; i++) { %>
+    <% for (let j = 0; j < 3; j++) { %>
+      <circle cx="<%= width - 40 - i * 15 %>" cy="<%= 20 + j * 15 %>" r="2"/>
+    <% } %>
+  <% } %>
+</g>
+
+<!-- Avatar (large, centered focus) -->
+<g class="hero-avatar" transform="translate(<%= padding %>, <%= padding %>)">
+  <defs>
+    <clipPath id="avatar-clip">
+      <circle cx="<%= avatarSize / 2 %>" cy="<%= avatarSize / 2 %>" r="<%= avatarSize / 2 %>"/>
+    </clipPath>
+  </defs>
+  <!-- Avatar border/ring -->
+  <circle cx="<%= avatarSize / 2 %>" cy="<%= avatarSize / 2 %>" r="<%= avatarSize / 2 + 3 %>" fill="none" stroke="#ffffff" stroke-width="4"/>
+  <circle cx="<%= avatarSize / 2 %>" cy="<%= avatarSize / 2 %>" r="<%= avatarSize / 2 + 3 %>" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+  <!-- Avatar image -->
+  <image
+    x="0"
+    y="0"
+    width="<%= avatarSize %>"
+    height="<%= avatarSize %>"
+    href="<%= computed.avatar %>"
+    clip-path="url(#avatar-clip)"
+  />
+</g>
+
+<% localY = padding %>
+
+<!-- Name and Title Area (to the right of avatar) -->
+<g class="hero-info" transform="translate(<%= padding + avatarSize + 20 %>, <%= localY + 15 %>)">
+  <!-- Name -->
+  <text x="0" y="24" class="hero-name">
+    <%= displayName %>
+  </text>
+
+  <!-- Tagline -->
+  <% if (userTagline) { %>
+    <text x="0" y="52" class="hero-tagline">
+      <%= userTagline %>
+    </text>
+  <% } %>
+
+  <!-- Quick stats below name -->
+  <g class="hero-quick-stats" transform="translate(0, <%= userTagline ? 70 : 50 %>)">
+    <!-- Followers -->
+    <g class="stat-item">
+      <text x="0" y="0" font-size="11" fill="#9ca3af" font-weight="500">
+        FOLLOWERS
+      </text>
+      <text x="0" y="18" font-size="18" font-weight="700" fill="#1f2937">
+        <%= user.followers.totalCount.toLocaleString() %>
+      </text>
+    </g>
+
+    <!-- Following -->
+    <g class="stat-item" transform="translate(100, 0)">
+      <text x="0" y="0" font-size="11" fill="#9ca3af" font-weight="500">
+        FOLLOWING
+      </text>
+      <text x="0" y="18" font-size="18" font-weight="700" fill="#1f2937">
+        <%= user.following.totalCount.toLocaleString() %>
+      </text>
+    </g>
+
+    <!-- Repositories -->
+    <g class="stat-item" transform="translate(200, 0)">
+      <text x="0" y="0" font-size="11" fill="#9ca3af" font-weight="500">
+        REPOS
+      </text>
+      <text x="0" y="18" font-size="18" font-weight="700" fill="#1f2937">
+        <%= user.repositories.totalCount %>
+      </text>
+    </g>
+  </g>
+</g>
+
+<!-- Bio Section (below avatar and name) -->
+<% if (bioLines.length > 0) { %>
+  <g class="hero-bio" transform="translate(<%= padding %>, <%= padding + avatarSize + 25 %>)">
+    <% bioLines.slice(0, 3).forEach((line, i) => { %>
+      <text x="0" y="<%= i * 20 %>" class="hero-bio">
+        <%= line %>
+      </text>
+    <% }) %>
+  </g>
+  <% localY = padding + avatarSize + 25 + (bioLines.length * 20) + 15 %>
+<% } else { %>
+  <% localY = padding + avatarSize + 15 %>
+<% } %>
+
+<!-- Status Badge and Meta Info -->
+<g class="hero-footer" transform="translate(<%= padding %>, <%= localY %>)">
+  <% if (userStatus) { %>
+    <!-- Status Badge -->
+    <g class="status-badge">
+      <%
+        let statusClass = 'status-available'
+        let statusIcon = '✓'
+        if (userStatus.toLowerCase().includes('hire')) {
+          statusClass = 'status-available'
+          statusIcon = '💼'
+        } else if (userStatus.toLowerCase().includes('collaborate')) {
+          statusClass = 'status-collaborate'
+          statusIcon = '🤝'
+        } else if (userStatus.toLowerCase().includes('busy')) {
+          statusClass = 'status-busy'
+          statusIcon = '⏸'
+        }
+      %>
+      <rect x="0" y="0" width="<%= userStatus.length * 8 + 35 %>" height="26" rx="13" class="<%= statusClass %>"/>
+      <text x="12" y="17" class="status-badge">
+        <%= statusIcon %> <%= userStatus %>
+      </text>
+    </g>
+  <% } %>
+
+  <!-- Joined Date -->
+  <g class="hero-joined" transform="translate(<%= userStatus ? userStatus.length * 8 + 50 : 0 %>, 0)">
+    <text x="0" y="17" font-size="12" fill="#6b7280">
+      <%= computed.cakeday ? '🎂' : '📅' %> Joined <%= computed.registration %>
+    </text>
+  </g>
+
+  <!-- Location -->
+  <% if (user.location) { %>
+    <g class="hero-location" transform="translate(<%= userStatus ? userStatus.length * 8 + 200 : 150 %>, 0)">
+      <text x="0" y="17" font-size="12" fill="#6b7280">
+        📍 <%= user.location %>
+      </text>
+    </g>
+  <% } %>
+</g>

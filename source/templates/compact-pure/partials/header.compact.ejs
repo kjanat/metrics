@@ -1,0 +1,159 @@
+<%
+  // Compact header - Horizontal layout for maximum space efficiency
+  const avatarSize = 28
+  const spacing = 6
+  const badgeHeight = 18
+  const badgePadding = 8
+  let localY = 0
+%>
+
+<% if (base.header) { %>
+  <% if (account === "user") { %>
+    <!-- Compact User Header (Horizontal Layout) -->
+    <g class="compact-header">
+      <!-- Background gradient -->
+      <rect x="0" y="0" width="<%= width %>" height="50" fill="url(#gradient-compact)" rx="4"/>
+
+      <!-- Avatar (small) -->
+      <image
+        class="avatar avatar-small"
+        x="<%= spacing %>"
+        y="<%= spacing + 5 %>"
+        width="<%= avatarSize %>"
+        height="<%= avatarSize %>"
+        href="<%= computed.avatar %>"
+      />
+
+      <!-- Name and key stats (inline) -->
+      <g class="header-info" transform="translate(<%= spacing + avatarSize + 10 %>, <%= spacing + 8 %>)">
+        <!-- Name -->
+        <text x="0" y="12" font-size="13" font-weight="600" fill="#24292e">
+          <%= (user.name || user.login).substring(0, 25) %><%= (user.name || user.login).length > 25 ? '...' : '' %>
+        </text>
+
+        <!-- Inline stats badges -->
+        <g class="inline-stats" transform="translate(0, 18)">
+          <!-- Repos badge -->
+          <g class="badge-item">
+            <rect class="badge" x="0" y="0" width="50" height="<%= badgeHeight %>" rx="2"/>
+            <text x="6" y="12" font-size="9" fill="#586069">📦</text>
+            <text class="badge-value" x="18" y="12" font-size="10" font-weight="600" fill="#24292e">
+              <%= user.repositories.totalCount %>
+            </text>
+          </g>
+
+          <!-- Followers badge -->
+          <g class="badge-item" transform="translate(55, 0)">
+            <rect class="badge" x="0" y="0" width="50" height="<%= badgeHeight %>" rx="2"/>
+            <text x="6" y="12" font-size="9" fill="#586069">👥</text>
+            <text class="badge-value" x="18" y="12" font-size="10" font-weight="600" fill="#24292e">
+              <%= user.followers.totalCount %>
+            </text>
+          </g>
+
+          <!-- Contributions badge -->
+          <g class="badge-item" transform="translate(110, 0)">
+            <rect class="badge" x="0" y="0" width="50" height="<%= badgeHeight %>" rx="2"/>
+            <text x="6" y="12" font-size="9" fill="#586069">📊</text>
+            <text class="badge-value" x="18" y="12" font-size="10" font-weight="600" fill="#24292e">
+              <%= user.repositoriesContributedTo.totalCount %>
+            </text>
+          </g>
+        </g>
+      </g>
+
+      <!-- Right side - Additional info -->
+      <g class="header-right" transform="translate(<%= width - 120 %>, <%= spacing + 8 %>)">
+        <!-- Mini calendar visualization -->
+        <g class="mini-calendar">
+          <% const maxDots = 20 %>
+          <% const calendarSlice = computed.calendar.slice(-maxDots) %>
+          <% for (let i = 0; i < calendarSlice.length; i++) { %>
+            <% const {color} = calendarSlice[i] %>
+            <rect
+              x="<%= i * 5 %>"
+              y="0"
+              width="4"
+              height="8"
+              fill="<%= color %>"
+              rx="1"
+            />
+          <% } %>
+        </g>
+
+        <!-- Joined date -->
+        <text x="0" y="24" font-size="9" fill="#6a737d">
+          <% if (computed.cakeday) { %>🎂<% } else { %>🕐<% } %>
+          <%= computed.registration %>
+        </text>
+      </g>
+
+      <% if (user.isHireable) { %>
+        <!-- Hireable badge (compact) -->
+        <g class="hireable-badge" transform="translate(<%= width - 75 %>, <%= spacing + 30 %>)">
+          <rect x="0" y="0" width="70" height="14" fill="#22c55e" rx="2" opacity="0.15"/>
+          <text x="4" y="10" font-size="9" fill="#22c55e" font-weight="600">
+            💼 Available
+          </text>
+        </g>
+      <% } %>
+    </g>
+
+  <% } else if (account === "organization") { %>
+    <!-- Compact Organization Header -->
+    <g class="compact-header-org">
+      <!-- Background -->
+      <rect x="0" y="0" width="<%= width %>" height="50" fill="url(#gradient-compact)" rx="4"/>
+
+      <!-- Avatar (small, square) -->
+      <image
+        class="avatar avatar-org"
+        x="<%= spacing %>"
+        y="<%= spacing + 5 %>"
+        width="<%= avatarSize %>"
+        height="<%= avatarSize %>"
+        href="<%= computed.avatar %>"
+      />
+
+      <!-- Org name and stats -->
+      <g class="org-info" transform="translate(<%= spacing + avatarSize + 10 %>, <%= spacing + 8 %>)">
+        <!-- Name -->
+        <text x="0" y="12" font-size="13" font-weight="600" fill="#24292e">
+          <%= (user.name || user.login).substring(0, 30) %>
+        </text>
+
+        <!-- Inline stats -->
+        <g class="org-stats-inline" transform="translate(0, 20)">
+          <!-- Members badge -->
+          <g class="badge-item">
+            <rect class="badge" x="0" y="0" width="55" height="<%= badgeHeight %>" rx="2"/>
+            <text x="6" y="12" font-size="9" fill="#586069">👥</text>
+            <text class="badge-value" x="18" y="12" font-size="10" font-weight="600" fill="#24292e">
+              <%= user.membersWithRole.totalCount %> members
+            </text>
+          </g>
+
+          <% if (user.isVerified) { %>
+            <!-- Verified badge -->
+            <g class="badge-item" transform="translate(62, 0)">
+              <rect class="badge-success" x="0" y="0" width="55" height="<%= badgeHeight %>" rx="2"/>
+              <text x="6" y="12" font-size="9" fill="#22c55e" font-weight="600">
+                ✓ Verified
+              </text>
+            </g>
+          <% } %>
+        </g>
+      </g>
+
+      <!-- Location (if available) -->
+      <% if (user.location) { %>
+        <g class="location" transform="translate(<%= width - 100 %>, <%= spacing + 30 %>)">
+          <text x="0" y="10" font-size="9" fill="#6a737d">
+            📍 <%= user.location.substring(0, 15) %>
+          </text>
+        </g>
+      <% } %>
+    </g>
+
+  <% } %>
+<% } %>

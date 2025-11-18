@@ -1,0 +1,44 @@
+name: "📊 Dashboard Pure"
+extends: null
+index: 3
+supports:
+  - user
+  - organization
+formats:
+  - svg
+  - png
+  - jpeg
+description: |
+  A comprehensive dashboard template with Pure SVG rendering.
+  Displays a multi-section overview of your GitHub profile with maximum performance.
+  Features header, activity, languages, repositories, achievements, and community panels.
+
+readme:
+  header: |
+    This template provides a complete dashboard view of your GitHub profile using pure SVG.
+    It combines multiple data sections into a unified, organized display optimized for Satori rendering.
+
+    Key features:
+    - Multi-panel dashboard layout
+    - 2-column grid for efficient space usage
+    - Comprehensive profile overview
+    - Pure SVG rendering (10-100x faster than Classic)
+    - Professional card-based design
+    - Color-coded sections with visual hierarchy
+
+example:
+  - name: Full dashboard
+    with:
+      template: dashboard-pure
+      base: header, activity, community, repositories
+      plugin_languages: yes
+      plugin_achievements: yes
+
+  - name: Dashboard with detailed languages
+    with:
+      template: dashboard-pure
+      config_display: large
+      base: header, activity, community, repositories
+      plugin_languages: yes
+      plugin_languages_indepth: yes
+      plugin_achievements: yes

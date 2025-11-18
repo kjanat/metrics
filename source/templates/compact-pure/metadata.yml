@@ -1,0 +1,44 @@
+name: "📦 Compact Pure"
+extends: null
+index: 3
+supports:
+  - user
+  - organization
+  - repository
+formats:
+  - svg
+  - png
+  - jpeg
+description: |
+  A space-efficient template designed for maximum information density.
+  Uses pure SVG elements with horizontal layouts to minimize height (200-300px).
+  Perfect for GitHub profile READMEs, badges, and compact displays.
+
+readme:
+  header: |
+    This template is optimized for space efficiency with a compact, horizontal-first layout.
+    It achieves 200-300px height by using inline badges and dense information display.
+
+    Key features:
+    - Ultra-compact (200-300px height)
+    - Horizontal layouts maximize width
+    - Pure SVG (no foreignObject)
+    - Badge-friendly design
+    - Perfect for profile READMEs
+    - Inline stat badges
+    - Dense but readable
+
+example:
+  - name: Compact profile badge
+    with:
+      template: compact-pure
+      base: header
+      plugin_languages: yes
+
+  - name: Compact with stats
+    with:
+      template: compact-pure
+      config_display: compact
+      base: header
+      plugin_languages: yes
+      plugin_languages_limit: 6

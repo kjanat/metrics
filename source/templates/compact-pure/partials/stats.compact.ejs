@@ -1,0 +1,104 @@
+<%
+  // Compact stats - Inline badge display for space efficiency
+  const badgeHeight = 20
+  const badgeSpacing = 4
+  const badgeWidth = 80
+  let localY = 0
+%>
+
+<!-- Compact Stats Bar -->
+<g class="stats-compact">
+  <!-- Container background -->
+  <rect x="0" y="0" width="<%= width %>" height="<%= badgeHeight + 4 %>" fill="#f9fafb" rx="3"/>
+
+  <!-- Horizontal stat badges -->
+  <g class="stats-badges" transform="translate(2, 2)">
+    <%
+      // Define stats to display
+      const stats = []
+
+      if (base.repositories) {
+        stats.push({
+          icon: '📦',
+          label: 'Repos',
+          value: user.repositories.totalCount
+        })
+      }
+
+      if (user.starredRepositories) {
+        stats.push({
+          icon: '⭐',
+          label: 'Stars',
+          value: user.starredRepositories.totalCount
+        })
+      }
+
+      if (user.followers) {
+        stats.push({
+          icon: '👥',
+          label: 'Followers',
+          value: user.followers.totalCount
+        })
+      }
+
+      if (user.following) {
+        stats.push({
+          icon: '👣',
+          label: 'Following',
+          value: user.following.totalCount
+        })
+      }
+
+      if (user.repositoriesContributedTo) {
+        stats.push({
+          icon: '🔀',
+          label: 'Contributed',
+          value: user.repositoriesContributedTo.totalCount
+        })
+      }
+
+      // Display up to 5 stats
+      const displayStats = stats.slice(0, 5)
+      const spacing = width / displayStats.length
+    %>
+
+    <% for (let i = 0; i < displayStats.length; i++) { %>
+      <% const stat = displayStats[i] %>
+      <g class="stat-badge" transform="translate(<%= i * spacing %>, 0)">
+        <!-- Badge background -->
+        <rect
+          x="0"
+          y="0"
+          width="<%= spacing - badgeSpacing %>"
+          height="<%= badgeHeight %>"
+          fill="url(#badge-gradient)"
+          stroke="#e1e4e8"
+          stroke-width="0.5"
+          rx="2"
+        />
+
+        <!-- Icon -->
+        <text x="6" y="14" font-size="10" fill="#586069">
+          <%= stat.icon %>
+        </text>
+
+        <!-- Value -->
+        <text x="20" y="14" font-size="11" font-weight="600" fill="#24292e">
+          <%= stat.value > 999 ? (stat.value / 1000).toFixed(1) + 'k' : stat.value %>
+        </text>
+
+        <!-- Label -->
+        <text
+          x="<%= (spacing - badgeSpacing) / 2 %>"
+          y="14"
+          font-size="8"
+          fill="#6a737d"
+          text-anchor="middle"
+          opacity="0.7"
+        >
+          <%= stat.label %>
+        </text>
+      </g>
+    <% } %>
+  </g>
+</g>

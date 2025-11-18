@@ -1,0 +1,102 @@
+<%
+  // Dashboard header - enhanced version with more stats
+  const iconSize = 16
+  const avatarSize = 64
+  const spacing = 20
+  let localY = 0
+%>
+
+<% if (account === "user") { %>
+  <!-- Header Background Panel -->
+  <rect x="0" y="0" width="<%= width %>" height="120" fill="url(#gradient-header)" rx="8"/>
+  <rect x="0" y="0" width="<%= width %>" height="120" fill="none" stroke="#d1d5da" stroke-width="1" rx="8"/>
+
+  <!-- Section Title -->
+  <text x="<%= padding %>" y="<%= padding + 3 %>" font-size="12" font-weight="600" fill="#6366f1" opacity="0.8">
+    👤 PROFILE OVERVIEW
+  </text>
+
+  <!-- Avatar and Name -->
+  <g class="header-content" transform="translate(<%= padding %>, <%= padding + 15 %>)">
+    <image x="0" y="0" width="<%= avatarSize %>" height="<%= avatarSize %>" href="<%= computed.avatar %>" clip-path="inset(0% round 50%)"/>
+
+    <text x="<%= avatarSize + 20 %>" y="22" font-size="22" font-weight="700" fill="#24292e">
+      <%= user.name || user.login %>
+    </text>
+
+    <% if (user.login !== user.name) { %>
+      <text x="<%= avatarSize + 20 %>" y="40" font-size="14" fill="#586069">
+        @<%= user.login %>
+      </text>
+    <% } %>
+
+    <!-- Quick Stats Row -->
+    <g class="quick-stats" transform="translate(<%= avatarSize + 20 %>, 52)">
+      <!-- Followers -->
+      <g class="stat-item">
+        <text x="0" y="14" font-size="11" fill="#586069">
+          <tspan font-weight="600" fill="#24292e"><%= user.followers.totalCount %></tspan> followers
+        </text>
+      </g>
+
+      <!-- Repositories -->
+      <g class="stat-item" transform="translate(100, 0)">
+        <text x="0" y="14" font-size="11" fill="#586069">
+          <tspan font-weight="600" fill="#24292e"><%= user.repositories.totalCount %></tspan> repos
+        </text>
+      </g>
+
+      <!-- Total Stars -->
+      <% const totalStars = data.user.repositories.nodes.reduce((acc, repo) => acc + repo.stargazers.totalCount, 0) %>
+      <g class="stat-item" transform="translate(200, 0)">
+        <text x="0" y="14" font-size="11" fill="#586069">
+          <tspan font-weight="600" fill="#24292e">⭐ <%= totalStars %></tspan> stars
+        </text>
+      </g>
+
+      <!-- Joined Date -->
+      <g class="stat-item" transform="translate(290, 0)">
+        <text x="0" y="14" font-size="11" fill="#586069">
+          <% if (computed.cakeday) { %>🎂<% } else { %>🕐<% } %>
+          Joined <%= computed.registration %>
+        </text>
+      </g>
+    </g>
+  </g>
+
+<% } else if (account === "organization") { %>
+  <!-- Organization Header -->
+  <rect x="0" y="0" width="<%= width %>" height="120" fill="url(#gradient-header)" rx="8"/>
+  <rect x="0" y="0" width="<%= width %>" height="120" fill="none" stroke="#d1d5da" stroke-width="1" rx="8"/>
+
+  <!-- Section Title -->
+  <text x="<%= padding %>" y="<%= padding + 3 %>" font-size="12" font-weight="600" fill="#6366f1" opacity="0.8">
+    🏢 ORGANIZATION
+  </text>
+
+  <!-- Avatar and Name -->
+  <g class="header-content" transform="translate(<%= padding %>, <%= padding + 15 %>)">
+    <image x="0" y="0" width="<%= avatarSize %>" height="<%= avatarSize %>" href="<%= computed.avatar %>" clip-path="inset(0% round 15%)"/>
+
+    <text x="<%= avatarSize + 20 %>" y="22" font-size="22" font-weight="700" fill="#24292e">
+      <%= user.name || user.login %>
+    </text>
+
+    <text x="<%= avatarSize + 20 %>" y="45" font-size="14" fill="#586069">
+      @<%= user.login %>
+      <% if (user.isVerified) { %>
+        <tspan fill="#0969da" font-weight="600"> ✓ Verified</tspan>
+      <% } %>
+    </text>
+
+    <!-- Organization Stats -->
+    <g class="quick-stats" transform="translate(<%= avatarSize + 20 %>, 58)">
+      <text x="0" y="14" font-size="11" fill="#586069">
+        👥 <tspan font-weight="600" fill="#24292e"><%= user.membersWithRole.totalCount %></tspan> members
+        <% if (user.location) { %>
+          <tspan dx="15">📍 <%= user.location %></tspan>
+        <% } %>
+      </text>
+    </g>
+  </g>
+<% } %>

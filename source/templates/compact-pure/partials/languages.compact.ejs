@@ -1,0 +1,96 @@
+<%
+  // Compact languages - Horizontal bar and inline list
+  if (!plugins.languages) return
+  const languages = plugins.languages
+  let localY = 0
+  const barHeight = 8
+  const itemHeight = 16
+  const maxLanguages = 6
+  const dotSize = 6
+%>
+
+<% if (languages.favorites.length) { %>
+  <!-- Compact Languages Section -->
+  <g class="languages-compact">
+    <!-- Section header (minimal) -->
+    <text x="0" y="12" font-size="11" font-weight="600" fill="#24292e">
+      💬 Languages
+    </text>
+
+    <% localY = 18 %>
+
+    <!-- Horizontal language bar (color strip) -->
+    <g class="language-strip" transform="translate(0, <%= localY %>)">
+      <% let xPos = 0 %>
+      <% for (const [i, {name, value, color}] of Object.entries(languages.favorites.slice(0, maxLanguages))) { %>
+        <% const barWidth = width * value %>
+        <rect
+          x="<%= xPos %>"
+          y="0"
+          width="<%= barWidth %>"
+          height="<%= barHeight %>"
+          fill="<%= color %>"
+          <% if (i == 0) { %>rx="2 0 0 2"<% } %>
+          <% if (i == languages.favorites.slice(0, maxLanguages).length - 1) { %>rx="0 2 2 0"<% } %>
+        />
+        <% xPos += barWidth %>
+      <% } %>
+    </g>
+
+    <% localY += barHeight + 10 %>
+
+    <!-- Compact language list (two columns) -->
+    <g class="language-list-compact" transform="translate(0, <%= localY %>)">
+      <% const langs = languages.favorites.slice(0, maxLanguages) %>
+      <% const cols = 2 %>
+      <% const colWidth = width / cols %>
+
+      <% for (let i = 0; i < langs.length; i++) { %>
+        <% const {name, value, color} = langs[i] %>
+        <% const col = i % cols %>
+        <% const row = Math.floor(i / cols) %>
+        <% const x = col * colWidth %>
+        <% const y = row * itemHeight %>
+
+        <g class="lang-item" transform="translate(<%= x %>, <%= y %>)">
+          <!-- Color dot -->
+          <circle cx="<%= dotSize / 2 %>" cy="<%= itemHeight / 2 - 2 %>" r="<%= dotSize / 2 %>" fill="<%= color %>"/>
+
+          <!-- Language name -->
+          <text x="<%= dotSize + 4 %>" y="<%= itemHeight / 2 + 2 %>" font-size="9" fill="#24292e">
+            <%= name.substring(0, 12) %><%= name.length > 12 ? '..' : '' %>
+          </text>
+
+          <!-- Percentage (compact) -->
+          <text x="<%= colWidth - 35 %>" y="<%= itemHeight / 2 + 2 %>" font-size="9" fill="#6a737d" text-anchor="end">
+            <%= (value * 100).toFixed(1) %>%
+          </text>
+        </g>
+      <% } %>
+    </g>
+
+    <% localY += Math.ceil(langs.length / cols) * itemHeight %>
+
+    <!-- Total lines indicator (if available) -->
+    <% if (languages.details.includes('lines')) { %>
+      <% const totalLines = languages.favorites.reduce((sum, {lines}) => sum + (lines || 0), 0) %>
+      <% if (totalLines > 0) { %>
+        <g class="total-lines" transform="translate(0, <%= localY + 5 %>)">
+          <text x="<%= width %>" y="10" font-size="8" fill="#959da5" text-anchor="end">
+            <%= totalLines.toLocaleString() %> total lines
+          </text>
+        </g>
+        <% localY += 15 %>
+      <% } %>
+    <% } %>
+  </g>
+
+<% } else { %>
+  <!-- No languages available -->
+  <g class="no-languages">
+    <rect x="0" y="0" width="<%= width %>" height="40" fill="#f9fafb" rx="3"/>
+    <text x="<%= width / 2 %>" y="24" text-anchor="middle" font-size="10" fill="#959da5">
+      No language data
+    </text>
+  </g>
+<% } %>

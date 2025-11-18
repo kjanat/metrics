@@ -1,0 +1,83 @@
+<%
+  // Dashboard community panel - Pure SVG
+  if (account !== "user") return
+  let localY = 0
+  const itemHeight = 24
+%>
+
+<!-- Community Panel -->
+<rect x="0" y="0" width="<%= width %>" height="210" fill="url(#gradient-community)" rx="8"/>
+<rect x="0" y="0" width="<%= width %>" height="210" fill="none" stroke="#d1d5da" stroke-width="1" rx="8"/>
+
+<!-- Section Title -->
+<text x="<%= padding %>" y="<%= padding + 14 %>" font-size="14" font-weight="600" fill="#24292e">
+  🌐 Community Stats
+</text>
+
+<g class="community-content" transform="translate(<%= padding %>, <%= padding + 35 %>)">
+  <!-- Organizations -->
+  <g class="community-item" transform="translate(0, 0)">
+    <circle cx="8" cy="<%= itemHeight / 2 %>" r="6" fill="#8b5cf6"/>
+    <text x="22" y="<%= itemHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+      <%= user.organizations.totalCount %> Organizations
+    </text>
+    <text x="<%= width - 2 * padding %>" y="<%= itemHeight / 2 + 4 %>" text-anchor="end" font-size="11" fill="#586069">
+      member of
+    </text>
+  </g>
+
+  <!-- Followers -->
+  <g class="community-item" transform="translate(0, <%= itemHeight + 5 %>)">
+    <circle cx="8" cy="<%= itemHeight / 2 %>" r="6" fill="#3b82f6"/>
+    <text x="22" y="<%= itemHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+      <%= user.followers.totalCount %> Followers
+    </text>
+    <text x="<%= width - 2 * padding %>" y="<%= itemHeight / 2 + 4 %>" text-anchor="end" font-size="11" fill="#586069">
+      following you
+    </text>
+  </g>
+
+  <!-- Following -->
+  <g class="community-item" transform="translate(0, <%= (itemHeight + 5) * 2 %>)">
+    <circle cx="8" cy="<%= itemHeight / 2 %>" r="6" fill="#06b6d4"/>
+    <text x="22" y="<%= itemHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+      <%= user.following.totalCount %> Following
+    </text>
+    <text x="<%= width - 2 * padding %>" y="<%= itemHeight / 2 + 4 %>" text-anchor="end" font-size="11" fill="#586069">
+      you follow
+    </text>
+  </g>
+
+  <!-- Starred Repositories -->
+  <g class="community-item" transform="translate(0, <%= (itemHeight + 5) * 3 %>)">
+    <circle cx="8" cy="<%= itemHeight / 2 %>" r="6" fill="#fbbf24"/>
+    <text x="22" y="<%= itemHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+      <%= user.starredRepositories.totalCount %> Stars Given
+    </text>
+    <text x="<%= width - 2 * padding %>" y="<%= itemHeight / 2 + 4 %>" text-anchor="end" font-size="11" fill="#586069">
+      repositories
+    </text>
+  </g>
+
+  <!-- Watching -->
+  <g class="community-item" transform="translate(0, <%= (itemHeight + 5) * 4 %>)">
+    <circle cx="8" cy="<%= itemHeight / 2 %>" r="6" fill="#10b981"/>
+    <text x="22" y="<%= itemHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+      <%= user.watching.totalCount %> Watching
+    </text>
+    <text x="<%= width - 2 * padding %>" y="<%= itemHeight / 2 + 4 %>" text-anchor="end" font-size="11" fill="#586069">
+      repositories
+    </text>
+  </g>
+
+  <!-- Sponsoring -->
+  <g class="community-item" transform="translate(0, <%= (itemHeight + 5) * 5 %>)">
+    <circle cx="8" cy="<%= itemHeight / 2 %>" r="6" fill="#ec4899"/>
+    <text x="22" y="<%= itemHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+      <%= user.sponsorshipsAsSponsor.totalCount %> Sponsoring
+    </text>
+    <text x="<%= width - 2 * padding %>" y="<%= itemHeight / 2 + 4 %>" text-anchor="end" font-size="11" fill="#586069">
+      developers
+    </text>
+  </g>
+</g>

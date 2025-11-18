@@ -1,0 +1,310 @@
+/* Dashboard Pure SVG Template Styles */
+
+/* Base SVG styling */
+svg.dashboard-pure {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  background: #ffffff;
+}
+
+svg.dashboard-pure.large {
+  width: 960px;
+}
+
+/* Text defaults */
+text {
+  font-family: inherit;
+  font-size: 12px;
+  fill: #24292e;
+}
+
+/* Dashboard sections */
+.dashboard-section {
+  margin-bottom: 20px;
+}
+
+.header-section rect {
+  transition: all 0.2s ease;
+}
+
+.activity-section,
+.community-section,
+.languages-section,
+.achievements-section,
+.calendar-section {
+  margin-bottom: 15px;
+}
+
+/* Headings */
+text.heading {
+  font-size: 16px;
+  font-weight: 600;
+  fill: #24292e;
+}
+
+text.subheading {
+  font-size: 14px;
+  font-weight: 500;
+  fill: #586069;
+}
+
+/* Section titles */
+text.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  fill: #24292e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Links */
+text.link {
+  fill: #0969da;
+  cursor: pointer;
+}
+
+text.link:hover {
+  text-decoration: underline;
+}
+
+/* Stats and numbers */
+text.stat-value {
+  font-size: 20px;
+  font-weight: 600;
+  fill: #24292e;
+}
+
+text.stat-label {
+  font-size: 12px;
+  fill: #586069;
+}
+
+/* Activity items */
+.activity-item circle,
+.community-item circle {
+  transition: all 0.2s ease;
+}
+
+.activity-item:hover circle,
+.community-item:hover circle {
+  r: 7;
+  opacity: 0.8;
+}
+
+/* Language items */
+.language-item {
+  transition: opacity 0.2s ease;
+}
+
+.language-item:hover {
+  opacity: 0.8;
+}
+
+.language-bar rect {
+  transition: opacity 0.2s ease;
+}
+
+.language-bar rect:hover {
+  opacity: 0.85;
+}
+
+/* Repository items */
+.repo-item {
+  transition: opacity 0.2s ease;
+}
+
+.repo-item:hover {
+  opacity: 0.9;
+}
+
+/* Achievement items */
+.achievement-item {
+  transition: all 0.2s ease;
+}
+
+.achievement-item:hover circle {
+  stroke-width: 3;
+}
+
+/* Achievement rank colors */
+.achievement.s { color: #fbbf24; }
+.achievement.a { color: #ec4899; }
+.achievement.b { color: #8b5cf6; }
+.achievement.c { color: #3b82f6; }
+.achievement.x { color: #6b7280; }
+
+/* Calendar cells */
+.calendar-grid rect {
+  transition: opacity 0.2s ease;
+}
+
+.calendar-grid rect:hover {
+  opacity: 0.8;
+  stroke: #24292e;
+  stroke-width: 1;
+}
+
+/* Status indicators */
+.success text {
+  fill: #28a745;
+}
+
+.warning text {
+  fill: #dbab09;
+}
+
+.error text {
+  fill: #cb2431;
+}
+
+.info text {
+  fill: #0969da;
+}
+
+/* Shapes and backgrounds */
+rect.card {
+  fill: #ffffff;
+  stroke: #d1d5da;
+  stroke-width: 1;
+}
+
+rect.card-background {
+  fill: #f6f8fa;
+}
+
+/* Panel backgrounds */
+rect.panel {
+  fill: #f6f8fa;
+  stroke: #d1d5da;
+  stroke-width: 1;
+  rx: 8;
+}
+
+/* Gradient overlays */
+.gradient-overlay {
+  opacity: 0.1;
+}
+
+/* Animations (simplified for Satori compatibility) */
+svg:not(.no-animations) .animated {
+  animation: fadeIn 0.3s ease-in;
+}
+
+svg:not(.no-animations) .dashboard-section {
+  animation: slideIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Language colors - common programming languages */
+.language-JavaScript { fill: #f1e05a; }
+.language-TypeScript { fill: #2b7489; }
+.language-Python { fill: #3572A5; }
+.language-Java { fill: #b07219; }
+.language-Go { fill: #00ADD8; }
+.language-Rust { fill: #dea584; }
+.language-Ruby { fill: #701516; }
+.language-PHP { fill: #4F5D95; }
+.language-C { fill: #555555; }
+.language-CPP { fill: #f34b7d; }
+.language-CSharp { fill: #178600; }
+.language-Swift { fill: #ffac45; }
+.language-Kotlin { fill: #F18E33; }
+.language-Shell { fill: #89e051; }
+.language-HTML { fill: #e34c26; }
+.language-CSS { fill: #563d7c; }
+
+/* Dark mode support (via class) */
+svg.dashboard-pure.dark {
+  background: #0d1117;
+}
+
+svg.dashboard-pure.dark text {
+  fill: #c9d1d9;
+}
+
+svg.dashboard-pure.dark text.heading {
+  fill: #ffffff;
+}
+
+svg.dashboard-pure.dark text.stat-label {
+  fill: #8b949e;
+}
+
+svg.dashboard-pure.dark rect.card {
+  fill: #161b22;
+  stroke: #30363d;
+}
+
+svg.dashboard-pure.dark rect.card-background {
+  fill: #0d1117;
+}
+
+svg.dashboard-pure.dark rect.panel {
+  fill: #161b22;
+  stroke: #30363d;
+}
+
+/* Responsive font sizing for large display */
+svg.dashboard-pure.large text {
+  font-size: 13px;
+}
+
+svg.dashboard-pure.large text.heading {
+  font-size: 18px;
+}
+
+svg.dashboard-pure.large text.stat-value {
+  font-size: 24px;
+}
+
+svg.dashboard-pure.large text.section-title {
+  font-size: 15px;
+}
+
+/* Column layout optimizations */
+.dashboard-left-column,
+.dashboard-right-column {
+  display: inline-block;
+}
+
+/* Spacing utilities */
+.section-gap {
+  margin-bottom: 20px;
+}
+
+/* Print optimizations */
+@media print {
+  svg.dashboard-pure {
+    background: #ffffff;
+  }
+
+  .no-print {
+    display: none;
+  }
+}
+
+/* Accessibility */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

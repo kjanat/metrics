@@ -1,0 +1,129 @@
+<%
+  // Highlights - Featured repositories/best work
+  let localY = 0
+
+  // Get top repositories (pinned or most starred)
+  const repos = user.repositories.nodes
+    .filter(repo => !repo.isPrivate)
+    .sort((a, b) => b.stargazers.totalCount - a.stargazers.totalCount)
+    .slice(0, 3)
+
+  const cardHeight = 65
+  const cardSpacing = 12
+  const sectionHeight = 80 + repos.length * (cardHeight + cardSpacing)
+%>
+
+<% if (repos.length > 0) { %>
+  <!-- Highlights Section Card -->
+  <rect x="0" y="0" width="<%= width %>" height="<%= sectionHeight %>" fill="#ffffff" rx="12" class="card-elevated"/>
+
+  <!-- Section Header -->
+  <g class="section-header" transform="translate(<%= padding %>, <%= padding %>)">
+    <text x="0" y="22" class="section-heading">
+      ⭐ Featured Projects
+    </text>
+    <text x="0" y="42" class="section-subheading">
+      My best work and most popular repositories
+    </text>
+  </g>
+
+  <% localY = padding + 60 %>
+
+  <!-- Repository Cards -->
+  <g class="highlights-list" transform="translate(<%= padding %>, <%= localY %>)">
+    <% for (const [i, repo] of repos.entries()) { %>
+      <%
+        const yPos = i * (cardHeight + cardSpacing)
+        const cardWidth = width - 2 * padding
+
+        // Truncate description
+        const maxDescLength = 60
+        const description = repo.description || 'No description available'
+        const truncatedDesc = description.length > maxDescLength
+          ? description.substring(0, maxDescLength) + '...'
+          : description
+
+        // Get primary language
+        const language = repo.primaryLanguage
+      %>
+
+      <g class="highlight-card animated" transform="translate(0, <%= yPos %>)" style="animation-delay: <%= i * 0.1 %>s">
+        <!-- Card Background -->
+        <rect
+          x="0"
+          y="0"
+          width="<%= cardWidth %>"
+          height="<%= cardHeight %>"
+          rx="8"
+          class="card-bg"
+        />
+
+        <!-- Left accent bar (language color) -->
+        <% if (language) { %>
+          <rect
+            x="0"
+            y="0"
+            width="4"
+            height="<%= cardHeight %>"
+            fill="<%= language.color || '#6b7280' %>"
+            rx="8 0 0 8"
+          />
+        <% } %>
+
+        <!-- Repository Icon -->
+        <text x="15" y="22" font-size="16">
+          <%= repo.isFork ? '🔱' : '📦' %>
+        </text>
+
+        <!-- Repository Name -->
+        <text x="40" y="22" class="highlight-title">
+          <%= repo.name.length > 25 ? repo.name.substring(0, 25) + '...' : repo.name %>
+        </text>
+
+        <!-- Repository Description -->
+        <text x="40" y="40" class="highlight-description">
+          <%= truncatedDesc %>
+        </text>
+
+        <!-- Repository Stats (right side) -->
+        <g class="repo-stats" transform="translate(<%= cardWidth - 140 %>, 0)">
+          <!-- Stars -->
+          <g class="stat">
+            <text x="0" y="22" font-size="12" fill="#6b7280">
+              ⭐ <%= repo.stargazers.totalCount %>
+            </text>
+          </g>
+
+          <!-- Forks -->
+          <g class="stat" transform="translate(50, 0)">
+            <text x="0" y="22" font-size="12" fill="#6b7280">
+              🔱 <%= repo.forkCount %>
+            </text>
+          </g>
+        </g>
+
+        <!-- Language badge (bottom right) -->
+        <% if (language) { %>
+          <g class="language-badge" transform="translate(<%= cardWidth - 100 %>, 42)">
+            <circle cx="4" cy="-2" r="4" fill="<%= language.color || '#6b7280' %>"/>
+            <text x="12" y="2" font-size="11" fill="#6b7280">
+              <%= language.name %>
+            </text>
+          </g>
+        <% } %>
+      </g>
+    <% } %>
+  </g>
+
+<% } else { %>
+  <!-- No repositories -->
+  <rect x="0" y="0" width="<%= width %>" height="80" fill="#ffffff" rx="12" class="card"/>
+  <g class="section-header" transform="translate(<%= padding %>, <%= padding %>)">
+    <text x="0" y="22" class="section-heading">
+      ⭐ Featured Projects
+    </text>
+    <text x="<%= width / 2 %>" y="55" text-anchor="middle" font-size="12" fill="#9ca3af">
+      No public repositories available
+    </text>
+  </g>
+<% } %>

@@ -1,0 +1,59 @@
+- name: Full dashboard (large display)
+  with:
+    filename: metrics.dashboard-pure.full.svg
+    template: dashboard-pure
+    config_display: large
+    base: header, activity, community, repositories
+    plugin_languages: yes
+    plugin_languages_indepth: yes
+    plugin_achievements: yes
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Compact dashboard
+  with:
+    filename: metrics.dashboard-pure.compact.svg
+    template: dashboard-pure
+    base: header, activity, repositories
+    plugin_languages: yes
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Community-focused dashboard
+  with:
+    filename: metrics.dashboard-pure.community.svg
+    template: dashboard-pure
+    config_display: large
+    base: header, activity, community
+    plugin_achievements: yes
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Developer dashboard
+  with:
+    filename: metrics.dashboard-pure.developer.svg
+    template: dashboard-pure
+    config_display: large
+    base: header, activity, repositories
+    plugin_languages: yes
+    plugin_languages_indepth: yes
+    plugin_languages_details: lines, bytes-size
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Organization dashboard
+  with:
+    filename: metrics.dashboard-pure.org.svg
+    template: dashboard-pure
+    user: github
+    config_display: large
+    base: header, repositories
+    plugin_languages: yes
+    token: ${{ secrets.METRICS_TOKEN_WITH_SCOPES }}
+
+- name: Portfolio dashboard
+  with:
+    filename: metrics.dashboard-pure.portfolio.svg
+    template: dashboard-pure
+    config_display: large
+    base: header, activity, community, repositories
+    plugin_languages: yes
+    plugin_achievements: yes
+    config_timezone: America/New_York
+    token: ${{ secrets.METRICS_TOKEN }}

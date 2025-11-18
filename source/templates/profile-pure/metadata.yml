@@ -1,0 +1,45 @@
+name: "👤 Profile Pure"
+extends: null
+index: 3
+supports:
+  - user
+formats:
+  - svg
+  - png
+  - jpeg
+description: |
+  A personal branding template focused on showcasing individual identity and achievements.
+  Uses pure SVG for fast Satori rendering with rich visual storytelling.
+  Perfect for GitHub profiles, portfolios, and personal branding.
+
+readme:
+  header: |
+    This template is designed for personal branding and storytelling.
+    It renders quickly using pure SVG while maintaining a premium visual aesthetic.
+
+    Key features:
+    - Pure SVG rendering (no foreignObject)
+    - Personal branding focus (hero, bio, tagline)
+    - Skill showcase with visual appeal
+    - Highlight reel of best work
+    - Achievement wall for milestones
+    - Community presence and social proof
+    - Customizable color themes
+
+example:
+  - name: Personal profile showcase
+    with:
+      template: profile-pure
+      base: header
+      config_tagline: "Full-Stack Developer & Open Source Enthusiast"
+      config_bio: "Building tools that developers love. Passionate about performance, design, and user experience."
+      config_status: "Available for hire"
+
+  - name: Profile with custom theme
+    with:
+      template: profile-pure
+      base: header
+      plugin_languages: yes
+      config_theme: "purple"
+      config_tagline: "Creative Developer & Designer"
+      config_status: "Open to collaborate"

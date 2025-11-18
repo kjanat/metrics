@@ -1,0 +1,105 @@
+<%
+  // Community section - Social proof, contributions, and impact
+  let localY = 0
+  const sectionHeight = 120
+
+  // Calculate contribution stats
+  const totalCommits = computed.commits || 0
+  const totalPRs = user.pullRequests?.totalCount || 0
+  const totalIssues = user.issues?.totalCount || 0
+  const totalRepos = user.repositories.totalCount
+  const contributedTo = user.repositoriesContributedTo?.totalCount || 0
+
+  // Calculate activity level
+  const activityScore = totalCommits + totalPRs + totalIssues
+  let activityLevel = 'Active'
+  let activityColor = '#10b981'
+  if (activityScore > 1000) {
+    activityLevel = 'Highly Active'
+    activityColor = '#7c3aed'
+  } else if (activityScore > 500) {
+    activityLevel = 'Very Active'
+    activityColor = '#3b82f6'
+  } else if (activityScore < 100) {
+    activityLevel = 'Getting Started'
+    activityColor = '#9ca3af'
+  }
+%>
+
+<!-- Community Section Card -->
+<rect x="0" y="0" width="<%= width %>" height="<%= sectionHeight %>" fill="#ffffff" rx="12" class="card-elevated"/>
+
+<!-- Section Header -->
+<g class="section-header" transform="translate(<%= padding %>, <%= padding %>)">
+  <text x="0" y="22" class="section-heading">
+    🌟 Community Impact
+  </text>
+  <text x="0" y="42" class="section-subheading">
+    Contributions and engagement across GitHub
+  </text>
+</g>
+
+<% localY = padding + 60 %>
+
+<!-- Community Stats Grid -->
+<g class="community-stats" transform="translate(<%= padding %>, <%= localY %>)">
+  <!-- Contributions Grid (2x3) -->
+  <%
+    const stats = [
+      { label: 'Total Commits', value: totalCommits, icon: '💾', color: '#3b82f6' },
+      { label: 'Pull Requests', value: totalPRs, icon: '🔀', color: '#10b981' },
+      { label: 'Issues', value: totalIssues, icon: '🐛', color: '#f59e0b' },
+      { label: 'Repositories', value: totalRepos, icon: '📚', color: '#8b5cf6' },
+      { label: 'Contributed To', value: contributedTo, icon: '🤝', color: '#ec4899' },
+      { label: 'Activity', value: activityLevel, icon: '⚡', color: activityColor, isText: true }
+    ]
+
+    const statWidth = (width - 2 * padding - 3 * 15) / 3 // 3 columns
+    const statHeight = 35
+  %>
+
+  <% stats.forEach((stat, i) => { %>
+    <%
+      const row = Math.floor(i / 3)
+      const col = i % 3
+      const xPos = col * (statWidth + 15)
+      const yPos = row * (statHeight + 10)
+    %>
+
+    <g class="community-badge" transform="translate(<%= xPos %>, <%= yPos %>)">
+      <!-- Badge Background -->
+      <rect
+        x="0"
+        y="0"
+        width="<%= statWidth %>"
+        height="<%= statHeight %>"
+        rx="6"
+      />
+
+      <!-- Colored left border -->
+      <rect
+        x="0"
+        y="0"
+        width="3"
+        height="<%= statHeight %>"
+        fill="<%= stat.color %>"
+        rx="6 0 0 6"
+      />
+
+      <!-- Icon -->
+      <text x="12" y="22" font-size="16">
+        <%= stat.icon %>
+      </text>
+
+      <!-- Label -->
+      <text x="35" y="14" font-size="9" fill="#9ca3af" font-weight="600" text-transform="uppercase">
+        <%= stat.label %>
+      </text>
+
+      <!-- Value -->
+      <text x="35" y="27" font-size="<%= stat.isText ? '11' : '14' %>" font-weight="700" fill="#1f2937">
+        <%= stat.isText ? stat.value : (typeof stat.value === 'number' ? stat.value.toLocaleString() : stat.value) %>
+      </text>
+    </g>
+  <% }) %>
+</g>

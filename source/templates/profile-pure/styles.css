@@ -1,0 +1,300 @@
+/* Profile Pure SVG Template Styles */
+
+/* Base SVG styling */
+svg.profile-pure {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Segoe UI Emoji', Helvetica, Arial, sans-serif;
+  background: #ffffff;
+}
+
+/* Text defaults */
+text {
+  font-family: inherit;
+  font-size: 14px;
+  fill: #24292e;
+  letter-spacing: -0.01em;
+}
+
+/* Hero section typography */
+.hero-name {
+  font-size: 32px;
+  font-weight: 700;
+  fill: #1f2937;
+  letter-spacing: -0.02em;
+}
+
+.hero-tagline {
+  font-size: 18px;
+  font-weight: 500;
+  fill: #6366f1;
+  letter-spacing: -0.01em;
+}
+
+.hero-bio {
+  font-size: 14px;
+  font-weight: 400;
+  fill: #6b7280;
+  line-height: 1.6;
+}
+
+/* Status badge */
+.status-badge text {
+  font-size: 12px;
+  font-weight: 600;
+  fill: #ffffff;
+}
+
+.status-available {
+  fill: #10b981;
+}
+
+.status-collaborate {
+  fill: #3b82f6;
+}
+
+.status-busy {
+  fill: #ef4444;
+}
+
+/* Section headings */
+text.section-heading {
+  font-size: 20px;
+  font-weight: 700;
+  fill: #1f2937;
+  letter-spacing: -0.02em;
+}
+
+text.section-subheading {
+  font-size: 14px;
+  font-weight: 500;
+  fill: #6b7280;
+}
+
+/* Skill tags */
+.skill-tag text {
+  font-size: 13px;
+  font-weight: 600;
+  fill: #4b5563;
+}
+
+.skill-tag rect {
+  fill: #f3f4f6;
+  stroke: #e5e7eb;
+  stroke-width: 1;
+}
+
+.skill-tag:hover rect {
+  fill: #e5e7eb;
+}
+
+/* Highlight cards */
+.highlight-card {
+  transition: transform 0.2s;
+}
+
+.highlight-card rect.card-bg {
+  fill: #ffffff;
+  stroke: #e5e7eb;
+  stroke-width: 1;
+  filter: url(#card-shadow);
+}
+
+.highlight-card:hover rect.card-bg {
+  stroke: #d1d5db;
+}
+
+.highlight-title {
+  font-size: 16px;
+  font-weight: 600;
+  fill: #1f2937;
+}
+
+.highlight-description {
+  font-size: 12px;
+  font-weight: 400;
+  fill: #6b7280;
+}
+
+/* Stats and numbers */
+text.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  fill: #1f2937;
+}
+
+text.stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  fill: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Community badges */
+.community-badge rect {
+  fill: #f9fafb;
+  stroke: #e5e7eb;
+  stroke-width: 1;
+}
+
+.community-badge text {
+  font-size: 13px;
+  fill: #374151;
+}
+
+/* Achievement items */
+.achievement-item rect {
+  fill: #fef3c7;
+  stroke: #fbbf24;
+  stroke-width: 1;
+}
+
+.achievement-item text {
+  font-size: 13px;
+  font-weight: 600;
+  fill: #92400e;
+}
+
+/* Language colors - extended palette */
+.language-JavaScript { fill: #f1e05a; }
+.language-TypeScript { fill: #2b7489; }
+.language-Python { fill: #3572A5; }
+.language-Java { fill: #b07219; }
+.language-Go { fill: #00ADD8; }
+.language-Rust { fill: #dea584; }
+.language-Ruby { fill: #701516; }
+.language-PHP { fill: #4F5D95; }
+.language-C { fill: #555555; }
+.language-CPP { fill: #f34b7d; }
+.language-CSharp { fill: #178600; }
+.language-Swift { fill: #ffac45; }
+.language-Kotlin { fill: #F18E33; }
+.language-Shell { fill: #89e051; }
+.language-HTML { fill: #e34c26; }
+.language-CSS { fill: #563d7c; }
+.language-Vue { fill: #41b883; }
+.language-React { fill: #61dafb; }
+.language-Dart { fill: #00B4AB; }
+.language-Scala { fill: #c22d40; }
+
+/* Theme variations */
+.default-theme .theme-accent { fill: #667eea; }
+.purple-theme .theme-accent { fill: #7c3aed; }
+.blue-theme .theme-accent { fill: #3b82f6; }
+.green-theme .theme-accent { fill: #10b981; }
+.orange-theme .theme-accent { fill: #f59e0b; }
+
+.default-theme .hero-tagline { fill: #667eea; }
+.purple-theme .hero-tagline { fill: #7c3aed; }
+.blue-theme .hero-tagline { fill: #3b82f6; }
+.green-theme .hero-tagline { fill: #10b981; }
+.orange-theme .hero-tagline { fill: #f59e0b; }
+
+/* Icon styling */
+.icon {
+  font-size: 16px;
+}
+
+.icon-large {
+  font-size: 20px;
+}
+
+/* Links */
+text.link {
+  fill: #0969da;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+text.link:hover {
+  fill: #0550ae;
+  text-decoration: underline;
+}
+
+/* Animations */
+svg:not(.no-animations) .animated {
+  animation: fadeIn 0.4s ease-in;
+}
+
+svg:not(.no-animations) .section-hero {
+  animation: slideDown 0.5s ease-out;
+}
+
+svg:not(.no-animations) .skill-tag {
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Card effects */
+rect.card {
+  fill: #ffffff;
+  stroke: #e5e7eb;
+  stroke-width: 1;
+}
+
+rect.card-elevated {
+  filter: url(#card-shadow);
+}
+
+/* Decorative elements */
+.decoration-dots circle {
+  fill: #e5e7eb;
+  opacity: 0.5;
+}
+
+.decoration-line {
+  stroke: #e5e7eb;
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+/* Responsive font sizing */
+@media (max-width: 600px) {
+  .hero-name {
+    font-size: 28px;
+  }
+
+  .hero-tagline {
+    font-size: 16px;
+  }
+
+  text.section-heading {
+    font-size: 18px;
+  }
+}
+
+/* Print styles */
+@media print {
+  svg.profile-pure {
+    background: #ffffff;
+  }
+
+  .no-print {
+    display: none;
+  }
+}

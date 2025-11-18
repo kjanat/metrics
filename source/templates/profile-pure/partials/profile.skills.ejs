@@ -1,0 +1,133 @@
+<%
+  // Skills showcase - Visual display of languages and technologies
+  if (!plugins.languages) return
+
+  const languages = plugins.languages
+  let localY = 0
+  const maxSkills = 12
+  const skillTagHeight = 32
+  const skillTagSpacing = 10
+  const skillsPerRow = 4
+  const skillTagWidth = (width - 2 * padding - (skillsPerRow - 1) * skillTagSpacing) / skillsPerRow
+
+  const rows = Math.ceil(Math.min(languages.favorites.length, maxSkills) / skillsPerRow)
+  const sectionHeight = 100 + rows * (skillTagHeight + skillTagSpacing)
+%>
+
+<% if (languages.favorites.length > 0) { %>
+  <!-- Skills Section Card -->
+  <rect x="0" y="0" width="<%= width %>" height="<%= sectionHeight %>" fill="#ffffff" rx="12" class="card-elevated"/>
+
+  <!-- Section Header -->
+  <g class="section-header" transform="translate(<%= padding %>, <%= padding %>)">
+    <text x="0" y="22" class="section-heading">
+      💻 Tech Stack & Skills
+    </text>
+    <text x="0" y="42" class="section-subheading">
+      Languages and technologies I work with
+    </text>
+  </g>
+
+  <% localY = padding + 60 %>
+
+  <!-- Visual Skills Bar (Top Languages Overview) -->
+  <g class="skills-bar" transform="translate(<%= padding %>, <%= localY %>)">
+    <% let xPos = 0 %>
+    <% const barWidth = width - 2 * padding %>
+    <% const barHeight = 10 %>
+
+    <% for (const [i, {name, value, color}] of Object.entries(languages.favorites.slice(0, 5))) { %>
+      <% const segmentWidth = barWidth * value %>
+      <rect
+        x="<%= xPos %>"
+        y="0"
+        width="<%= segmentWidth %>"
+        height="<%= barHeight %>"
+        fill="<%= color %>"
+        opacity="0.8"
+        <% if (i == 0) { %>rx="5 0 0 5"<% } %>
+        <% if (i == Math.min(languages.favorites.length - 1, 4)) { %>rx="0 5 5 0"<% } %>
+      >
+        <title><%= name %>: <%= (value * 100).toFixed(1) %>%</title>
+      </rect>
+      <% xPos += segmentWidth %>
+    <% } %>
+  </g>
+
+  <% localY += barHeight + 20 %>
+
+  <!-- Skill Tags Grid -->
+  <g class="skills-grid" transform="translate(<%= padding %>, <%= localY %>)">
+    <% for (const [i, {name, value, color}] of Object.entries(languages.favorites.slice(0, maxSkills))) { %>
+      <%
+        const row = Math.floor(i / skillsPerRow)
+        const col = i % skillsPerRow
+        const xPos = col * (skillTagWidth + skillTagSpacing)
+        const yPos = row * (skillTagHeight + skillTagSpacing)
+      %>
+
+      <g class="skill-tag animated" transform="translate(<%= xPos %>, <%= yPos %>)" style="animation-delay: <%= i * 0.05 %>s">
+        <!-- Tag Background -->
+        <rect
+          x="0"
+          y="0"
+          width="<%= skillTagWidth %>"
+          height="<%= skillTagHeight %>"
+          rx="8"
+        />
+
+        <!-- Language Color Indicator -->
+        <rect
+          x="0"
+          y="0"
+          width="4"
+          height="<%= skillTagHeight %>"
+          fill="<%= color %>"
+          rx="8 0 0 8"
+        />
+
+        <!-- Language Icon/Dot -->
+        <circle
+          cx="18"
+          cy="<%= skillTagHeight / 2 %>"
+          r="5"
+          fill="<%= color %>"
+        />
+
+        <!-- Language Name -->
+        <text
+          x="30"
+          y="<%= skillTagHeight / 2 - 3 %>"
+          font-size="13"
+          font-weight="600"
+          fill="#1f2937"
+        >
+          <%= name.length > 10 ? name.substring(0, 10) + '...' : name %>
+        </text>
+
+        <!-- Percentage -->
+        <text
+          x="30"
+          y="<%= skillTagHeight / 2 + 12 %>"
+          font-size="11"
+          fill="#9ca3af"
+          font-weight="500"
+        >
+          <%= (value * 100).toFixed(1) %>%
+        </text>
+      </g>
+    <% } %>
+  </g>
+
+<% } else { %>
+  <!-- No skills data -->
+  <rect x="0" y="0" width="<%= width %>" height="80" fill="#ffffff" rx="12" class="card"/>
+  <g class="section-header" transform="translate(<%= padding %>, <%= padding %>)">
+    <text x="0" y="22" class="section-heading">
+      💻 Tech Stack & Skills
+    </text>
+    <text x="<%= width / 2 %>" y="55" text-anchor="middle" font-size="12" fill="#9ca3af">
+      No language data available
+    </text>
+  </g>
+<% } %>

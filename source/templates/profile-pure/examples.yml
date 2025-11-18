@@ -1,0 +1,65 @@
+- name: Basic profile showcase
+  with:
+    filename: profile.svg
+    template: profile-pure
+    base: header, repositories
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Profile with custom tagline and bio
+  with:
+    filename: profile.custom.svg
+    template: profile-pure
+    base: header, repositories
+    config_tagline: "Full-Stack Developer & Open Source Enthusiast"
+    config_bio: "Building tools that developers love. Passionate about performance, design, and user experience."
+    config_status: "Available for hire"
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Profile with skills showcase
+  with:
+    filename: profile.skills.svg
+    template: profile-pure
+    base: header, repositories
+    plugin_languages: yes
+    plugin_languages_indepth: yes
+    config_tagline: "Creative Developer & Designer"
+    config_theme: "purple"
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Complete profile with achievements
+  with:
+    filename: profile.complete.svg
+    template: profile-pure
+    base: header, repositories
+    plugin_languages: yes
+    plugin_achievements: yes
+    config_tagline: "Software Engineer & Community Builder"
+    config_bio: "Crafting elegant solutions to complex problems. Contributing to open source and helping developers grow."
+    config_status: "Open to collaborate"
+    config_theme: "blue"
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Portfolio-style profile (custom theme)
+  with:
+    filename: profile.portfolio.svg
+    template: profile-pure
+    base: header, repositories
+    plugin_languages: yes
+    plugin_languages_indepth: yes
+    config_tagline: "Design-Focused Engineer"
+    config_bio: "Bridging the gap between beautiful design and powerful code"
+    config_theme: "green"
+    token: ${{ secrets.METRICS_TOKEN }}
+
+- name: Job seeker profile
+  with:
+    filename: profile.hiring.svg
+    template: profile-pure
+    base: header, repositories
+    plugin_languages: yes
+    plugin_achievements: yes
+    config_tagline: "Full-Stack Engineer | React • Node • TypeScript"
+    config_bio: "5+ years building scalable web applications. Seeking senior engineering roles at innovative companies."
+    config_status: "Available for hire"
+    config_theme: "orange"
+    token: ${{ secrets.METRICS_TOKEN }}

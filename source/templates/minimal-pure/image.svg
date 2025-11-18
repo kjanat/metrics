@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="99999" class="minimal-pure <%= !animated ? 'no-animations' : '' %>">
+
+  <defs>
+    <style><%= fonts %></style>
+  </defs>
+
+  <style data-optimizable="true"><%= style %></style>
+  <style><%= extras.css %></style>
+
+  <!-- Ultra-minimal Pure SVG layout -->
+  <g class="metrics-container" transform="translate(8, 8)">
+    <%
+      let yOffset = 0
+      const width = 284
+      const padding = 8
+      const lineHeight = 16
+    %>
+
+    <% if (warnings.length) { %>
+      <!-- Warning Section -->
+      <g class="warning-section" transform="translate(0, <%= yOffset %>)">
+        <rect x="0" y="0" width="<%= width %>" height="30" fill="#fee" rx="4"/>
+        <text x="12" y="20" fill="#c00" font-size="11" font-weight="500">
+          ⚠ <%= warnings.map(({warning}) => warning.message).join(", ") %>
+        </text>
+      </g>
+      <% yOffset += 38 %>
+    <% } %>
+
+    <!-- Render partials -->
+    <% for (const partial of [...partials]) { %>
+      <g class="partial-<%= partial %>" transform="translate(0, <%= yOffset %>)">
+        <%- await include(`partials/${partial}.ejs`, {yOffset: 0, width, padding, lineHeight}) %>
+      </g>
+      <%
+        // Minimal height calculations for compact layout
+        const heights = {
+          'base.minimal': 110,
+          'languages.minimal': 50,
+        }
+        yOffset += heights[partial] || 80
+      %>
+    <% } %>
+
+    <% if (base.metadata) { %>
+      <!-- Minimal Footer -->
+      <g class="footer-section" transform="translate(0, <%= yOffset %>)">
+        <rect x="0" y="0" width="<%= width %>" height="1" fill="#e1e4e8" opacity="0.2"/>
+        <text x="<%= width / 2 %>" y="14" text-anchor="middle" fill="#586069" font-size="9" opacity="0.6">
+          Updated <%= meta.generated.split(' ')[0] %> • lowlighter/metrics
+        </text>
+      </g>
+      <% yOffset += 24 %>
+    <% } %>
+
+    <!-- End marker -->
+    <rect id="metrics-end" x="0" y="<%= yOffset %>" width="1" height="1" opacity="0"/>
+  </g>
+
+</svg>

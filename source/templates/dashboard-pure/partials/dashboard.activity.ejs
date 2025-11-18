@@ -1,0 +1,83 @@
+<%
+  // Dashboard activity panel - Pure SVG
+  if (account !== "user") return
+  let localY = 0
+  const itemHeight = 24
+%>
+
+<!-- Activity Panel -->
+<rect x="0" y="0" width="<%= width %>" height="210" fill="url(#gradient-activity)" rx="8"/>
+<rect x="0" y="0" width="<%= width %>" height="210" fill="none" stroke="#d1d5da" stroke-width="1" rx="8"/>
+
+<!-- Section Title -->
+<text x="<%= padding %>" y="<%= padding + 14 %>" font-size="14" font-weight="600" fill="#24292e">
+  📈 Recent Activity
+</text>
+
+<g class="activity-content" transform="translate(<%= padding %>, <%= padding + 35 %>)">
+  <!-- Commits -->
+  <g class="activity-item" transform="translate(0, 0)">
+    <circle cx="8" cy="<%= itemHeight / 2 %>" r="6" fill="#10b981"/>
+    <text x="22" y="<%= itemHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+      <%= computed.commits %> Commits
+    </text>
+    <text x="<%= width - 2 * padding %>" y="<%= itemHeight / 2 + 4 %>" text-anchor="end" font-size="12" fill="#10b981" font-weight="600">
+      <%= Math.round(computed.commits / 365) %>/day avg
+    </text>
+  </g>
+
+  <!-- Pull Requests Opened -->
+  <g class="activity-item" transform="translate(0, <%= itemHeight + 5 %>)">
+    <circle cx="8" cy="<%= itemHeight / 2 %>" r="6" fill="#3b82f6"/>
+    <text x="22" y="<%= itemHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+      <%= user.contributionsCollection.totalPullRequestContributions %> Pull Requests
+    </text>
+    <text x="<%= width - 2 * padding %>" y="<%= itemHeight / 2 + 4 %>" text-anchor="end" font-size="11" fill="#586069">
+      opened
+    </text>
+  </g>
+
+  <!-- Pull Requests Reviewed -->
+  <g class="activity-item" transform="translate(0, <%= (itemHeight + 5) * 2 %>)">
+    <circle cx="8" cy="<%= itemHeight / 2 %>" r="6" fill="#8b5cf6"/>
+    <text x="22" y="<%= itemHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+      <%= user.contributionsCollection.totalPullRequestReviewContributions %> PR Reviews
+    </text>
+    <text x="<%= width - 2 * padding %>" y="<%= itemHeight / 2 + 4 %>" text-anchor="end" font-size="11" fill="#586069">
+      reviewed
+    </text>
+  </g>
+
+  <!-- Issues Opened -->
+  <g class="activity-item" transform="translate(0, <%= (itemHeight + 5) * 3 %>)">
+    <circle cx="8" cy="<%= itemHeight / 2 %>" r="6" fill="#f59e0b"/>
+    <text x="22" y="<%= itemHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+      <%= user.contributionsCollection.totalIssueContributions %> Issues
+    </text>
+    <text x="<%= width - 2 * padding %>" y="<%= itemHeight / 2 + 4 %>" text-anchor="end" font-size="11" fill="#586069">
+      opened
+    </text>
+  </g>
+
+  <!-- Issue Comments -->
+  <g class="activity-item" transform="translate(0, <%= (itemHeight + 5) * 4 %>)">
+    <circle cx="8" cy="<%= itemHeight / 2 %>" r="6" fill="#ec4899"/>
+    <text x="22" y="<%= itemHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+      <%= user.issueComments.totalCount %> Comments
+    </text>
+    <text x="<%= width - 2 * padding %>" y="<%= itemHeight / 2 + 4 %>" text-anchor="end" font-size="11" fill="#586069">
+      on issues
+    </text>
+  </g>
+
+  <!-- Repositories Contributed To -->
+  <g class="activity-item" transform="translate(0, <%= (itemHeight + 5) * 5 %>)">
+    <circle cx="8" cy="<%= itemHeight / 2 %>" r="6" fill="#06b6d4"/>
+    <text x="22" y="<%= itemHeight / 2 + 4 %>" font-size="12" fill="#24292e" font-weight="500">
+      <%= user.repositoriesContributedTo.totalCount %> Repositories
+    </text>
+    <text x="<%= width - 2 * padding %>" y="<%= itemHeight / 2 + 4 %>" text-anchor="end" font-size="11" fill="#586069">
+      contributed
+    </text>
+  </g>
+</g>

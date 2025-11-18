@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="<%= large ? 800 : 480 %>" height="99999" class="compact-pure <%= large ? 'wide' : 'standard' %> <%= !animated ? 'no-animations' : '' %>">
+
+  <defs>
+    <style><%= fonts %></style>
+    <!-- Compact gradient for header -->
+    <linearGradient id="gradient-compact" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.08" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.08" />
+    </linearGradient>
+
+    <!-- Badge gradients -->
+    <linearGradient id="badge-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0.05" />
+    </linearGradient>
+  </defs>
+
+  <style data-optimizable="true"><%= style %></style>
+  <style><%= extras.css %></style>
+
+  <!-- Compact Pure SVG layout - Maximum density! -->
+  <g class="compact-container" transform="translate(5, 5)">
+    <%
+      let yOffset = 0
+      const width = large ? 790 : 470
+      const padding = 5
+      const lineHeight = 16
+      const compactSpacing = 8
+    %>
+
+    <% if (warnings.length) { %>
+      <!-- Warning Section (Compact) -->
+      <g class="warning-section" transform="translate(0, <%= yOffset %>)">
+        <rect x="0" y="0" width="<%= width %>" height="28" fill="#fee" rx="4"/>
+        <text x="10" y="18" fill="#c00" font-size="11" font-weight="500">
+          ⚠ <%= warnings.map(({warning}) => warning.message).join(", ") %>
+        </text>
+      </g>
+      <% yOffset += 36 %>
+    <% } %>
+
+    <!-- Main Content Area -->
+    <rect x="0" y="0" width="<%= width %>" height="99999" fill="#ffffff" rx="6"/>
+    <rect x="0" y="0" width="<%= width %>" height="99999" fill="none" stroke="#e1e4e8" stroke-width="1" rx="6"/>
+
+    <!-- Render partials in compact mode -->
+    <% for (const partial of [...partials]) { %>
+      <g class="partial-<%= partial %>" transform="translate(<%= padding %>, <%= yOffset + padding %>)">
+        <%- await include(`partials/${partial}.ejs`, {
+          yOffset: 0,
+          width: width - 2 * padding,
+          padding,
+          lineHeight,
+          compactSpacing,
+          compact: true
+        }) %>
+      </g>
+      <%
+        // Compact height estimates
+        const compactHeights = {
+          'base.header': 60,
+          'stats.compact': 30,
+          'languages.compact': 80,
+          'base.activity+community': 70,
+          'base.repositories': 100,
+          'languages': 70,
+          'achievements': 120,
+        }
+        yOffset += compactHeights[partial] || 60
+      %>
+    <% } %>
+
+    <% if (base.metadata) { %>
+      <!-- Footer Section (Minimal) -->
+      <g class="footer-section" transform="translate(0, <%= yOffset %>)">
+        <rect x="0" y="0" width="<%= width %>" height="1" fill="#d1d5da" opacity="0.2"/>
+        <text x="<%= width / 2 %>" y="14" text-anchor="middle" fill="#959da5" font-size="9" opacity="0.7">
+          Updated <%= meta.generated %> · lowlighter/metrics@<%= meta.version %>
+        </text>
+      </g>
+      <% yOffset += 22 %>
+    <% } %>
+
+    <!-- Adjust final height -->
+    <rect id="metrics-end" x="0" y="<%= yOffset %>" width="1" height="1" opacity="0"/>
+  </g>
+
+</svg>
